@@ -1,0 +1,257 @@
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix asoft: <https://github.com/cdcc-jpg/ontologies#> .
+@base <https://github.com/cdcc-jpg/ontologies> .
+
+# ONTOLOGY METADATA
+asoft:AirsoftOntology rdf:type owl:Ontology ;
+    dcterms:title "An Airsoft Ontology" ;
+    dcterms:creator "clement.dhollande@leurn.co" ;
+    dcterms:created "2024-05-20"^^xsd:date ;
+    dcterms:description "A comprehensive ontology covering airsoft replicas, gear, and game rules." ;
+    owl:versionInfo "1.0" .
+
+asoft:AirsoftGame a owl:Class .
+
+# GENERAL CONCEPTS
+
+asoft:AirsoftField a owl:Class ;
+    rdfs:subClassOf schema:Place ;
+    rdfs:label "Airsoft field"@en ;
+    rdfs:comment "A place where airsoft is played."@en .
+
+asoft:AirsoftGear a owl:Class ;
+    rdfs:subClassOf schema:Product ;
+    rdfs:label "Airsoft gear"@en ;
+    rdfs:comment "A type of object specifically used to play airsoft."@en .
+
+asoft:AirsoftRule a owl:Class ;
+    rdfs:label "Airsoft rule"@en ;
+    rdfs:comment "A type of pre-established rules specifically applied to play airsoft."@en .
+
+asoft:AirsoftAgent a owl:Class ;
+    rdfs:subClassOf foaf:Agent ;
+    rdfs:label "Airsoft agent"@en ;
+    rdfs:comment "A type of agent that participates in an airsoft game." .
+
+# GENERAL PROCESSES
+
+asoft:StandardAirsoftSchedule a owl:Class, obo:BFO_0000015 ;
+    rdfs:comment "The ordered sequence of a standard game day." ;
+    asoft:hasPhases ( asoft:Briefing asoft:GameStart asoft:LunchBreak asoft:GameEnd ) .
+
+asoft:Briefing a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    rdfs:label "Briefing"@en .
+
+asoft:GameStart a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    rdfs:label "Game Start"@en .
+
+asoft:LunchBreak a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    rdfs:label "Lunch Break"@en .
+
+asoft:GameEnd a owl:Class ;
+    rdfs:subClassOf obo:BFO_0000015 ;
+    rdfs:label "Game End"@en .
+
+# SPECIFIC CONCEPTS (AirsoftField)
+
+asoft:OutdoorAirsoftField a owl:Class ;
+    rdfs:label "Outdoor airsoft field"@en ;
+    rdfs:comment "A place located outdoor where airsoft is played."@en ;
+    rdfs:subClassOf asoft:AirsoftField .
+
+asoft:IndoorAirsoftField a owl:Class ;
+    rdfs:label "Indoor airsoft field"@en ;
+    rdfs:comment "A place located indoor where airsoft is played."@en ;
+    rdfs:subClassOf asoft:AirsoftField .
+
+# SPECIFIC CONCEPTS (AirsoftGear)
+
+asoft:AirsoftClothing a owl:Class ;
+    rdfs:label "Airsoft vest"@en, "Airsoft Clothing"@en ;
+    rdfs:comment "A piece of gear worn on the body by the player."@en ;
+    rdfs:subClassOf asoft:AirsoftGear .
+
+asoft:EyeProtection a owl:Class ;
+    rdfs:label "Eye Protection"@en ;
+    rdfs:comment "Mandatory safety glasses, goggles, or masks worn to protect the eyes from BBs."@en ;
+    rdfs:subClassOf asoft:AirsoftClothing .
+
+asoft:AirsoftReplica a owl:Class ;
+    rdfs:label "Airsoft replica"@en ;
+    rdfs:comment "A piece of gear that propels 0.6 polymer ballbearings (BBs)."@en ;
+    rdfs:subClassOf asoft:AirsoftGear .
+
+asoft:AirsoftConsumable a owl:Class ;
+    rdfs:label "Airsoft consumable"@en ;
+    rdfs:comment "A piece of consumable that allows physical interaction between players."@en ;
+    rdfs:subClassOf asoft:AirsoftGear .
+
+asoft:AirsoftBB a owl:Class ;
+    rdfs:label "Airsoft BB"@en ;
+    rdfs:comment "Spherical plastic or biodegradable projectiles fired by replicas."@en ;
+    rdfs:subClassOf asoft:AirsoftConsumable ,
+                    [ a owl:Restriction ;
+                      owl:onProperty asoft:hasWeight ;
+                      owl:hasValue "0.6"^^xsd:decimal
+                    ] .
+
+asoft:AirsoftGrenade a owl:Class ;
+    rdfs:label "Airsoft grenade"@en ;
+    rdfs:comment "A type of airsoft consumable that simulates the effect of a real grenade."@en ;
+    rdfs:subClassOf asoft:AirsoftConsumable ,
+                    [ a owl:Restriction ;
+                        owl:onProperty asoft:hasDecibel ;
+                        owl:hasValue "120"^^xsd:decimal 
+                    ] .
+
+# SPECIFIC CONCEPTS (AirsoftRule)
+
+asoft:Kill a owl:Class ;
+    rdfs:label "Kill"@en ;
+    rdfs:comment "The rule that states that a player is not allowed to interact with other players."@en ;
+    rdfs:subClassOf asoft:AirsoftRule .
+
+asoft:PowerLimit a owl:Class ;
+    rdfs:label "Power limit"@en ;
+    rdfs:comment "The rule that imposes a maximum cinetic power limit applied to polymer BBs."@en ;
+    rdfs:subClassOf asoft:AirsoftRule .
+
+asoft:NoiseLimit a owl:Class ;
+    rdfs:label "Noise limit"@en ;
+    rdfs:comment "The rule that imposes a maximum sonic power limit emitted by consummables."@en ;
+    rdfs:subClassOf asoft:AirsoftRule .
+
+# SPECIFIC CONCEPTS (AirsoftAgent)
+
+asoft:AirsoftMarshall a owl:Class ;
+    rdfs:subClassOf foaf:Person ;
+    rdfs:label "Airsoft marshall"@en ;
+    rdfs:comment "A type of airsoft agent that enforces airsoft rules during an airsoft game." ;
+    rdfs:subClassOf asoft:AirsoftAgent .
+
+asoft:AirsoftPlayer a owl:Class ;
+    rdfs:subClassOf foaf:Person ;
+    rdfs:label "Airsoft player"@en ;
+    rdfs:comment "A type of airsoft agent that plays an airsoft game." ;
+    rdfs:subClassOf asoft:AirsoftAgent .
+
+asoft:AirsoftManager a owl:Class ;
+    rdfs:subClassOf foaf:Person ;
+    rdfs:label "Airsoft Manager"@en ;
+    rdfs:comment "A type of airsoft agent that organises an airsoft game." ;
+    rdfs:subClassOf asoft:AirsoftAgent .
+
+asoft:AirsoftTeam a owl:Class ;
+    rdfs:subClassOf foaf:Group ;
+    rdfs:label "Airsoft Team"@en ;
+    rdfs:comment "An organized group of airsoft players."@en ;
+    rdfs:subClassOf asoft:AirsoftAgent .
+
+# SPECIFIC CONCEPTS (AirsoftReplica)
+
+asoft:HpaReplica a owl:Class ;
+    rdfs:label "HPA replica"@en ;
+    rdfs:comment "A type of airsoft replica that uses a compress air tank to propel BBs."@en ;
+    rdfs:subClassOf asoft:AirsoftReplica .
+
+asoft:GbbrReplica a owl:Class ;
+    rdfs:label "GBBR replica"@en ;
+    rdfs:comment "A type of airsoft replica that uses compressed gas in magazines to propel BBs."@en ;
+    rdfs:subClassOf asoft:AirsoftReplica .
+
+asoft:ElectricReplica a owl:Class ;
+    rdfs:label "Electric replica"@en ;
+    rdfs:comment "A type of airsoft replica that uses an electric motor that compresses ambient air to propel BBs."@en ;
+    rdfs:subClassOf asoft:AirsoftReplica .
+
+# GENERAL OBJECT PROPERTIES
+
+asoft:hasPhases a owl:ObjectProperty ;
+    rdfs:label "has phases"@en ;
+    rdfs:subPropertyOf obo:BFO_0000051 ; 
+    rdfs:domain asoft:StandardAirsoftSchedule ;
+    rdfs:range rdf:List .
+
+asoft:kills a owl:ObjectProperty ;
+    rdfs:range asoft:AirsoftPlayer ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    owl:inverseOf asoft:isKilledBy .
+
+asoft:isKilledBy a owl:ObjectProperty ;
+    rdfs:range asoft:AirsoftPlayer ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    owl:inverseOf asoft:kills .
+
+asoft:usesGear a owl:ObjectProperty ;
+    rdfs:label "uses gear"@en ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    rdfs:range asoft:AirsoftGear .
+
+asoft:enforcesRule a owl:ObjectProperty ;
+    rdfs:label "enforces rule"@en ;
+    rdfs:domain asoft:AirsoftMarshall ;
+    rdfs:range asoft:AirsoftRule .
+
+asoft:playsOnField a owl:ObjectProperty ;
+    rdfs:label "plays on field"@en ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    rdfs:range asoft:AirsoftField .
+
+asoft:belongsToTeam a owl:ObjectProperty ;
+    rdfs:label "belongs to team"@en ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    rdfs:range asoft:AirsoftTeam .
+
+# GENERAL DATA PROPERTIES
+
+asoft:hasWeight a owl:DatatypeProperty ;
+    rdfs:label "has weight"@en ;
+    rdfs:comment "The physical weight of an object, usually measured in grams for airsoft."@en ;
+    rdfs:domain asoft:AirsoftGear ;
+    rdfs:range xsd:decimal .
+
+asoft:hasPowerLimit a owl:DatatypeProperty ;
+    rdfs:label "has power limit"@en ;
+    rdfs:domain asoft:AirsoftReplica ;
+    rdfs:range xsd:decimal .
+
+asoft:hasFPS a owl:DatatypeProperty ;
+    rdfs:label "has FPS"@en ;
+    rdfs:comment "Feet per second measurement of the replica."@en ;
+    rdfs:domain asoft:AirsoftReplica ;
+    rdfs:range xsd:integer .
+
+asoft:hasAmmunitionCapacity a owl:DatatypeProperty ;
+    rdfs:label "has ammunition capacity"@en ;
+    rdfs:domain asoft:AirsoftReplica ;
+    rdfs:range xsd:integer .
+
+# INDIVIDUALS (Instances of the classes)
+
+asoft:Player_JohnDoe a owl:NamedIndividual, asoft:AirsoftPlayer ;
+    rdfs:label "John Doe"@en ;
+    asoft:belongsToTeam asoft:Team_GhostSquad ;
+    asoft:playsOnField asoft:Field_CQBCity ;
+    asoft:usesGear asoft:Replica_CustomM4 .
+
+asoft:Team_GhostSquad a owl:NamedIndividual, asoft:AirsoftTeam ;
+    rdfs:label "Ghost Squad"@en ;
+    rdfs:comment "A competitive CQB airsoft team."@en .
+
+asoft:Field_CQBCity a owl:NamedIndividual, asoft:IndoorAirsoftField ;
+    rdfs:label "CQB City Indoor Arena"@en .
+
+asoft:Replica_CustomM4 a owl:NamedIndividual, asoft:ElectricReplica ;
+    rdfs:label "Custom M4A1 AEG"@en ;
+    asoft:hasFPS 350 ;
+    asoft:hasAmmunitionCapacity 120 .
