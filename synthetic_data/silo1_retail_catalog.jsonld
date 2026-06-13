@@ -1,0 +1,4802 @@
+[
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0001",
+    "name": "Novritsch SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0002",
+    "name": "GHK Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0003",
+    "name": "LCT SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0004",
+    "name": "PolarStar Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0005",
+    "name": "Silverback VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0006",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0007",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0008",
+    "name": "VFC Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0009",
+    "name": "Wolverine Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0010",
+    "name": "Redline MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0011",
+    "name": "G&G AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0012",
+    "name": "LCT SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0013",
+    "name": "LCT AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0014",
+    "name": "LCT AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0015",
+    "name": "VFC M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0016",
+    "name": "VFC SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0017",
+    "name": "Novritsch SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0018",
+    "name": "Cyma SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0019",
+    "name": "PolarStar Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0020",
+    "name": "Wolverine F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0021",
+    "name": "Redline F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0022",
+    "name": "KJW Hi-Capa 5.1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0023",
+    "name": "KJW MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0024",
+    "name": "Cyma Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0025",
+    "name": "Krytac AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0026",
+    "name": "PolarStar F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0027",
+    "name": "KJW MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0028",
+    "name": "WE Tech Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0029",
+    "name": "Novritsch SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0030",
+    "name": "Wolverine MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0031",
+    "name": "KJW M4A1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0032",
+    "name": "Novritsch SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0033",
+    "name": "Tokyo Marui M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0034",
+    "name": "WE Tech Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0035",
+    "name": "Tokyo Marui Steyr Scout Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0036",
+    "name": "LCT SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0037",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0038",
+    "name": "Tokyo Marui Steyr Scout Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0039",
+    "name": "LCT M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0040",
+    "name": "G&G SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0041",
+    "name": "Tokyo Marui Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0042",
+    "name": "Cyma M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0043",
+    "name": "KJW AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0044",
+    "name": "Tokyo Marui SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0045",
+    "name": "Tokyo Marui Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0046",
+    "name": "Novritsch VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0047",
+    "name": "Cyma M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0048",
+    "name": "Krytac AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0049",
+    "name": "PolarStar MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0050",
+    "name": "Modify VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0051",
+    "name": "Cyma AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0052",
+    "name": "Redline F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0053",
+    "name": "KJW MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0054",
+    "name": "Silverback VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0055",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0056",
+    "name": "G&G AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0057",
+    "name": "VFC SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0058",
+    "name": "Krytac Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0059",
+    "name": "Tokyo Marui SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0060",
+    "name": "WE Tech AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0061",
+    "name": "Redline Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0062",
+    "name": "PolarStar MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0063",
+    "name": "Krytac AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0064",
+    "name": "KJW Hi-Capa 5.1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0065",
+    "name": "Tokyo Marui SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0066",
+    "name": "Cyma Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0067",
+    "name": "LCT SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0068",
+    "name": "Modify SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0069",
+    "name": "Tokyo Marui SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0070",
+    "name": "Cyma SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0071",
+    "name": "Cyma SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0072",
+    "name": "PolarStar Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0073",
+    "name": "LCT AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0074",
+    "name": "Cyma M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0075",
+    "name": "VFC M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0076",
+    "name": "VFC Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0077",
+    "name": "Krytac SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0078",
+    "name": "Tokyo Marui AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0079",
+    "name": "PolarStar MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0080",
+    "name": "WE Tech AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0081",
+    "name": "VFC Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0082",
+    "name": "Tokyo Marui SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0083",
+    "name": "KJW MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0084",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0085",
+    "name": "KJW Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0086",
+    "name": "Novritsch VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0087",
+    "name": "Tokyo Marui SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0088",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0089",
+    "name": "Novritsch VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0090",
+    "name": "Modify VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0091",
+    "name": "Tokyo Marui SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0092",
+    "name": "Modify VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0093",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0094",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0095",
+    "name": "Wolverine Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0096",
+    "name": "Novritsch SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0097",
+    "name": "Silverback SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0098",
+    "name": "Novritsch SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0099",
+    "name": "WE Tech M4A1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0100",
+    "name": "Modify SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0101",
+    "name": "Novritsch SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0102",
+    "name": "WE Tech MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0103",
+    "name": "GHK M4A1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0104",
+    "name": "Krytac Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0105",
+    "name": "Wolverine Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0106",
+    "name": "KWA MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0107",
+    "name": "Tokyo Marui AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0108",
+    "name": "PolarStar Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0109",
+    "name": "PolarStar F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0110",
+    "name": "VFC SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0111",
+    "name": "Cyma Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0112",
+    "name": "Wolverine Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0113",
+    "name": "LCT M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0114",
+    "name": "WE Tech MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0115",
+    "name": "Krytac SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0116",
+    "name": "LCT SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0117",
+    "name": "Wolverine F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0118",
+    "name": "PolarStar MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0119",
+    "name": "VFC SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0120",
+    "name": "VFC SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0121",
+    "name": "Cyma SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0122",
+    "name": "Redline Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0123",
+    "name": "Silverback SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0124",
+    "name": "GHK M4A1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0125",
+    "name": "Tokyo Marui SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0126",
+    "name": "GHK Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0127",
+    "name": "Wolverine MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0128",
+    "name": "Novritsch Steyr Scout Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0129",
+    "name": "Tokyo Marui Steyr Scout Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0130",
+    "name": "GHK AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0131",
+    "name": "Redline F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0132",
+    "name": "Wolverine MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0133",
+    "name": "Silverback VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0134",
+    "name": "Cyma SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0135",
+    "name": "PolarStar MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0136",
+    "name": "Tokyo Marui M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0137",
+    "name": "GHK Hi-Capa 5.1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0138",
+    "name": "Redline Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0139",
+    "name": "Wolverine Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0140",
+    "name": "VFC AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0141",
+    "name": "Tokyo Marui Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0142",
+    "name": "GHK MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0143",
+    "name": "KWA Hi-Capa 5.1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0144",
+    "name": "Tokyo Marui AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0145",
+    "name": "G&G M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0146",
+    "name": "Cyma Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0147",
+    "name": "VFC M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0148",
+    "name": "G&G SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0149",
+    "name": "Novritsch SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0150",
+    "name": "Wolverine Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0151",
+    "name": "KJW Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0152",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0153",
+    "name": "G&G M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0154",
+    "name": "G&G AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0155",
+    "name": "PolarStar F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0156",
+    "name": "Cyma AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0157",
+    "name": "Modify VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0158",
+    "name": "Krytac SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0159",
+    "name": "PolarStar Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0160",
+    "name": "Modify SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0161",
+    "name": "Tokyo Marui SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0162",
+    "name": "KJW AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0163",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0164",
+    "name": "PolarStar Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0165",
+    "name": "Wolverine MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0166",
+    "name": "Silverback VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0167",
+    "name": "Krytac M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0168",
+    "name": "Redline Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0169",
+    "name": "Krytac Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0170",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0171",
+    "name": "Krytac AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0172",
+    "name": "KWA AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0173",
+    "name": "PolarStar MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0174",
+    "name": "Tokyo Marui SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0175",
+    "name": "Tokyo Marui SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0176",
+    "name": "Modify Steyr Scout Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0177",
+    "name": "G&G SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0178",
+    "name": "Krytac SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0179",
+    "name": "Tokyo Marui SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0180",
+    "name": "Tokyo Marui SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0181",
+    "name": "Cyma SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0182",
+    "name": "WE Tech M4A1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0183",
+    "name": "KJW Hi-Capa 5.1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0184",
+    "name": "Krytac Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0185",
+    "name": "PolarStar MTW HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0186",
+    "name": "KJW Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0187",
+    "name": "LCT SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0188",
+    "name": "Modify Steyr Scout Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0189",
+    "name": "PolarStar Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0190",
+    "name": "KWA Hi-Capa 5.1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0191",
+    "name": "Redline Kythera SR25 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0192",
+    "name": "Silverback VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0193",
+    "name": "Tokyo Marui VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0194",
+    "name": "KWA AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0195",
+    "name": "VFC SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0196",
+    "name": "Tokyo Marui MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0197",
+    "name": "LCT Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0198",
+    "name": "Tokyo Marui M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0199",
+    "name": "G&G AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0200",
+    "name": "GHK MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0201",
+    "name": "Tokyo Marui M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0202",
+    "name": "GHK Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0203",
+    "name": "G&G SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0204",
+    "name": "GHK Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0205",
+    "name": "Wolverine F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0206",
+    "name": "Modify SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0207",
+    "name": "VFC SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0208",
+    "name": "Tokyo Marui AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0209",
+    "name": "GHK Hi-Capa 5.1 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "GHK"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0210",
+    "name": "KJW MP7 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KJW"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0211",
+    "name": "LCT Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0212",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0213",
+    "name": "Krytac Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0214",
+    "name": "Novritsch SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0215",
+    "name": "Novritsch SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0216",
+    "name": "Tokyo Marui SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0217",
+    "name": "KWA AKM GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0218",
+    "name": "WE Tech Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "WE Tech"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0219",
+    "name": "Krytac SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0220",
+    "name": "Tokyo Marui Steyr Scout Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0221",
+    "name": "Cyma M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0222",
+    "name": "PolarStar Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0223",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0224",
+    "name": "Redline Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0225",
+    "name": "LCT M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0226",
+    "name": "Silverback SSG10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0227",
+    "name": "Cyma AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Cyma"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0228",
+    "name": "LCT M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0229",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0230",
+    "name": "Tokyo Marui M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0231",
+    "name": "Krytac SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0232",
+    "name": "G&G SCAR-L AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0233",
+    "name": "VFC M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0234",
+    "name": "VFC SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0235",
+    "name": "Novritsch VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0236",
+    "name": "Wolverine Jack CQB HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Wolverine"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0237",
+    "name": "Novritsch SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0238",
+    "name": "VFC AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "VFC"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0239",
+    "name": "Novritsch SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Novritsch"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0240",
+    "name": "Tokyo Marui M4 CQB AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0241",
+    "name": "KWA Glock 19 GBBR",
+    "brand": {
+      "@type": "Brand",
+      "name": "KWA"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Green Gas"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0242",
+    "name": "LCT AK74U AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0243",
+    "name": "Modify SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Modify"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0244",
+    "name": "Redline F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "Redline"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0245",
+    "name": "Silverback VSR-10 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Silverback"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0246",
+    "name": "G&G SR25 AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "G&G"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0247",
+    "name": "LCT Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "LCT"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "gearbox_type",
+        "value": "V2/V3 Standard"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0248",
+    "name": "PolarStar F2 M4 HPA System",
+    "brand": {
+      "@type": "Brand",
+      "name": "PolarStar"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "High Pressure Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "velocity_feet_per_second",
+        "value": "Adjustable"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0249",
+    "name": "Tokyo Marui SRS A2 Bolt Action",
+    "brand": {
+      "@type": "Brand",
+      "name": "Tokyo Marui"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Spring Action"
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "sku": "SKU-0250",
+    "name": "Krytac Vector SMG AEG",
+    "brand": {
+      "@type": "Brand",
+      "name": "Krytac"
+    },
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "power_source",
+        "value": "Electric (LiPo)"
+      }
+    ]
+  }
+]

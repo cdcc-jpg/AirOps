@@ -1,0 +1,251 @@
+REPAIR_ID,PLAYER_ID,PLATFORM_MODEL,INTAKE_DATE,TECH_DIAGNOSIS,UPGRADE_PARTS_INSTALLED,REPAIR_STATUS
+R_8001,P_0001,Novritsch_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8002,P_0002,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8003,P_0003,LCT_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8004,P_0004,PolarStar Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8005,P_0005,Silverback_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8006,P_0006,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8007,P_0007,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8008,P_0008,VFC_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8009,P_0009,Wolverine Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8010,P_0010,Redline MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8011,P_0011,G&G_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8012,P_0012,LCT SCAR-L,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8013,P_0013,LCT AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8014,P_0014,LCT AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8015,P_0015,VFC_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8016,P_0016,VFC_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8017,P_0017,Novritsch_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8018,P_0018,Cyma_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8019,P_0019,PolarStar Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8020,P_0020,Wolverine F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8021,P_0021,Redline F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8022,P_0022,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8023,P_0023,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8024,P_0024,Cyma Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8025,P_0025,Krytac_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8026,P_0026,PolarStar F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8027,P_0027,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8028,P_0028,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8029,P_0029,Novritsch_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8030,P_0030,Wolverine MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8031,P_0031,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8032,P_0032,Novritsch_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8033,P_0033,Tokyo Marui M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8034,P_0034,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8035,P_0035,Tokyo Marui_Steyr Scout,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8036,P_0036,LCT_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8037,P_0037,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8038,P_0038,Tokyo Marui_Steyr Scout,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8039,P_0039,LCT_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8040,P_0040,G&G_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8041,P_0041,Tokyo Marui GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8042,P_0042,Cyma_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8043,P_0043,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8044,P_0044,Tokyo Marui_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8045,P_0045,Tokyo Marui_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8046,P_0046,Novritsch_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8047,P_0047,Cyma_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8048,P_0048,Krytac AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8049,P_0049,PolarStar MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8050,P_0050,Modify_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8051,P_0051,Cyma_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8052,P_0052,Redline F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8053,P_0053,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8054,P_0054,Silverback_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8055,P_0055,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8056,P_0056,G&G_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8057,P_0057,VFC_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8058,P_0058,Krytac_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8059,P_0059,Tokyo Marui_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8060,P_0060,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8061,P_0061,Redline Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8062,P_0062,PolarStar MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8063,P_0063,Krytac AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8064,P_0064,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8065,P_0065,Tokyo Marui_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8066,P_0066,Cyma_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8067,P_0067,LCT_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8068,P_0068,Modify_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8069,P_0069,Tokyo Marui_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8070,P_0070,Cyma_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8071,P_0071,Cyma_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8072,P_0072,PolarStar Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8073,P_0073,LCT AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8074,P_0074,Cyma_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8075,P_0075,VFC_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8076,P_0076,VFC Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8077,P_0077,Krytac_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8078,P_0078,Tokyo Marui AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8079,P_0079,PolarStar MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8080,P_0080,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8081,P_0081,VFC Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8082,P_0082,Tokyo Marui_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8083,P_0083,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8084,P_0084,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8085,P_0085,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8086,P_0086,Novritsch_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8087,P_0087,Tokyo Marui_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8088,P_0088,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8089,P_0089,Novritsch_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8090,P_0090,Modify_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8091,P_0091,Tokyo Marui_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8092,P_0092,Modify_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8093,P_0093,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8094,P_0094,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8095,P_0095,Wolverine Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8096,P_0096,Novritsch_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8097,P_0097,Silverback_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8098,P_0098,Novritsch_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8099,P_0099,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8100,P_0100,Modify_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8101,P_0101,Novritsch_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8102,P_0102,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8103,P_0103,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8104,P_0104,Krytac Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8105,P_0105,Wolverine Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8106,P_0106,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8107,P_0107,Tokyo Marui_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8108,P_0108,PolarStar Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8109,P_0109,PolarStar F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8110,P_0110,VFC_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8111,P_0111,Cyma_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8112,P_0112,Wolverine Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8113,P_0113,LCT M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8114,P_0114,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8115,P_0115,Krytac_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8116,P_0116,LCT SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8117,P_0117,Wolverine F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8118,P_0118,PolarStar MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8119,P_0119,VFC SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8120,P_0120,VFC SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8121,P_0121,Cyma SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8122,P_0122,Redline Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8123,P_0123,Silverback_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8124,P_0124,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8125,P_0125,Tokyo Marui_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8126,P_0126,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8127,P_0127,Wolverine MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8128,P_0128,Novritsch_Steyr Scout,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8129,P_0129,Tokyo Marui_Steyr Scout,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8130,P_0130,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8131,P_0131,Redline F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8132,P_0132,Wolverine MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8133,P_0133,Silverback_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8134,P_0134,Cyma SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8135,P_0135,PolarStar MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8136,P_0136,Tokyo Marui M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8137,P_0137,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8138,P_0138,Redline Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8139,P_0139,Wolverine Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8140,P_0140,VFC AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8141,P_0141,Tokyo Marui GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8142,P_0142,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8143,P_0143,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8144,P_0144,Tokyo Marui_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8145,P_0145,G&G_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8146,P_0146,Cyma_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8147,P_0147,VFC M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8148,P_0148,G&G_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8149,P_0149,Novritsch_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8150,P_0150,Wolverine Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8151,P_0151,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8152,P_0152,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8153,P_0153,G&G_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8154,P_0154,G&G_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8155,P_0155,PolarStar F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8156,P_0156,Cyma_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8157,P_0157,Modify_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8158,P_0158,Krytac SCAR-L,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8159,P_0159,PolarStar Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8160,P_0160,Modify_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8161,P_0161,Tokyo Marui_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8162,P_0162,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8163,P_0163,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8164,P_0164,PolarStar Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8165,P_0165,Wolverine MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8166,P_0166,Silverback_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8167,P_0167,Krytac_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8168,P_0168,Redline Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8169,P_0169,Krytac_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8170,P_0170,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8171,P_0171,Krytac AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8172,P_0172,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8173,P_0173,PolarStar MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8174,P_0174,Tokyo Marui_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8175,P_0175,Tokyo Marui_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8176,P_0176,Modify_Steyr Scout,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8177,P_0177,G&G SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8178,P_0178,Krytac_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8179,P_0179,Tokyo Marui_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8180,P_0180,Tokyo Marui SCAR-L,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8181,P_0181,Cyma_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8182,P_0182,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8183,P_0183,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8184,P_0184,Krytac_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8185,P_0185,PolarStar MTW,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8186,P_0186,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8187,P_0187,LCT_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8188,P_0188,Modify_Steyr Scout,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8189,P_0189,PolarStar Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8190,P_0190,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8191,P_0191,Redline Kythera SR25,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8192,P_0192,Silverback_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8193,P_0193,Tokyo Marui_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8194,P_0194,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8195,P_0195,VFC_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8196,P_0196,Tokyo Marui GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8197,P_0197,LCT Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8198,P_0198,Tokyo Marui M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8199,P_0199,G&G_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8200,P_0200,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8201,P_0201,Tokyo Marui_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8202,P_0202,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8203,P_0203,G&G_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8204,P_0204,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8205,P_0205,Wolverine F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8206,P_0206,Modify_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8207,P_0207,VFC SCAR-L,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8208,P_0208,Tokyo Marui GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8209,P_0209,GHK GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8210,P_0210,KJW GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8211,P_0211,LCT Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8212,P_0212,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8213,P_0213,Krytac Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8214,P_0214,Novritsch_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8215,P_0215,Novritsch_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8216,P_0216,Tokyo Marui_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8217,P_0217,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8218,P_0218,WE Tech GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8219,P_0219,Krytac_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8220,P_0220,Tokyo Marui_Steyr Scout,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8221,P_0221,Cyma M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8222,P_0222,PolarStar Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8223,P_0223,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8224,P_0224,Redline Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8225,P_0225,LCT_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8226,P_0226,Silverback_SSG10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8227,P_0227,Cyma_AK74U_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8228,P_0228,LCT_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8229,P_0229,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8230,P_0230,Tokyo Marui M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8231,P_0231,Krytac SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8232,P_0232,G&G_SCAR-L_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8233,P_0233,VFC M4 CQB,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8234,P_0234,VFC_SR25_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8235,P_0235,Novritsch_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8236,P_0236,Wolverine Jack CQB,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8237,P_0237,Novritsch_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8238,P_0238,VFC AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8239,P_0239,Novritsch_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8240,P_0240,Tokyo Marui_M4 CQB_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8241,P_0241,KWA GBB,2026-11-22,Shattered loading nozzle and frozen piston seal from rapid venting in cold weather.,Polycarbonate Loading Nozzle; Winter Seal,COMPLETED
+R_8242,P_0242,LCT AK74U,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8243,P_0243,Modify_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8244,P_0244,Redline F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8245,P_0245,Silverback_VSR-10,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8246,P_0246,G&G SR25,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
+R_8247,P_0247,LCT_Vector SMG_Elec,2026-11-20,Stripped spur gear and burnt motor due to terrible factory shimming/AOE.,Prometheus Shim Set; High Torque Motor,COMPLETED
+R_8248,P_0248,PolarStar F2 M4,2026-11-21,FCU locked due to field ban. Customer requested dwell reduction for heavy ammo.,Zip-tie tournament lock,COMPLETED
+R_8249,P_0249,Tokyo Marui_SRS A2,2026-11-23,Customer wanted to lift heavy ammo. Factory rubber too weak.,Maple Leaf 70deg Macaron; Omega Nub,COMPLETED
+R_8250,P_0250,Krytac Vector SMG,2026-11-24,Routine maintenance. Re-lubed cylinder.,Silicone Grease,COMPLETED
