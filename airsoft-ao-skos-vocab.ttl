@@ -1,0 +1,71 @@
+@prefix : <https://github.com/cdcc-jpg/ontologies/vocab#> .
+@prefix asoft: <https://github.com/cdcc-jpg/ontologies#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <https://github.com/cdcc-jpg/ontologies/vocab> .
+
+<https://github.com/cdcc-jpg/ontologies/vocab> rdf:type owl:Ontology ;
+    dcterms:title "Airsoft Controlled Vocabulary"@en ;
+    dcterms:description "A SKOS controlled vocabulary for airsoft terminology, mapped to the Airsoft OWL ontology."@en ;
+    owl:imports <http://www.w3.org/2004/02/skos/core> .
+
+#################################################################
+#    Concept Scheme
+#################################################################
+
+:AirsoftVocabulary rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Airsoft Controlled Vocabulary"@en ;
+    skos:definition "A controlled vocabulary for categorizing airsoft equipment, consumables, and rules."@en .
+
+#################################################################
+#    Concepts & OWL Interactions
+#################################################################
+
+### The root concept for BB Types
+:BBType rdf:type skos:Concept ;
+    skos:inScheme :AirsoftVocabulary ;
+    skos:prefLabel "BB Type"@en ;
+    skos:definition "The categorization of ball bearing projectiles used in airsoft."@en ;
+    # INTERACTION: Maps this SKOS Concept directly to the OWL Class "AirsoftBB"
+    skos:exactMatch asoft:AirsoftBB .
+
+### Specific BB Material Concepts
+:MetalBBType rdf:type skos:Concept ;
+    skos:inScheme :AirsoftVocabulary ;
+    skos:broader :BBType ;
+    skos:prefLabel "Metal BB"@en ;
+    skos:definition "Spherical projectiles made of metal, usually steel or aluminum. Typically banned at standard airsoft fields."@en ;
+    skos:related asoft:Kill . # INTERACTION: Related to the OWL Class for "Kill" rules
+
+:BioBBType rdf:type skos:Concept ;
+    skos:inScheme :AirsoftVocabulary ;
+    skos:broader :BBType ;
+    skos:prefLabel "Biodegradable BB"@en ;
+    skos:altLabel "PLA BB"@en ;
+    skos:definition "Spherical projectiles made of biodegradable materials like Polylactic Acid (PLA)."@en .
+
+:NonBioBBType rdf:type skos:Concept ;
+    skos:inScheme :AirsoftVocabulary ;
+    skos:broader :BBType ;
+    skos:prefLabel "Non-biodegradable BB"@en ;
+    skos:altLabel "ABS BB"@en ;
+    skos:definition "Spherical projectiles made of traditional plastics like Acrylonitrile Butadiene Styrene (ABS)."@en .
+
+### Linking Gear Status as a Controlled Vocabulary
+:PlayStatus rdf:type skos:ConceptScheme ;
+    skos:prefLabel "Play Legality Status"@en ;
+    skos:definition "Vocabulary indicating whether gear is allowed on a field."@en .
+
+:LegalForPlay rdf:type skos:Concept ;
+    skos:inScheme :PlayStatus ;
+    skos:prefLabel "Legal for Play"@en ;
+    skos:definition "The item is permitted under standard airsoft rules."@en .
+
+:NotLegalForPlay rdf:type skos:Concept ;
+    skos:inScheme :PlayStatus ;
+    skos:prefLabel "Not Legal for Play"@en ;
+    skos:definition "The item is strictly prohibited on the field."@en .
