@@ -1,7 +1,7 @@
 /**
- * AirOps — Chrono Compliance Feed
- * Real-time chrono event dashboard with SHACL-like validation,
- * compliance cards, and violation detection.
+ * AirOps v2 — Chrono Compliance Feed
+ * Updated for Humber Airsoft 3-tier system (AEG / DMR / Bolt-Action).
+ * Displays tier badges, MED indicators, and SHACL-like validation.
  */
 
 export class ChronoFeed {
@@ -10,10 +10,11 @@ export class ChronoFeed {
   }
 
   /**
-   * Render the chrono dashboard stats panel.
+   * Render the chrono dashboard stats panel with tier breakdown.
    */
   renderStats() {
     const summary = this.engine.getChronoSummary();
+    const tiers = summary.tierCounts || {};
 
     return `
       <div class="chrono-stats">
@@ -21,24 +22,35 @@ export class ChronoFeed {
           <div class="stat-value">${summary.pass}</div>
           <div class="stat-label">Passed</div>
         </div>
-        <div class="chrono-stat info">
-          <div class="stat-value">${summary.passDmr}</div>
-          <div class="stat-label">DMR Rules</div>
-        </div>
         <div class="chrono-stat warn">
           <div class="stat-value">${summary.failMin}</div>
           <div class="stat-label">Low Power</div>
         </div>
         <div class="chrono-stat fail">
-          <div class="stat-value">${summary.jouleCreep}</div>
-          <div class="stat-label">Joule Creep</div>
+          <div class="stat-value">${summary.failOver + summary.jouleCreep}</div>
+          <div class="stat-label">Failed / Creep</div>
+        </div>
+      </div>
+
+      <div class="chrono-tiers">
+        <div class="tier-badge tier-aeg">
+          <span class="tier-count">${tiers['AEG'] || 0}</span>
+          <span class="tier-label">AEG ≤350fps</span>
+        </div>
+        <div class="tier-badge tier-dmr">
+          <span class="tier-count">${tiers['DMR'] || 0}</span>
+          <span class="tier-label">DMR ≤450fps</span>
+        </div>
+        <div class="tier-badge tier-bolt">
+          <span class="tier-count">${tiers['Bolt-Action'] || 0}</span>
+          <span class="tier-label">Bolt ≤500fps</span>
         </div>
       </div>
     `;
   }
 
   /**
-   * Render the chrono event list.
+   * Render the chrono event list with tier indicators.
    */
   renderEventList(filter = 'all') {
     let players = [...this.engine.players];
@@ -62,6 +74,7 @@ export class ChronoFeed {
 
   _renderChronoEvent(player) {
     const chrono = player.chrono;
+    const tier = chrono.tier || 'AEG';
     let dotClass, resultText, resultColor;
 
     switch (chrono.status) {
@@ -70,11 +83,12 @@ export class ChronoFeed {
         resultText = 'PASS';
         resultColor = 'var(--status-pass)';
         break;
-      case 'PASS_DMR_RULES':
-        dotClass = 'pass';
-        resultText = 'DMR';
-        resultColor = 'var(--status-info)';
+      case 'FAIL_OVER_POWER':
+        dotClass = 'fail';
+        resultText = 'OVER';
+        resultColor = 'var(--status-fail)';
         break;
+      case 'FAIL_MIN_PERFORMANCE':
       case 'FAILED_MIN_PERFORMANCE':
         dotClass = 'warn';
         resultText = 'LOW';
@@ -87,15 +101,22 @@ export class ChronoFeed {
         break;
       default:
         dotClass = 'pass';
-        resultText = chrono.status;
+        resultText = chrono.status || 'OK';
         resultColor = 'var(--text-muted)';
     }
+
+    const medBadge = chrono.med > 0
+      ? `<span class="med-badge">${chrono.med}m MED</span>`
+      : '';
+    const tierClass = tier === 'DMR' ? 'tier-dmr' : tier === 'Bolt-Action' ? 'tier-bolt' : 'tier-aeg';
 
     return `
       <div class="chrono-event" data-player-id="${player.id}">
         <div class="chrono-status-dot ${dotClass}"></div>
         <div class="chrono-player">${player.callsign.split('-')[0]}</div>
-        <div class="chrono-reading">${chrono.fps}fps · ${chrono.joules}J · ${chrono.bbWeight}g</div>
+        <div class="chrono-tier-badge ${tierClass}">${tier === 'Bolt-Action' ? 'BOLT' : tier}</div>
+        <div class="chrono-reading">${chrono.fps}fps · ${chrono.joules}J</div>
+        ${medBadge}
         <div class="chrono-result" style="color: ${resultColor}">${resultText}</div>
       </div>
     `;
@@ -126,7 +147,7 @@ export class ChronoFeed {
     });
 
     if (unique.length === 0) {
-      return '<div class="text-green" style="font-size: 0.75rem;">✓ No violations detected</div>';
+      return '<div class="text-green" style="font-size: 0.75rem;">✓ No violations detected — compliant with Humber 3-tier rules</div>';
     }
 
     return unique.map(v => `

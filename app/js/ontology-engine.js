@@ -1,7 +1,8 @@
 /**
- * AirOps — Ontology Engine
+ * AirOps v2 — Ontology Engine
  * Client-side data layer that loads the unified dataset and exposes
- * query methods mirroring the power of SPARQL over the ontology graph.
+ * query methods mirroring SPARQL over the ontology graph.
+ * Updated for Humber Airsoft 3-tier chrono system.
  */
 
 export class OntologyEngine {
@@ -21,6 +22,13 @@ export class OntologyEngine {
     this._playersByTeam = new Map();
     this._chronoByPlayer = new Map();
     this._repairsByPlayer = new Map();
+
+    // Humber 3-Tier Chrono Rules
+    this.chronoTiers = {
+      'AEG':         { maxFps: 350, maxJoules: 1.20, med: 0,  fireMode: 'Full-Auto / Semi' },
+      'DMR':         { maxFps: 450, maxJoules: 1.88, med: 25, fireMode: 'Semi-Auto Locked' },
+      'Bolt-Action': { maxFps: 500, maxJoules: 2.32, med: 35, fireMode: 'Single-Shot' },
+    };
   }
 
   /**
@@ -96,6 +104,14 @@ export class OntologyEngine {
     return this.players.filter(p => p.compliance === status);
   }
 
+  getPlayersByStatus(status) {
+    return this.players.filter(p => p.status === status);
+  }
+
+  getPlayersByTier(tier) {
+    return this.players.filter(p => p.chrono?.tier === tier);
+  }
+
   getChronoForPlayer(playerId) {
     return this._chronoByPlayer.get(playerId) || [];
   }
@@ -105,28 +121,48 @@ export class OntologyEngine {
   }
 
   /**
-   * SHACL-like validation: check if a player's chrono data
-   * violates field rules.
+   * SHACL-like 3-tier validation: check if a player's chrono data
+   * violates Humber field rules for a given zone.
    */
   validateCompliance(player, zone) {
     const violations = [];
     const chrono = player.chrono;
-    const maxJ = zone?.maxJoules ?? 1.2;
+    const tier = chrono?.tier || 'AEG';
+    const tierLimits = this.chronoTiers[tier] || this.chronoTiers['AEG'];
+    const zoneMaxJ = zone?.maxJoules ?? tierLimits.maxJoules;
 
-    // Power limit check (AirsoftReplicaShape)
-    if (chrono.joules > maxJ) {
+    // Power limit per tier
+    if (chrono.joules > tierLimits.maxJoules) {
       violations.push({
         type: 'POWER_VIOLATION',
-        message: `Power Limit VIOLATION: ${chrono.joules}J exceeds ${maxJ}J maximum for ${zone?.name || 'this zone'}.`,
+        message: `CHRONO FAIL (${tier}): ${chrono.joules}J exceeds ${tierLimits.maxJoules}J tier limit.`,
         severity: 'critical',
       });
     }
 
-    // FPS max check
-    if (chrono.fps > 500) {
+    // Zone power cap (CQB/Firebase zones cap at 1.2J)
+    if (zoneMaxJ > 0 && chrono.joules > zoneMaxJ) {
+      violations.push({
+        type: 'ZONE_POWER_VIOLATION',
+        message: `ZONE FAIL: ${chrono.joules}J exceeds ${zoneMaxJ}J zone cap for ${zone?.name || 'this zone'}.`,
+        severity: 'critical',
+      });
+    }
+
+    // FPS check per tier
+    if (chrono.fps > tierLimits.maxFps) {
       violations.push({
         type: 'FPS_VIOLATION',
-        message: `Velocity VIOLATION: ${chrono.fps} FPS exceeds extreme safety limit (500 FPS).`,
+        message: `VELOCITY FAIL (${tier}): ${chrono.fps} FPS exceeds ${tierLimits.maxFps} FPS tier limit.`,
+        severity: 'critical',
+      });
+    }
+
+    // Absolute max check
+    if (chrono.fps > 500) {
+      violations.push({
+        type: 'FPS_ABSOLUTE_VIOLATION',
+        message: `Velocity exceeds absolute 500 FPS field maximum. Banned.`,
         severity: 'critical',
       });
     }
@@ -135,16 +171,25 @@ export class OntologyEngine {
     if (chrono.status === 'JOULE_CREEP_DETECTED') {
       violations.push({
         type: 'JOULE_CREEP',
-        message: `Joule creep detected on ${player.gear.primary.name}. Gear confiscated.`,
+        message: `Joule creep detected on ${player.gear?.primary?.name || 'replica'}. Gear confiscated for the day.`,
         severity: 'critical',
       });
     }
 
     // Min performance check
-    if (chrono.status === 'FAILED_MIN_PERFORMANCE') {
+    if (chrono.status === 'FAIL_MIN_PERFORMANCE' || chrono.status === 'FAILED_MIN_PERFORMANCE') {
       violations.push({
         type: 'MIN_PERFORMANCE',
-        message: `Minimum performance failure: ${chrono.joules}J / ${chrono.fps} FPS.`,
+        message: `Minimum performance failure: ${chrono.joules}J / ${chrono.fps} FPS. Repair recommended.`,
+        severity: 'warning',
+      });
+    }
+
+    // MED enforcement (DMR/Bolt-Action in CQB zones)
+    if (tierLimits.med > 0 && zone && (zone.type === 'cqb' || zone.type === 'fortification')) {
+      violations.push({
+        type: 'MED_WARNING',
+        message: `${tier} requires ${tierLimits.med}m MED. Must use sidearm in ${zone.name}.`,
         severity: 'warning',
       });
     }
@@ -160,6 +205,25 @@ export class OntologyEngine {
       if (breakdown[p.compliance] !== undefined) {
         breakdown[p.compliance]++;
       }
+    }
+    return breakdown;
+  }
+
+  getStatusBreakdown() {
+    const breakdown = { ACTIVE: 0, ELIMINATED: 0, RESPAWNING: 0, OUT: 0 };
+    for (const p of this.players) {
+      if (breakdown[p.status] !== undefined) {
+        breakdown[p.status]++;
+      }
+    }
+    return breakdown;
+  }
+
+  getTierBreakdown() {
+    const breakdown = {};
+    for (const p of this.players) {
+      const tier = p.chrono?.tier || 'AEG';
+      breakdown[tier] = (breakdown[tier] || 0) + 1;
     }
     return breakdown;
   }
@@ -200,16 +264,13 @@ export class OntologyEngine {
 
   /**
    * Team balance score: 0 = perfectly balanced, higher = more imbalanced.
-   * Considers role distribution, gear types, and average power.
    */
   getTeamBalanceScore() {
     const alpha = this.getPlayersByTeam('alpha');
     const bravo = this.getPlayersByTeam('bravo');
 
-    // Size balance
     const sizeDiff = Math.abs(alpha.length - bravo.length);
 
-    // Role balance
     const rolesA = this.getRoleDistribution('alpha');
     const rolesB = this.getRoleDistribution('bravo');
     const allRoles = new Set([...Object.keys(rolesA), ...Object.keys(rolesB)]);
@@ -218,7 +279,6 @@ export class OntologyEngine {
       roleDiff += Math.abs((rolesA[role] || 0) - (rolesB[role] || 0));
     }
 
-    // Power balance
     const avgA = this.getAverageJoules('alpha');
     const avgB = this.getAverageJoules('bravo');
     const powerDiff = Math.abs(avgA - avgB);
@@ -244,6 +304,20 @@ export class OntologyEngine {
   }
 
   /**
+   * Get respawn points from the field layout.
+   */
+  getRespawnPoints() {
+    return this.fieldLayout?.respawnPoints || [];
+  }
+
+  /**
+   * Get objectives from the field layout.
+   */
+  getObjectives() {
+    return this.fieldLayout?.objectives || [];
+  }
+
+  /**
    * Get players currently in a specific zone (based on position).
    */
   getPlayersInZone(zoneId) {
@@ -262,16 +336,23 @@ export class OntologyEngine {
    * Get chrono violation summary for dashboard.
    */
   getChronoSummary() {
-    let pass = 0, passDmr = 0, failMin = 0, jouleCreep = 0;
+    let pass = 0, failOver = 0, failMin = 0, jouleCreep = 0;
+    const tierCounts = {};
+
     for (const p of this.players) {
+      const tier = p.chrono?.tier || 'AEG';
+      tierCounts[tier] = (tierCounts[tier] || 0) + 1;
+
       switch (p.chrono.status) {
         case 'PASS': pass++; break;
-        case 'PASS_DMR_RULES': passDmr++; break;
+        case 'FAIL_OVER_POWER': failOver++; break;
+        case 'FAIL_MIN_PERFORMANCE':
         case 'FAILED_MIN_PERFORMANCE': failMin++; break;
         case 'JOULE_CREEP_DETECTED': jouleCreep++; break;
       }
     }
-    return { pass, passDmr, failMin, jouleCreep, total: this.players.length };
+
+    return { pass, failOver, failMin, jouleCreep, total: this.players.length, tierCounts };
   }
 
   /**
@@ -285,7 +366,8 @@ export class OntologyEngine {
       p.callsign.toLowerCase().includes(q) ||
       p.id.toLowerCase().includes(q) ||
       p.role.toLowerCase().includes(q) ||
-      p.gear.primary.name.toLowerCase().includes(q)
+      p.gear.primary.name.toLowerCase().includes(q) ||
+      (p.chrono?.tier || '').toLowerCase().includes(q)
     );
   }
 }

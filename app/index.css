@@ -1345,3 +1345,452 @@ body::after {
   color: var(--text-secondary);
   line-height: 1.4;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   v2 — Marshall Console & Operations Styles
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Utility class to hide element */
+.hidden {
+  display: none !important;
+}
+
+/* Status board at the top of players list */
+.status-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+  flex-shrink: 0;
+}
+
+.sb-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: 6px 2px;
+  text-align: center;
+  transition: transform var(--transition-fast);
+}
+
+.sb-item:hover {
+  transform: translateY(-2px);
+  background: var(--bg-hover);
+}
+
+.sb-val {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.sb-lbl {
+  font-size: 0.55rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+}
+
+.sb-item.active .sb-val { color: var(--accent-green); }
+.sb-item.eliminated .sb-val { color: var(--accent-red); }
+.sb-item.respawn .sb-val { color: var(--accent-amber); }
+.sb-item.out .sb-val { color: var(--text-muted); }
+
+/* Quick check-in accordion styles */
+.checkin-section {
+  margin-bottom: var(--space-md);
+  border-bottom: 1px solid var(--border-primary);
+  padding-bottom: var(--space-md);
+}
+
+.checkin-toggle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px dashed var(--border-primary);
+}
+
+.checkin-form-container {
+  background: rgba(18, 28, 48, 0.4);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin-top: var(--space-sm);
+  animation: slideDown 250ms var(--ease-out);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.checkin-form .form-group {
+  margin-bottom: var(--space-sm);
+}
+
+.checkin-form label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+
+.checkin-form input, .checkin-form select {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 6px var(--space-sm);
+  font-size: 0.75rem;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.checkin-form input:focus, .checkin-form select:focus {
+  border-color: var(--accent-green);
+}
+
+/* 3-Tier Chrono Feed Styles */
+.chrono-tiers {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.tier-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  font-size: 0.6rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.tier-count {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tier-aeg { background: rgba(0, 255, 136, 0.05); border-color: rgba(0, 255, 136, 0.15); color: var(--accent-green); }
+.tier-dmr { background: rgba(0, 204, 255, 0.05); border-color: rgba(0, 204, 255, 0.15); color: var(--accent-cyan); }
+.tier-bolt { background: rgba(170, 102, 255, 0.05); border-color: rgba(170, 102, 255, 0.15); color: var(--accent-purple); }
+
+.chrono-tier-badge {
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  margin-right: 6px;
+}
+
+.chrono-tier-badge.tier-aeg { background: rgba(0, 255, 136, 0.1); color: var(--accent-green); }
+.chrono-tier-badge.tier-dmr { background: rgba(0, 204, 255, 0.1); color: var(--accent-cyan); }
+.chrono-tier-badge.tier-bolt { background: rgba(170, 102, 255, 0.1); color: var(--accent-purple); }
+
+.med-badge {
+  background: rgba(255, 170, 0, 0.1);
+  color: var(--accent-amber);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: bold;
+  padding: 1px 4px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+
+/* Card tier label */
+.card-tier-label {
+  border: 1px solid var(--border-primary);
+}
+
+/* Intel Tab styles */
+.intel-leaderboard {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-top: var(--space-sm);
+}
+
+.leaderboard-header {
+  display: flex;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.2);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.lb-rank { width: 30px; text-align: center; }
+.lb-name { flex: 1; padding-left: 6px; }
+.lb-stat { width: 50px; text-align: right; font-family: var(--font-mono); }
+
+.lb-row {
+  display: flex;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.lb-row:hover {
+  background: var(--bg-hover);
+}
+
+/* Weapons stats rendering */
+.weapon-stat-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+  background: var(--bg-card);
+  padding: 6px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-primary);
+}
+
+.ws-name {
+  width: 130px;
+  font-size: 0.7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
+.ws-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  margin: 0 var(--space-md);
+  overflow: hidden;
+}
+
+.ws-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+  border-radius: 3px;
+}
+
+.ws-kills {
+  width: 25px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--accent-cyan);
+}
+
+/* Fuzzy balance report styles */
+.balance-report {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+.balance-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.balance-team {
+  flex: 1;
+}
+
+.bt-name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.bt-tts {
+  font-family: var(--font-mono);
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-top: var(--space-xs);
+}
+
+.balance-verdict {
+  width: 100px;
+  border-left: 1px solid var(--border-primary);
+  border-right: 1px solid var(--border-primary);
+  padding: 0 var(--space-sm);
+}
+
+.bv-diff {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.bv-rating {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.bv-rating.pass { background: rgba(0, 255, 136, 0.1); color: var(--accent-green); }
+.bv-rating.warn { background: rgba(255, 170, 0, 0.1); color: var(--accent-amber); }
+.bv-rating.fail { background: rgba(255, 51, 102, 0.1); color: var(--accent-red); }
+
+.balance-detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.bd-col {
+  background: rgba(18, 28, 48, 0.4);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.bd-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border-primary);
+  padding-bottom: 4px;
+}
+
+.balance-factor-row {
+  display: flex;
+  align-items: center;
+  font-size: 0.65rem;
+  margin-bottom: 6px;
+}
+
+.bf-label {
+  width: 90px;
+  color: var(--text-secondary);
+}
+
+.bf-bar-bg {
+  flex: 1;
+  height: 5px;
+  background: var(--bg-tertiary);
+  border-radius: 2.5px;
+  overflow: hidden;
+  margin: 0 var(--space-sm);
+}
+
+.bf-bar {
+  height: 100%;
+  border-radius: 2.5px;
+}
+
+.bf-val {
+  width: 25px;
+  text-align: right;
+  font-family: var(--font-mono);
+  color: var(--text-heading);
+}
+
+/* Game Timer card */
+.timer-card {
+  background: linear-gradient(135deg, rgba(12,18,32,0.9), rgba(18,28,48,0.9));
+  border: 1px solid rgba(0, 255, 136, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.05);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+}
+
+.timer-display {
+  user-select: none;
+}
+
+/* Violation incident row styling */
+.incident-row {
+  display: flex;
+  align-items: center;
+  padding: 8px 6px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.incident-row:hover {
+  background: var(--bg-hover);
+}
+
+.inc-time {
+  font-family: var(--font-mono);
+  width: 40px;
+  color: var(--text-muted);
+}
+
+.inc-icon {
+  width: 20px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.inc-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 6px;
+}
+
+.inc-type {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.inc-zone {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+.inc-action {
+  width: 100px;
+  text-align: right;
+}
+
+.action-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.action-badge.warning { background: rgba(255, 170, 0, 0.1); color: var(--accent-amber); }
+.action-badge.info { background: rgba(0, 204, 255, 0.1); color: var(--accent-cyan); }
+.action-badge.warn { background: rgba(255, 102, 0, 0.1); color: var(--accent-amber); }
+.action-badge.danger { background: rgba(255, 51, 102, 0.15); color: var(--accent-red); }
+

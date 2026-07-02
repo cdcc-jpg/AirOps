@@ -299,3 +299,165 @@ asoft:GameMode_MilSim rdf:type owl:NamedIndividual ,
                                asoft:GameMode ;
     rdfs:label "MilSim"@en ;
     rdfs:comment "Military simulation mode with multi-phase objectives, radio comms, and tactical realism."@en .
+
+
+#################################################################
+#    v2 — Humber Quarry Classes & Properties
+#################################################################
+
+### Violation type with graduated warnings.
+asoft:ViolationType rdf:type owl:Class ;
+    rdfs:comment "Classification of airsoft rule infractions with warning thresholds and escalation."@en ;
+    rdfs:label "Violation Type"@en .
+
+### Per-player warning accumulator.
+asoft:WarningRecord rdf:type owl:Class ;
+    rdfs:comment "Tracks active warnings issued to a player for a specific violation type."@en ;
+    rdfs:label "Warning Record"@en .
+
+### Environmental conditions affecting gameplay.
+asoft:EnvironmentContext rdf:type owl:Class ;
+    rdfs:comment "Temperature, wind, weather conditions during a game session."@en ;
+    rdfs:label "Environment Context"@en .
+
+### Fuzzy balance factor.
+asoft:BalanceFactor rdf:type owl:Class ;
+    rdfs:comment "A weighted factor in fuzzy team-balance inference."@en ;
+    rdfs:label "Balance Factor"@en .
+
+### MED property.
+asoft:MinimumEngagementDistance rdf:type owl:DatatypeProperty ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "Minimum engagement distance in metres for high-energy platforms."@en ;
+    rdfs:label "MED (m)"@en .
+
+### Warning threshold.
+asoft:hasMaxWarnings rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:ViolationType ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has max warnings"@en .
+
+### Current warning count.
+asoft:hasCurrentWarnings rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:WarningRecord ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has current warnings"@en .
+
+### Escalation action string.
+asoft:hasEscalationAction rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:ViolationType ;
+    rdfs:range xsd:string ;
+    rdfs:label "has escalation action"@en .
+
+### Warning → player link.
+asoft:warningForPlayer rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:WarningRecord ;
+    rdfs:range asoft:AirsoftPlayer ;
+    rdfs:label "warning for player"@en .
+
+### Warning → violation type link.
+asoft:warningType rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:WarningRecord ;
+    rdfs:range asoft:ViolationType ;
+    rdfs:label "warning type"@en .
+
+
+#################################################################
+#    v2 — Humber Airsoft Field & Zones
+#################################################################
+
+asoft:Field_HumberAirsoft rdf:type owl:NamedIndividual ,
+                                   asoft:AirsoftField ;
+    rdfs:label "Humber Airsoft (Leggotts Quarry)"@en ;
+    rdfs:comment "35-acre outdoor site in a disused chalk quarry, South Ferriby DN18 6RA."@en .
+
+asoft:Zone_SafeZone rdf:type owl:NamedIndividual , asoft:SafeZone ;
+    rdfs:label "Safe Zone"@en ;
+    asoft:hasMaxJouleLimit 0.0 .
+
+asoft:Zone_Firebase rdf:type owl:NamedIndividual , asoft:ObjectiveZone ;
+    rdfs:label "The Firebase"@en ;
+    asoft:hasMaxJouleLimit 1.2 .
+
+asoft:Zone_Village rdf:type owl:NamedIndividual , asoft:CQBZone ;
+    rdfs:label "The Village"@en ;
+    asoft:hasMaxJouleLimit 1.2 .
+
+asoft:Zone_WoodlandNorth rdf:type owl:NamedIndividual , asoft:FieldZone ;
+    rdfs:label "Woodland North"@en ;
+    asoft:hasMaxJouleLimit 2.32 .
+
+asoft:Zone_WoodlandEast rdf:type owl:NamedIndividual , asoft:FieldZone ;
+    rdfs:label "Woodland East"@en ;
+    asoft:hasMaxJouleLimit 2.32 .
+
+asoft:Zone_QuarryFloorNorth rdf:type owl:NamedIndividual , asoft:FieldZone ;
+    rdfs:label "Quarry Floor North"@en ;
+    asoft:hasMaxJouleLimit 2.32 .
+
+asoft:Zone_QuarryFloorSouth rdf:type owl:NamedIndividual , asoft:FieldZone ;
+    rdfs:label "Quarry Floor South"@en ;
+    asoft:hasMaxJouleLimit 2.32 .
+
+asoft:Zone_Ridge rdf:type owl:NamedIndividual , asoft:FieldZone ;
+    rdfs:label "The Ridge"@en ;
+    asoft:hasMaxJouleLimit 2.32 .
+
+### Humber-specific game modes.
+asoft:GameMode_FirebaseAssault rdf:type owl:NamedIndividual , asoft:GameMode ;
+    rdfs:label "Attack & Defend Firebase"@en ;
+    rdfs:comment "One team defends the HESCO compound while attackers push from the quarry floor."@en .
+
+asoft:GameMode_VillageCQB rdf:type owl:NamedIndividual , asoft:GameMode ;
+    rdfs:label "Village Assault"@en ;
+    rdfs:comment "Close-quarters combat focused on the wooded village structures."@en .
+
+asoft:GameMode_SiteDomination rdf:type owl:NamedIndividual , asoft:GameMode ;
+    rdfs:label "Full Site Domination"@en ;
+    rdfs:comment "Multi-objective conquest spanning all quarry zones."@en .
+
+
+#################################################################
+#    v2 — Violation Types & Warning Thresholds
+#################################################################
+
+asoft:Violation_JouleCreep rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "Joule Creep Detected"@en ;
+    asoft:hasMaxWarnings 1 ;
+    asoft:hasEscalationAction "BANNED_FOR_DAY" .
+
+asoft:Violation_EyeProtection rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "Eye Protection Removed"@en ;
+    asoft:hasMaxWarnings 2 ;
+    asoft:hasEscalationAction "EJECTED" .
+
+asoft:Violation_BlindFire rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "Blind Fire"@en ;
+    asoft:hasMaxWarnings 2 ;
+    asoft:hasEscalationAction "TEMP_BAN_30MIN" .
+
+asoft:Violation_Overshoot rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "Overshooting"@en ;
+    asoft:hasMaxWarnings 2 ;
+    asoft:hasEscalationAction "TEMP_BAN_30MIN" .
+
+asoft:Violation_DeadManWalking rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "Dead Man Walking / Talking"@en ;
+    asoft:hasMaxWarnings 3 ;
+    asoft:hasEscalationAction "TEMP_BAN_15MIN" .
+
+asoft:Violation_MED rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "MED Violation"@en ;
+    asoft:hasMaxWarnings 1 ;
+    asoft:hasEscalationAction "WEAPON_CONFISCATED" .
+
+asoft:Violation_Aggression rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "Physical Contact / Aggression"@en ;
+    asoft:hasMaxWarnings 0 ;
+    asoft:hasEscalationAction "EJECTED" .
+
+asoft:Violation_Pyro rdf:type owl:NamedIndividual , asoft:ViolationType ;
+    rdfs:label "Pyrotechnic Misuse"@en ;
+    asoft:hasMaxWarnings 0 ;
+    asoft:hasEscalationAction "EJECTED" .
+

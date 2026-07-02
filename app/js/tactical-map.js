@@ -40,7 +40,10 @@ export class TacticalMap {
     this._bindEvents();
     this._resize();
 
-    window.addEventListener('resize', () => this._resize());
+    window.addEventListener('resize', () => {
+      this._resize();
+      this._render();
+    });
   }
 
   _bindEvents() {
@@ -101,6 +104,7 @@ export class TacticalMap {
       this.panX += (e.clientX - this._lastMouse.x);
       this.panY += (e.clientY - this._lastMouse.y);
       this._lastMouse = { x: e.clientX, y: e.clientY };
+      this._render();
       return;
     }
 
@@ -123,6 +127,7 @@ export class TacticalMap {
       this.hoveredZone = hoveredZone;
       this.canvas.style.cursor = hoveredZone ? 'pointer' : 'crosshair';
       if (this.onZoneHover) this.onZoneHover(hoveredZone, this._mousePos);
+      this._render();
     }
   }
 
@@ -131,18 +136,21 @@ export class TacticalMap {
       this._isDragging = true;
       this._lastMouse = { x: e.clientX, y: e.clientY };
       this.canvas.style.cursor = 'grabbing';
+      this._render();
     }
   }
 
   _onMouseUp(e) {
     this._isDragging = false;
     this.canvas.style.cursor = this.hoveredZone ? 'pointer' : 'crosshair';
+    this._render();
   }
 
   _onMouseLeave() {
     this._isDragging = false;
     this.hoveredZone = null;
     if (this.onZoneHover) this.onZoneHover(null, null);
+    this._render();
   }
 
   _onWheel(e) {
@@ -157,6 +165,7 @@ export class TacticalMap {
     this.panY = my - (my - this.panY) * (newZoom / this.zoom);
 
     this.zoom = newZoom;
+    this._render();
   }
 
   _onClick(e) {
@@ -175,6 +184,7 @@ export class TacticalMap {
       if (dx * dx + dy * dy < hitRadius * hitRadius) {
         this.selectedPlayer = player;
         if (this.onPlayerClick) this.onPlayerClick(player);
+        this._render();
         return;
       }
     }
@@ -183,16 +193,11 @@ export class TacticalMap {
   // ─── Rendering ─────────────────────────────────────────────
 
   start() {
-    const render = (ts) => {
-      this._time = ts;
-      this._render();
-      this._animFrame = requestAnimationFrame(render);
-    };
-    this._animFrame = requestAnimationFrame(render);
+    this._render();
   }
 
   stop() {
-    if (this._animFrame) cancelAnimationFrame(this._animFrame);
+    // No-op (animations disabled)
   }
 
   _render() {
@@ -337,6 +342,7 @@ export class TacticalMap {
 
   _drawPaths() {
     const ctx = this.ctx;
+    if (!this.layout.paths) return;
 
     for (const path of this.layout.paths) {
       if (path.points.length < 2) continue;
@@ -361,6 +367,7 @@ export class TacticalMap {
 
   _drawTerrain() {
     const ctx = this.ctx;
+    if (!this.layout.terrain) return;
 
     for (const feature of this.layout.terrain) {
       if (feature.type === 'trees') {
@@ -423,14 +430,13 @@ export class TacticalMap {
   _drawObjectives() {
     const ctx = this.ctx;
     const objectives = this.engine.gameSession?.objectives || [];
-    const t = this._time / 1000;
 
     for (const obj of objectives) {
       const p = this._toScreen(obj.x, obj.y);
       const r = 10 * this.zoom;
 
-      // Pulsing ring
-      const pulseR = r + 4 + Math.sin(t * 2) * 3;
+      // Static outline ring
+      const pulseR = r + 4;
       let ringColor;
       if (obj.holder === 'alpha') ringColor = 'rgba(0, 255, 136, 0.3)';
       else if (obj.holder === 'bravo') ringColor = 'rgba(68, 136, 255, 0.3)';
@@ -468,7 +474,6 @@ export class TacticalMap {
 
   _drawPlayers() {
     const ctx = this.ctx;
-    const t = this._time / 1000;
 
     for (const player of this.engine.players) {
       const p = this._toScreen(player.position.x, player.position.y);
@@ -594,27 +599,33 @@ export class TacticalMap {
 
   toggleHeatmap() {
     this.showHeatmap = !this.showHeatmap;
+    this._render();
   }
 
   toggleLabels() {
     this.showZoneLabels = !this.showZoneLabels;
+    this._render();
   }
 
   togglePlayers() {
     this.showPlayerMarkers = !this.showPlayerMarkers;
+    this._render();
   }
 
   resetView() {
     this.zoom = 1;
     this.panX = 0;
     this.panY = 0;
+    this._render();
   }
 
   selectPlayer(playerId) {
     this.selectedPlayer = this.engine.getPlayer(playerId);
+    this._render();
   }
 
   clearSelection() {
     this.selectedPlayer = null;
+    this._render();
   }
 }

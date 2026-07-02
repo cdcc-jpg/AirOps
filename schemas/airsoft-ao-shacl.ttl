@@ -3,31 +3,122 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-asoft:AirsoftReplicaShape a sh:NodeShape ;
+#################################################################
+#    Tier 1 — AEG / Support Gunner
+#    ≤ 350 FPS (1.20J) — No MED
+#################################################################
+
+asoft:AEG_ChronoShape a sh:NodeShape ;
     sh:targetClass asoft:AirsoftReplica ;
     sh:property [
         sh:path asoft:hasPowerLimit ;
         sh:maxInclusive 1.20 ;
         sh:datatype xsd:decimal ;
-        sh:name "Power Limit CHECK" ;
-        sh:description "No replica can exceed the 1.2 Joule safety limit." ;
-        sh:message "Power Limit VIOLATION: Replica exceeds the 1.2 Joule maximum output." ;
+        sh:name "AEG Power Limit" ;
+        sh:description "Standard AEG/support replicas must not exceed 1.20 Joules (≈ 350 FPS w/ 0.20g)." ;
+        sh:message "CHRONO FAIL (Tier 1): AEG replica exceeds 1.20J. Downgrade spring or use heavier BBs." ;
+    ] ;
+    sh:property [
+        sh:path asoft:hasFPS ;
+        sh:datatype xsd:integer ;
+        sh:maxInclusive 350 ;
+        sh:name "AEG FPS Ceiling" ;
+        sh:message "CHRONO FAIL (Tier 1): AEG velocity exceeds 350 FPS field limit." ;
+    ] .
+
+#################################################################
+#    Tier 2 — DMR (Designated Marksman Rifle)
+#    ≤ 450 FPS (1.88J) — 25m MED — Semi-auto lock required
+#################################################################
+
+asoft:DMR_ChronoShape a sh:NodeShape ;
+    sh:targetClass asoft:DesignatedMarksmanRifle ;
+    sh:property [
+        sh:path asoft:hasPowerLimit ;
+        sh:maxInclusive 1.88 ;
+        sh:datatype xsd:decimal ;
+        sh:name "DMR Power Limit" ;
+        sh:description "DMR replicas must not exceed 1.88 Joules (≈ 450 FPS w/ 0.20g). Requires semi-auto lock." ;
+        sh:message "CHRONO FAIL (Tier 2): DMR replica exceeds 1.88J maximum. Must re-chrono after adjustment." ;
+    ] ;
+    sh:property [
+        sh:path asoft:hasFPS ;
+        sh:datatype xsd:integer ;
+        sh:maxInclusive 450 ;
+        sh:name "DMR FPS Ceiling" ;
+        sh:message "CHRONO FAIL (Tier 2): DMR velocity exceeds 450 FPS." ;
+    ] ;
+    sh:property [
+        sh:path asoft:MinimumEngagementDistance ;
+        sh:minInclusive 25 ;
+        sh:datatype xsd:integer ;
+        sh:name "DMR MED" ;
+        sh:message "MED VIOLATION: DMR engagement below 25 metres. Switch to sidearm." ;
+    ] .
+
+#################################################################
+#    Tier 3 — Bolt-Action Sniper
+#    ≤ 500 FPS (2.32J) — 35m MED — Single-shot only
+#################################################################
+
+asoft:BoltAction_ChronoShape a sh:NodeShape ;
+    sh:targetClass asoft:BoltActionSniper ;
+    sh:property [
+        sh:path asoft:hasPowerLimit ;
+        sh:maxInclusive 2.32 ;
+        sh:datatype xsd:decimal ;
+        sh:name "Bolt-Action Power Limit" ;
+        sh:description "Bolt-action snipers must not exceed 2.32 Joules (≈ 500 FPS w/ 0.20g). Single-shot only." ;
+        sh:message "CHRONO FAIL (Tier 3): Bolt-action exceeds 2.32J. Cannot be fielded." ;
     ] ;
     sh:property [
         sh:path asoft:hasFPS ;
         sh:datatype xsd:integer ;
         sh:maxInclusive 500 ;
-        sh:name "FPS Max Limit" ;
-        sh:message "Velocity VIOLATION: FPS exceeds extreme field safety limits (500 FPS)." ;
+        sh:name "Bolt-Action FPS Ceiling" ;
+        sh:message "CHRONO FAIL (Tier 3): Bolt-action velocity exceeds 500 FPS absolute maximum." ;
     ] ;
     sh:property [
-        sh:path asoft:hasAmmunitionCapacity ;
+        sh:path asoft:MinimumEngagementDistance ;
+        sh:minInclusive 35 ;
         sh:datatype xsd:integer ;
-        sh:minInclusive 0 ;
-        sh:message "Ammunition capacity must be a non-negative integer." ;
+        sh:name "Bolt-Action MED" ;
+        sh:message "MED VIOLATION: Bolt-action engagement below 35 metres. Switch to sidearm." ;
     ] .
 
-# 2. BALLISTICS & CONSUMABLES (Enforcing Ontology Restrictions via SHACL)
+#################################################################
+#    CQB / Firebase Zone Restrictions
+#    ≤ 350 FPS (1.20J), Semi-auto only, No grenades > MK5
+#################################################################
+
+asoft:CQBZoneShape a sh:NodeShape ;
+    sh:targetClass asoft:CQBZone ;
+    sh:property [
+        sh:path asoft:hasMaxJouleLimit ;
+        sh:maxInclusive 1.20 ;
+        sh:datatype xsd:decimal ;
+        sh:name "CQB Zone Power Cap" ;
+        sh:message "ZONE VIOLATION: Replica exceeds 1.20J CQB/Firebase power cap. Semi-auto only." ;
+    ] .
+
+#################################################################
+#    Pyrotechnics — CE-marked, ≤ MK7 (≤ 150 dB), underarm only
+#################################################################
+
+asoft:PyroShape a sh:NodeShape ;
+    sh:targetClass asoft:AirsoftGrenade ;
+    sh:property [
+        sh:path asoft:hasDecibel ;
+        sh:maxInclusive 150 ;
+        sh:datatype xsd:integer ;
+        sh:name "Pyro Sound Limit" ;
+        sh:message "PYRO VIOLATION: Sound exceeds 150 dB (MK7 max). Non-CE pyro banned." ;
+    ] .
+
+#################################################################
+#    BB Ammunition — 6mm plastic only
+#################################################################
+
 asoft:AirsoftBBShape a sh:NodeShape ;
     sh:targetClass asoft:AirsoftBB ;
     sh:property [
@@ -37,41 +128,66 @@ asoft:AirsoftBBShape a sh:NodeShape ;
         sh:message "BB Weight VIOLATION: Projectile weight exceeds the certified 0.6g limit." ;
     ] .
 
-asoft:AirsoftGrenadeShape a sh:NodeShape ;
-    sh:targetClass asoft:AirsoftGrenade ;
-    sh:property [
-        sh:path asoft:hasDecibel ;
-        sh:maxInclusive 120 ;
-        sh:datatype xsd:integer ;
-        sh:message "Noise Limit VIOLATION: Pyrotechnic/gas grenade sound pressure level exceeds 120 dB field safety threshold." ;
-    ] .
+#################################################################
+#    Player — Team, field, gear constraints
+#################################################################
 
-# 3. GAMEPLAY & OBJECT RELATIONSHIPS (Graph Topology Validation)
 asoft:AirsoftPlayerShape a sh:NodeShape ;
     sh:targetClass asoft:AirsoftPlayer ;
     sh:property [
         sh:path asoft:belongsToTeam ;
         sh:class asoft:AirsoftTeam ;
         sh:maxCount 1 ;
-        sh:message "Integrity Error: A player must belong to a valid AirsoftTeam and cannot be rostered on multiple teams simultaneously." ;
+        sh:message "Integrity Error: Player must belong to exactly one AirsoftTeam." ;
     ] ;
     sh:property [
         sh:path asoft:playsOnField ;
         sh:class asoft:AirsoftField ;
-        sh:message "Mapping Error: Object assigned to playsOnField must be an instance of AirsoftField." ;
+        sh:message "Field assignment must reference a valid AirsoftField." ;
     ] ;
     sh:property [
         sh:path asoft:usesGear ;
         sh:minCount 1 ;
-        sh:message "Safety Deployment Violation: Player must be mapped to at least one piece of AirsoftGear (e.g., Mandatory Eye Protection)." ;
+        sh:message "Safety Violation: Player must be mapped to at least one piece of gear (mandatory eye protection)." ;
     ] .
 
-# 4. MARSHALLING & REGULATION VALIDATION
+#################################################################
+#    Marshall — must enforce at least one rule
+#################################################################
+
 asoft:AirsoftMarshallShape a sh:NodeShape ;
     sh:targetClass asoft:AirsoftMarshall ;
     sh:property [
         sh:path asoft:enforcesRule ;
         sh:class asoft:AirsoftRule ;
         sh:minCount 1 ;
-        sh:message "Operational Error: Active marshalls must be associated with enforcing at least one AirsoftRule." ;
+        sh:message "Operational Error: Active marshalls must enforce at least one AirsoftRule." ;
+    ] .
+
+#################################################################
+#    Warning Record — auto-escalation beyond threshold
+#################################################################
+
+asoft:WarningRecordShape a sh:NodeShape ;
+    sh:targetClass asoft:WarningRecord ;
+    sh:property [
+        sh:path asoft:hasCurrentWarnings ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:name "Warning Count" ;
+        sh:message "Warning count must be zero or positive." ;
+    ] ;
+    sh:property [
+        sh:path asoft:warningForPlayer ;
+        sh:class asoft:AirsoftPlayer ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Each warning record must be linked to exactly one player." ;
+    ] ;
+    sh:property [
+        sh:path asoft:warningType ;
+        sh:class asoft:ViolationType ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Each warning record must reference exactly one ViolationType." ;
     ] .

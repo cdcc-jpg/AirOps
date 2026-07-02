@@ -1,13 +1,13 @@
 {
   "_meta": {
-    "generated": "2026-07-02T19:06:54.107140",
-    "generator": "prepare_app_data.py",
-    "description": "Unified AirOps dataset derived from 4 synthetic data silos",
+    "generated": "2026-07-02T22:40:29.797130",
+    "generator": "prepare_app_data.py (v2 — Humber)",
+    "description": "Unified AirOps dataset for Humber Airsoft at Leggotts Quarry",
     "silos": {
       "silo1": "Retail catalog (JSON-LD)",
       "silo2": "Field chrono logs (TTL)",
       "silo3": "Tech repair records (CSV)",
-      "silo4": "Social scrape (MD) — used for sentiment, not directly imported"
+      "silo4": "Social scrape (MD) — sentiment context"
     }
   },
   "teams": [
@@ -15,13 +15,13 @@
       "id": "alpha",
       "name": "Alpha Force",
       "color": "#00ff88",
-      "spawnZone": "spawn_a"
+      "spawnZone": "woodland_north"
     },
     {
       "id": "bravo",
       "name": "Bravo Company",
       "color": "#4488ff",
-      "spawnZone": "spawn_b"
+      "spawnZone": "woodland_east"
     }
   ],
   "players": [
@@ -33,6 +33,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Commander",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Novritsch SSG10 Bolt Action",
@@ -47,7 +48,10 @@
         "fps": 301,
         "joules": 2.02,
         "bbWeight": 0.48,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -62,10 +66,18 @@
         }
       ],
       "position": {
-        "x": 114,
-        "y": 440
+        "x": 370,
+        "y": 422
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0002",
@@ -75,6 +87,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Commander",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "GHK Glock 19 GBBR",
@@ -89,7 +102,10 @@
         "fps": 231,
         "joules": 0.62,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -104,10 +120,23 @@
         }
       ],
       "position": {
-        "x": 800,
-        "y": 258
+        "x": 784,
+        "y": 246
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "EYE_PRO_REMOVED",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0003",
@@ -117,6 +146,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "LCT SCAR-L AEG",
@@ -131,7 +161,10 @@
         "fps": 332,
         "joules": 1.02,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -146,10 +179,23 @@
         }
       ],
       "position": {
-        "x": 161,
-        "y": 479
+        "x": 379,
+        "y": 538
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "DEAD_MAN_WALKING",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0004",
@@ -159,6 +205,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Medic",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "PolarStar Jack CQB HPA System",
@@ -173,7 +220,10 @@
         "fps": 388,
         "joules": 2.52,
         "bbWeight": 0.36,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -188,10 +238,18 @@
         }
       ],
       "position": {
-        "x": 837,
-        "y": 223
+        "x": 620,
+        "y": 621
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0005",
@@ -201,6 +259,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Sniper",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Silverback VSR-10 Bolt Action",
@@ -215,7 +274,10 @@
         "fps": 303,
         "joules": 1.83,
         "bbWeight": 0.43,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -230,10 +292,18 @@
         }
       ],
       "position": {
-        "x": 127,
-        "y": 221
+        "x": 104,
+        "y": 212
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0006",
@@ -242,7 +312,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Support",
+      "role": "Rifleman",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "Wolverine Jack CQB HPA System",
@@ -257,7 +328,10 @@
         "fps": 409,
         "joules": 2.81,
         "bbWeight": 0.36,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -272,10 +346,18 @@
         }
       ],
       "position": {
-        "x": 783,
-        "y": 437
+        "x": 582,
+        "y": 494
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0007",
@@ -284,7 +366,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "KWA Glock 19 GBBR",
@@ -299,7 +382,10 @@
         "fps": 205,
         "joules": 0.49,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -314,10 +400,18 @@
         }
       ],
       "position": {
-        "x": 251,
-        "y": 449
+        "x": 208,
+        "y": 111
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0008",
@@ -326,7 +420,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Breacher",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "VFC Vector SMG AEG",
@@ -341,7 +436,10 @@
         "fps": 320,
         "joules": 0.95,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -356,10 +454,23 @@
         }
       ],
       "position": {
-        "x": 829,
+        "x": 686,
         "y": 448
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "OVERSHOOT",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0009",
@@ -368,7 +479,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Support",
+      "role": "Rifleman",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "Wolverine Kythera SR25 HPA System",
@@ -383,7 +495,10 @@
         "fps": 406,
         "joules": 2.77,
         "bbWeight": 0.36,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -398,10 +513,18 @@
         }
       ],
       "position": {
-        "x": 162,
-        "y": 335
+        "x": 214,
+        "y": 612
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0010",
@@ -410,7 +533,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Support",
+      "role": "Medic",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "Redline MTW HPA System",
@@ -425,7 +549,10 @@
         "fps": 390,
         "joules": 2.26,
         "bbWeight": 0.32,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -440,10 +567,18 @@
         }
       ],
       "position": {
-        "x": 776,
-        "y": 220
+        "x": 702,
+        "y": 619
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0011",
@@ -453,6 +588,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "G&G AK74U AEG",
@@ -467,7 +603,10 @@
         "fps": 342,
         "joules": 1.09,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -482,10 +621,18 @@
         }
       ],
       "position": {
-        "x": 83,
-        "y": 174
+        "x": 162,
+        "y": 643
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0012",
@@ -494,7 +641,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Breacher",
+      "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "LCT SCAR-L AEG",
@@ -509,7 +657,10 @@
         "fps": 332,
         "joules": 1.02,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -524,10 +675,18 @@
         }
       ],
       "position": {
-        "x": 759,
-        "y": 471
+        "x": 735,
+        "y": 414
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 2,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0013",
@@ -536,7 +695,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "LCT AK74U AEG",
@@ -551,7 +711,10 @@
         "fps": 342,
         "joules": 1.09,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -566,10 +729,18 @@
         }
       ],
       "position": {
-        "x": 234,
-        "y": 366
+        "x": 123,
+        "y": 597
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 1
+      }
     },
     {
       "id": "P_0014",
@@ -579,6 +750,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "LCT AK74U AEG",
@@ -593,7 +765,10 @@
         "fps": 345,
         "joules": 1.11,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -608,10 +783,18 @@
         }
       ],
       "position": {
-        "x": 818,
-        "y": 345
+        "x": 793,
+        "y": 269
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 3,
+        "deaths": 2,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0015",
@@ -620,7 +803,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Breacher",
+      "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "VFC M4 CQB AEG",
@@ -635,7 +819,10 @@
         "fps": 332,
         "joules": 1.02,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -650,10 +837,18 @@
         }
       ],
       "position": {
-        "x": 212,
-        "y": 389
+        "x": 356,
+        "y": 305
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0016",
@@ -662,7 +857,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Sniper",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "VFC SR25 AEG",
@@ -677,7 +873,10 @@
         "fps": 348,
         "joules": 1.13,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "DMR",
+        "med": 25,
+        "fireMode": "Semi-Auto Locked"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -692,10 +891,18 @@
         }
       ],
       "position": {
-        "x": 855,
-        "y": 278
+        "x": 774,
+        "y": 629
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0017",
@@ -705,6 +912,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Sniper",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Novritsch SRS A2 Bolt Action",
@@ -719,7 +927,10 @@
         "fps": 320,
         "joules": 2.05,
         "bbWeight": 0.43,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -734,10 +945,18 @@
         }
       ],
       "position": {
-        "x": 201,
-        "y": 155
+        "x": 253,
+        "y": 121
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0018",
@@ -747,6 +966,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Rifleman",
+      "status": "ELIMINATED",
       "gear": {
         "primary": {
           "name": "Cyma SCAR-L AEG",
@@ -761,7 +981,10 @@
         "fps": 333,
         "joules": 1.03,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -776,10 +999,18 @@
         }
       ],
       "position": {
-        "x": 749,
-        "y": 499
+        "x": 580,
+        "y": 334
       },
-      "isAlive": true
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0019",
@@ -789,6 +1020,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Support",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "PolarStar Jack CQB HPA System",
@@ -803,7 +1035,10 @@
         "fps": 393,
         "joules": 2.59,
         "bbWeight": 0.36,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -818,10 +1053,18 @@
         }
       ],
       "position": {
-        "x": 197,
-        "y": 286
+        "x": 222,
+        "y": 597
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0020",
@@ -830,7 +1073,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Support",
+      "role": "Breacher",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "Wolverine F2 M4 HPA System",
@@ -845,7 +1089,10 @@
         "fps": 397,
         "joules": 2.64,
         "bbWeight": 0.36,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -860,10 +1107,18 @@
         }
       ],
       "position": {
-        "x": 916,
-        "y": 478
+        "x": 842,
+        "y": 584
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0021",
@@ -872,7 +1127,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Support",
+      "role": "Breacher",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "Redline F2 M4 HPA System",
@@ -887,7 +1143,10 @@
         "fps": 396,
         "joules": 2.93,
         "bbWeight": 0.4,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -902,10 +1161,18 @@
         }
       ],
       "position": {
-        "x": 147,
-        "y": 207
+        "x": 177,
+        "y": 196
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0022",
@@ -915,6 +1182,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "KJW Hi-Capa 5.1 GBBR",
@@ -929,7 +1197,10 @@
         "fps": 205,
         "joules": 0.49,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -945,9 +1216,17 @@
       ],
       "position": {
         "x": 760,
-        "y": 382
+        "y": 578
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0023",
@@ -956,7 +1235,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "KJW MP7 GBBR",
@@ -971,7 +1251,10 @@
         "fps": 227,
         "joules": 0.6,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -986,10 +1269,18 @@
         }
       ],
       "position": {
-        "x": 244,
-        "y": 284
+        "x": 130,
+        "y": 162
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0024",
@@ -998,7 +1289,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Breacher",
+      "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Cyma Vector SMG AEG",
@@ -1013,7 +1305,10 @@
         "fps": 344,
         "joules": 1.1,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1028,10 +1323,18 @@
         }
       ],
       "position": {
-        "x": 848,
-        "y": 241
+        "x": 648,
+        "y": 294
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 2,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0025",
@@ -1041,6 +1344,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Krytac AK74U AEG",
@@ -1055,7 +1359,10 @@
         "fps": 342,
         "joules": 1.09,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1070,10 +1377,18 @@
         }
       ],
       "position": {
-        "x": 87,
-        "y": 470
+        "x": 207,
+        "y": 177
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0026",
@@ -1082,7 +1397,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Support",
+      "role": "Rifleman",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "PolarStar F2 M4 HPA System",
@@ -1097,7 +1413,10 @@
         "fps": 397,
         "joules": 2.35,
         "bbWeight": 0.32,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -1112,10 +1431,18 @@
         }
       ],
       "position": {
-        "x": 796,
-        "y": 477
+        "x": 826,
+        "y": 115
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0027",
@@ -1124,7 +1451,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "role": "Breacher",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "KJW MP7 GBBR",
@@ -1139,7 +1467,10 @@
         "fps": 205,
         "joules": 0.49,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -1154,10 +1485,18 @@
         }
       ],
       "position": {
-        "x": 110,
-        "y": 228
+        "x": 165,
+        "y": 516
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0028",
@@ -1166,7 +1505,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Rifleman",
+      "role": "Medic",
+      "status": "RESPAWNING",
       "gear": {
         "primary": {
           "name": "WE Tech Glock 19 GBBR",
@@ -1181,7 +1521,10 @@
         "fps": 217,
         "joules": 0.55,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -1196,10 +1539,18 @@
         }
       ],
       "position": {
-        "x": 761,
-        "y": 426
+        "x": 634,
+        "y": 488
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 2
+      }
     },
     {
       "id": "P_0029",
@@ -1209,6 +1560,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Sniper",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Novritsch SRS A2 Bolt Action",
@@ -1223,7 +1575,10 @@
         "fps": 301,
         "joules": 2.02,
         "bbWeight": 0.48,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1238,10 +1593,18 @@
         }
       ],
       "position": {
-        "x": 259,
-        "y": 421
+        "x": 312,
+        "y": 392
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0030",
@@ -1251,6 +1614,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Support",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "Wolverine MTW HPA System",
@@ -1265,7 +1629,10 @@
         "fps": 395,
         "joules": 2.61,
         "bbWeight": 0.36,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -1280,10 +1647,18 @@
         }
       ],
       "position": {
-        "x": 720,
-        "y": 456
+        "x": 799,
+        "y": 258
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0031",
@@ -1292,7 +1667,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "KJW M4A1 GBBR",
@@ -1307,7 +1683,10 @@
         "fps": 237,
         "joules": 0.65,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -1322,10 +1701,23 @@
         }
       ],
       "position": {
-        "x": 64,
-        "y": 207
+        "x": 376,
+        "y": 162
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "AGGRESSION",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 1
+      }
     },
     {
       "id": "P_0032",
@@ -1335,6 +1727,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Sniper",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Novritsch SRS A2 Bolt Action",
@@ -1349,7 +1742,10 @@
         "fps": 310,
         "joules": 2.14,
         "bbWeight": 0.48,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1364,10 +1760,18 @@
         }
       ],
       "position": {
-        "x": 812,
-        "y": 307
+        "x": 794,
+        "y": 614
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0033",
@@ -1376,7 +1780,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Breacher",
+      "role": "Medic",
+      "status": "ELIMINATED",
       "gear": {
         "primary": {
           "name": "Tokyo Marui M4 CQB AEG",
@@ -1391,7 +1796,10 @@
         "fps": 345,
         "joules": 1.11,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1407,9 +1815,17 @@
       ],
       "position": {
         "x": 121,
-        "y": 179
+        "y": 290
       },
-      "isAlive": true
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0034",
@@ -1419,6 +1835,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "WE Tech Glock 19 GBBR",
@@ -1433,7 +1850,10 @@
         "fps": 237,
         "joules": 0.65,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -1448,10 +1868,23 @@
         }
       ],
       "position": {
-        "x": 865,
-        "y": 190
+        "x": 841,
+        "y": 352
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "AGGRESSION",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 2,
+        "revives": 0
+      }
     },
     {
       "id": "P_0035",
@@ -1461,6 +1894,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Sniper",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Tokyo Marui Steyr Scout Bolt Action",
@@ -1475,7 +1909,10 @@
         "fps": 316,
         "joules": 1.99,
         "bbWeight": 0.43,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1490,10 +1927,18 @@
         }
       ],
       "position": {
-        "x": 81,
-        "y": 398
+        "x": 294,
+        "y": 635
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 3,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0036",
@@ -1502,7 +1947,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Sniper",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "LCT SR25 AEG",
@@ -1517,7 +1963,10 @@
         "fps": 337,
         "joules": 1.06,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "DMR",
+        "med": 25,
+        "fireMode": "Semi-Auto Locked"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1532,10 +1981,23 @@
         }
       ],
       "position": {
-        "x": 928,
-        "y": 185
+        "x": 672,
+        "y": 371
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "DEAD_MAN_WALKING",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0037",
@@ -1545,6 +2007,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Support",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "Wolverine Jack CQB HPA System",
@@ -1559,7 +2022,10 @@
         "fps": 404,
         "joules": 2.43,
         "bbWeight": 0.32,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -1574,10 +2040,18 @@
         }
       ],
       "position": {
-        "x": 254,
-        "y": 422
+        "x": 117,
+        "y": 109
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0038",
@@ -1587,6 +2061,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Sniper",
+      "status": "ELIMINATED",
       "gear": {
         "primary": {
           "name": "Tokyo Marui Steyr Scout Bolt Action",
@@ -1601,7 +2076,10 @@
         "fps": 304,
         "joules": 2.06,
         "bbWeight": 0.48,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1616,10 +2094,18 @@
         }
       ],
       "position": {
-        "x": 916,
-        "y": 214
+        "x": 838,
+        "y": 202
       },
-      "isAlive": true
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0039",
@@ -1628,7 +2114,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Breacher",
+      "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "LCT M4 CQB AEG",
@@ -1643,7 +2130,10 @@
         "fps": 343,
         "joules": 1.09,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1658,10 +2148,27 @@
         }
       ],
       "position": {
-        "x": 92,
-        "y": 487
+        "x": 115,
+        "y": 350
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "MED_VIOLATION",
+          "count": 1
+        },
+        {
+          "type": "MED_VIOLATION",
+          "count": 2
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 1
+      }
     },
     {
       "id": "P_0040",
@@ -1670,7 +2177,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Sniper",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "G&G SR25 AEG",
@@ -1685,7 +2193,10 @@
         "fps": 331,
         "joules": 1.02,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "DMR",
+        "med": 25,
+        "fireMode": "Semi-Auto Locked"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1700,10 +2211,18 @@
         }
       ],
       "position": {
-        "x": 841,
-        "y": 431
+        "x": 820,
+        "y": 108
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0041",
@@ -1712,7 +2231,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "role": "Breacher",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Tokyo Marui Glock 19 GBBR",
@@ -1727,7 +2247,10 @@
         "fps": 224,
         "joules": 0.58,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -1742,10 +2265,18 @@
         }
       ],
       "position": {
-        "x": 195,
-        "y": 460
+        "x": 148,
+        "y": 370
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0042",
@@ -1754,7 +2285,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Breacher",
+      "role": "Rifleman",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Cyma M4 CQB AEG",
@@ -1769,7 +2301,10 @@
         "fps": 331,
         "joules": 1.02,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1784,10 +2319,18 @@
         }
       ],
       "position": {
-        "x": 828,
-        "y": 258
+        "x": 694,
+        "y": 315
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 2,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0043",
@@ -1797,6 +2340,7 @@
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
       "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "KJW AKM GBBR",
@@ -1811,7 +2355,10 @@
         "fps": 205,
         "joules": 0.49,
         "bbWeight": 0.25,
-        "status": "FAILED_MIN_PERFORMANCE"
+        "status": "FAIL_MIN_PERFORMANCE",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "FLAGGED",
       "repairs": [
@@ -1826,10 +2373,23 @@
         }
       ],
       "position": {
-        "x": 253,
-        "y": 252
+        "x": 338,
+        "y": 600
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "BLIND_FIRE",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 2
+      }
     },
     {
       "id": "P_0044",
@@ -1838,7 +2398,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Support",
+      "role": "Rifleman",
+      "status": "RESPAWNING",
       "gear": {
         "primary": {
           "name": "Tokyo Marui SCAR-L AEG",
@@ -1853,7 +2414,10 @@
         "fps": 331,
         "joules": 1.02,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1868,10 +2432,18 @@
         }
       ],
       "position": {
-        "x": 822,
-        "y": 493
+        "x": 766,
+        "y": 383
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0045",
@@ -1880,7 +2452,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Breacher",
+      "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Tokyo Marui Vector SMG AEG",
@@ -1895,7 +2468,10 @@
         "fps": 323,
         "joules": 0.97,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1910,10 +2486,18 @@
         }
       ],
       "position": {
-        "x": 226,
-        "y": 341
+        "x": 162,
+        "y": 552
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 2,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0046",
@@ -1923,6 +2507,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Sniper",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Novritsch VSR-10 Bolt Action",
@@ -1937,7 +2522,10 @@
         "fps": 311,
         "joules": 1.93,
         "bbWeight": 0.43,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1952,10 +2540,18 @@
         }
       ],
       "position": {
-        "x": 832,
-        "y": 414
+        "x": 607,
+        "y": 177
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 1,
+        "assists": 0,
+        "objectiveCaptures": 1,
+        "revives": 0
+      }
     },
     {
       "id": "P_0047",
@@ -1964,7 +2560,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Breacher",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Cyma M4 CQB AEG",
@@ -1979,7 +2576,10 @@
         "fps": 332,
         "joules": 1.02,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -1994,10 +2594,18 @@
         }
       ],
       "position": {
-        "x": 175,
-        "y": 211
+        "x": 269,
+        "y": 251
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0048",
@@ -2006,7 +2614,8 @@
       "team": "bravo",
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
-      "role": "Rifleman",
+      "role": "Medic",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Krytac AK74U AEG",
@@ -2021,7 +2630,10 @@
         "fps": 344,
         "joules": 1.1,
         "bbWeight": 0.2,
-        "status": "PASS"
+        "status": "PASS",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -2036,10 +2648,23 @@
         }
       ],
       "position": {
-        "x": 736,
-        "y": 323
+        "x": 570,
+        "y": 466
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [
+        {
+          "type": "BLIND_FIRE",
+          "count": 1
+        }
+      ],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 1
+      }
     },
     {
       "id": "P_0049",
@@ -2048,7 +2673,8 @@
       "team": "alpha",
       "teamName": "Alpha Force",
       "teamColor": "#00ff88",
-      "role": "Support",
+      "role": "Rifleman",
+      "status": "OUT",
       "gear": {
         "primary": {
           "name": "PolarStar MTW HPA System",
@@ -2063,7 +2689,10 @@
         "fps": 407,
         "joules": 3.08,
         "bbWeight": 0.4,
-        "status": "JOULE_CREEP_DETECTED"
+        "status": "JOULE_CREEP_DETECTED",
+        "tier": "AEG",
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
       },
       "compliance": "BANNED",
       "repairs": [
@@ -2078,10 +2707,18 @@
         }
       ],
       "position": {
-        "x": 65,
-        "y": 451
+        "x": 366,
+        "y": 516
       },
-      "isAlive": false
+      "isAlive": false,
+      "warnings": [],
+      "stats": {
+        "kills": 0,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     },
     {
       "id": "P_0050",
@@ -2091,6 +2728,7 @@
       "teamName": "Bravo Company",
       "teamColor": "#4488ff",
       "role": "Sniper",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Modify VSR-10 Bolt Action",
@@ -2105,7 +2743,10 @@
         "fps": 306,
         "joules": 1.87,
         "bbWeight": 0.43,
-        "status": "PASS_DMR_RULES"
+        "status": "PASS",
+        "tier": "Bolt-Action",
+        "med": 35,
+        "fireMode": "Single-Shot"
       },
       "compliance": "CLEARED",
       "repairs": [
@@ -2120,10 +2761,18 @@
         }
       ],
       "position": {
-        "x": 861,
-        "y": 267
+        "x": 671,
+        "y": 266
       },
-      "isAlive": true
+      "isAlive": true,
+      "warnings": [],
+      "stats": {
+        "kills": 1,
+        "deaths": 0,
+        "assists": 0,
+        "objectiveCaptures": 0,
+        "revives": 0
+      }
     }
   ],
   "chronoEvents": [
@@ -8296,381 +8945,498 @@
   ],
   "gameEvents": [
     {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T10:00:21",
-      "team": "bravo",
-      "zone": "obj_alpha"
-    },
-    {
       "type": "elimination",
-      "timestamp": "2026-11-24T10:03:42",
-      "attackerId": "P_0005",
-      "attackerCallsign": "Titan-05",
-      "attackerTeam": "alpha",
-      "targetId": "P_0028",
-      "targetCallsign": "Grizzly-28",
-      "targetTeam": "bravo",
-      "zone": "bunker_a",
-      "weapon": "Silverback VSR-10 Bolt Action"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:09:34",
-      "attackerId": "P_0029",
-      "attackerCallsign": "Apex-29",
-      "attackerTeam": "alpha",
-      "targetId": "P_0012",
-      "targetCallsign": "Blaze-12",
-      "targetTeam": "bravo",
-      "zone": "bunker_a",
-      "weapon": "Novritsch SRS A2 Bolt Action"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:09:56",
-      "attackerId": "P_0050",
-      "attackerCallsign": "Osprey-50",
+      "timestamp": "2026-11-24T10:00:22",
+      "attackerId": "P_0044",
+      "attackerCallsign": "Warden-44",
       "attackerTeam": "bravo",
-      "targetId": "P_0043",
-      "targetCallsign": "Venom-43",
+      "targetId": "P_0045",
+      "targetCallsign": "Saber-45",
       "targetTeam": "alpha",
-      "zone": "hill_overlook",
-      "weapon": "Modify VSR-10 Bolt Action"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:11:59",
-      "attackerId": "P_0015",
-      "attackerCallsign": "Spartan-15",
-      "attackerTeam": "alpha",
-      "targetId": "P_0038",
-      "targetCallsign": "Hawk-38",
-      "targetTeam": "bravo",
-      "zone": "bunker_a",
-      "weapon": "VFC M4 CQB AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:15:56",
-      "attackerId": "P_0012",
-      "attackerCallsign": "Blaze-12",
-      "attackerTeam": "bravo",
-      "targetId": "P_0033",
-      "targetCallsign": "Fox-33",
-      "targetTeam": "alpha",
-      "zone": "obj_central",
-      "weapon": "LCT SCAR-L AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:18:27",
-      "attackerId": "P_0003",
-      "attackerCallsign": "Cipher-03",
-      "attackerTeam": "alpha",
-      "targetId": "P_0036",
-      "targetCallsign": "Sierra-36",
-      "targetTeam": "bravo",
-      "zone": "hill_overlook",
-      "weapon": "LCT SCAR-L AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:20:50",
-      "attackerId": "P_0039",
-      "attackerCallsign": "Raven-39",
-      "attackerTeam": "alpha",
-      "targetId": "P_0024",
-      "targetCallsign": "Lynx-24",
-      "targetTeam": "bravo",
-      "zone": "woodland_south",
-      "weapon": "LCT M4 CQB AEG"
+      "zone": "ridge",
+      "weapon": "Tokyo Marui SCAR-L AEG"
     },
     {
       "type": "violation",
-      "timestamp": "2026-11-24T10:24:18",
-      "playerId": "P_0048",
-      "playerCallsign": "Ember-48",
+      "timestamp": "2026-11-24T10:08:42",
+      "playerId": "P_0008",
+      "playerCallsign": "Viper-08",
       "team": "bravo",
-      "violationType": "BLIND_FIRE",
-      "zone": "bunker_a",
-      "action": "EJECTED"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:25:52",
-      "attackerId": "P_0024",
-      "attackerCallsign": "Lynx-24",
-      "attackerTeam": "bravo",
-      "targetId": "P_0017",
-      "targetCallsign": "Yankee-17",
-      "targetTeam": "alpha",
-      "zone": "obj_alpha",
-      "weapon": "Cyma Vector SMG AEG"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T10:26:43",
-      "team": "bravo",
-      "zone": "obj_central"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:30:16",
-      "attackerId": "P_0042",
-      "attackerCallsign": "Dagger-42",
-      "attackerTeam": "bravo",
-      "targetId": "P_0027",
-      "targetCallsign": "Frost-27",
-      "targetTeam": "alpha",
-      "zone": "bridge",
-      "weapon": "Cyma M4 CQB AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:34:18",
-      "attackerId": "P_0023",
-      "attackerCallsign": "Mantis-23",
-      "attackerTeam": "alpha",
-      "targetId": "P_0046",
-      "targetCallsign": "Python-46",
-      "targetTeam": "bravo",
-      "zone": "obj_central",
-      "weapon": "KJW MP7 GBBR"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T10:36:27",
-      "team": "bravo",
-      "zone": "obj_alpha"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T10:40:03",
-      "team": "alpha",
-      "zone": "obj_alpha"
-    },
-    {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T10:51:46",
-      "medicId": "P_0003",
-      "medicCallsign": "Cipher-03",
-      "revivedId": "P_0017",
-      "revivedCallsign": "Yankee-17",
-      "team": "alpha",
-      "zone": "cqb_building"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T10:52:29",
-      "team": "alpha",
-      "zone": "obj_alpha"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:56:51",
-      "attackerId": "P_0048",
-      "attackerCallsign": "Ember-48",
-      "attackerTeam": "bravo",
-      "targetId": "P_0001",
-      "targetCallsign": "Bravo-01",
-      "targetTeam": "alpha",
-      "zone": "obj_bravo",
-      "weapon": "Krytac AK74U AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:02:16",
-      "attackerId": "P_0023",
-      "attackerCallsign": "Mantis-23",
-      "attackerTeam": "alpha",
-      "targetId": "P_0008",
-      "targetCallsign": "Viper-08",
-      "targetTeam": "bravo",
-      "zone": "woodland_north",
-      "weapon": "KJW MP7 GBBR"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:05:05",
-      "attackerId": "P_0017",
-      "attackerCallsign": "Yankee-17",
-      "attackerTeam": "alpha",
-      "targetId": "P_0038",
-      "targetCallsign": "Hawk-38",
-      "targetTeam": "bravo",
-      "zone": "hill_overlook",
-      "weapon": "Novritsch SRS A2 Bolt Action"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:08:28",
-      "attackerId": "P_0017",
-      "attackerCallsign": "Yankee-17",
-      "attackerTeam": "alpha",
-      "targetId": "P_0012",
-      "targetCallsign": "Blaze-12",
-      "targetTeam": "bravo",
-      "zone": "hill_overlook",
-      "weapon": "Novritsch SRS A2 Bolt Action"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T11:09:08",
-      "team": "alpha",
-      "zone": "obj_bravo"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:15:14",
-      "attackerId": "P_0024",
-      "attackerCallsign": "Lynx-24",
-      "attackerTeam": "bravo",
-      "targetId": "P_0005",
-      "targetCallsign": "Titan-05",
-      "targetTeam": "alpha",
-      "zone": "woodland_north",
-      "weapon": "Cyma Vector SMG AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:18:51",
-      "attackerId": "P_0032",
-      "attackerCallsign": "X-Ray-32",
-      "attackerTeam": "bravo",
-      "targetId": "P_0007",
-      "targetCallsign": "Ghost-07",
-      "targetTeam": "alpha",
-      "zone": "obj_bravo",
-      "weapon": "Novritsch SRS A2 Bolt Action"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:24:37",
-      "attackerId": "P_0022",
-      "attackerCallsign": "Onyx-22",
-      "attackerTeam": "bravo",
-      "targetId": "P_0027",
-      "targetCallsign": "Frost-27",
-      "targetTeam": "alpha",
-      "zone": "obj_central",
-      "weapon": "KJW Hi-Capa 5.1 GBBR"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T11:34:28",
-      "team": "alpha",
-      "zone": "obj_alpha"
-    },
-    {
-      "type": "violation",
-      "timestamp": "2026-11-24T11:42:51",
-      "playerId": "P_0003",
-      "playerCallsign": "Cipher-03",
-      "team": "alpha",
-      "violationType": "NO_BANG_BANG",
-      "zone": "hill_overlook",
-      "action": "EJECTED"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:43:26",
-      "attackerId": "P_0036",
-      "attackerCallsign": "Sierra-36",
-      "attackerTeam": "bravo",
-      "targetId": "P_0033",
-      "targetCallsign": "Fox-33",
-      "targetTeam": "alpha",
-      "zone": "bunker_a",
-      "weapon": "LCT SR25 AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:52:15",
-      "attackerId": "P_0043",
-      "attackerCallsign": "Venom-43",
-      "attackerTeam": "alpha",
-      "targetId": "P_0032",
-      "targetCallsign": "X-Ray-32",
-      "targetTeam": "bravo",
-      "zone": "cqb_building",
-      "weapon": "KJW AKM GBBR"
-    },
-    {
-      "type": "violation",
-      "timestamp": "2026-11-24T11:53:55",
-      "playerId": "P_0025",
-      "playerCallsign": "Hornet-25",
-      "team": "alpha",
-      "violationType": "NO_BANG_BANG",
-      "zone": "bridge",
+      "violationType": "OVERSHOOT",
+      "warningNumber": 1,
+      "maxWarnings": 2,
+      "zone": "quarry_floor_north",
       "action": "WARNING"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:55:02",
-      "attackerId": "P_0039",
-      "attackerCallsign": "Raven-39",
-      "attackerTeam": "alpha",
-      "targetId": "P_0022",
-      "targetCallsign": "Onyx-22",
-      "targetTeam": "bravo",
-      "zone": "cqb_building",
-      "weapon": "LCT M4 CQB AEG"
+      "timestamp": "2026-11-24T10:13:37",
+      "attackerId": "P_0042",
+      "attackerCallsign": "Dagger-42",
+      "attackerTeam": "bravo",
+      "targetId": "P_0031",
+      "targetCallsign": "Phantom-31",
+      "targetTeam": "alpha",
+      "zone": "quarry_floor_north",
+      "weapon": "Cyma M4 CQB AEG"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:55:03",
-      "attackerId": "P_0028",
-      "attackerCallsign": "Grizzly-28",
+      "timestamp": "2026-11-24T10:17:09",
+      "attackerId": "P_0012",
+      "attackerCallsign": "Blaze-12",
       "attackerTeam": "bravo",
       "targetId": "P_0035",
       "targetCallsign": "Whiskey-35",
       "targetTeam": "alpha",
-      "zone": "hill_overlook",
-      "weapon": "WE Tech Glock 19 GBBR"
+      "zone": "woodland_north",
+      "weapon": "LCT SCAR-L AEG"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T10:22:37",
+      "playerId": "P_0043",
+      "playerCallsign": "Venom-43",
+      "team": "alpha",
+      "violationType": "BLIND_FIRE",
+      "warningNumber": 1,
+      "maxWarnings": 2,
+      "zone": "village",
+      "action": "WARNING"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T10:24:26",
+      "team": "bravo",
+      "zone": "obj_ridge_tower",
+      "capturerId": "P_0034",
+      "capturerCallsign": "Delta-34"
     },
     {
       "type": "medic_revive",
-      "timestamp": "2026-11-24T11:58:21",
-      "medicId": "P_0024",
-      "medicCallsign": "Lynx-24",
-      "revivedId": "P_0032",
-      "revivedCallsign": "X-Ray-32",
+      "timestamp": "2026-11-24T10:28:11",
+      "medicId": "P_0048",
+      "medicCallsign": "Ember-48",
+      "revivedId": "P_0008",
+      "revivedCallsign": "Viper-08",
       "team": "bravo",
-      "zone": "bridge"
+      "zone": "woodland_east"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:58:48",
+      "timestamp": "2026-11-24T10:28:51",
+      "attackerId": "P_0041",
+      "attackerCallsign": "Raptor-41",
+      "attackerTeam": "alpha",
+      "targetId": "P_0012",
+      "targetCallsign": "Blaze-12",
+      "targetTeam": "bravo",
+      "zone": "firebase",
+      "weapon": "Tokyo Marui Glock 19 GBBR"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T10:41:21",
+      "medicId": "P_0043",
+      "medicCallsign": "Venom-43",
+      "revivedId": "P_0023",
+      "revivedCallsign": "Mantis-23",
+      "team": "alpha",
+      "zone": "village"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T10:44:19",
+      "playerId": "P_0039",
+      "playerCallsign": "Raven-39",
+      "team": "alpha",
+      "violationType": "MED_VIOLATION",
+      "warningNumber": 2,
+      "maxWarnings": 1,
+      "zone": "firebase",
+      "action": "WEAPON_CONFISCATED"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T10:46:40",
+      "playerId": "P_0036",
+      "playerCallsign": "Sierra-36",
+      "team": "bravo",
+      "violationType": "DEAD_MAN_WALKING",
+      "warningNumber": 1,
+      "maxWarnings": 3,
+      "zone": "ridge",
+      "action": "WARNING"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T10:49:57",
+      "team": "bravo",
+      "zone": "obj_firebase_compound",
+      "capturerId": "P_0002",
+      "capturerCallsign": "Zero-02"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T10:49:57",
+      "medicId": "P_0028",
+      "medicCallsign": "Grizzly-28",
+      "revivedId": "P_0044",
+      "revivedCallsign": "Warden-44",
+      "team": "bravo",
+      "zone": "entrance_road"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T10:51:15",
+      "attackerId": "P_0014",
+      "attackerCallsign": "Bolt-14",
+      "attackerTeam": "bravo",
+      "targetId": "P_0035",
+      "targetCallsign": "Whiskey-35",
+      "targetTeam": "alpha",
+      "zone": "firebase",
+      "weapon": "LCT AK74U AEG"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T10:51:35",
+      "playerId": "P_0002",
+      "playerCallsign": "Zero-02",
+      "team": "bravo",
+      "violationType": "EYE_PRO_REMOVED",
+      "warningNumber": 1,
+      "maxWarnings": 2,
+      "zone": "woodland_east",
+      "action": "WARNING"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T10:52:21",
+      "team": "bravo",
+      "zone": "obj_firebase_compound",
+      "capturerId": "P_0044",
+      "capturerCallsign": "Warden-44"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T10:55:31",
+      "attackerId": "P_0042",
+      "attackerCallsign": "Dagger-42",
+      "attackerTeam": "bravo",
+      "targetId": "P_0013",
+      "targetCallsign": "Talon-13",
+      "targetTeam": "alpha",
+      "zone": "quarry_floor_south",
+      "weapon": "Cyma M4 CQB AEG"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T10:55:50",
+      "team": "bravo",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0046",
+      "capturerCallsign": "Python-46"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T10:58:26",
+      "playerId": "P_0031",
+      "playerCallsign": "Phantom-31",
+      "team": "alpha",
+      "violationType": "AGGRESSION",
+      "warningNumber": 1,
+      "maxWarnings": 0,
+      "zone": "entrance_road",
+      "action": "EJECTED"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T11:00:01",
+      "medicId": "P_0039",
+      "medicCallsign": "Raven-39",
+      "revivedId": "P_0017",
+      "revivedCallsign": "Yankee-17",
+      "team": "alpha",
+      "zone": "village"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:04:19",
+      "team": "bravo",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0016",
+      "capturerCallsign": "Tango-16"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:04:41",
+      "attackerId": "P_0014",
+      "attackerCallsign": "Bolt-14",
+      "attackerTeam": "bravo",
+      "targetId": "P_0035",
+      "targetCallsign": "Whiskey-35",
+      "targetTeam": "alpha",
+      "zone": "ridge",
+      "weapon": "LCT AK74U AEG"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:05:42",
+      "team": "bravo",
+      "zone": "obj_firebase_compound",
+      "capturerId": "P_0034",
+      "capturerCallsign": "Delta-34"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T11:06:59",
+      "medicId": "P_0028",
+      "medicCallsign": "Grizzly-28",
+      "revivedId": "P_0042",
+      "revivedCallsign": "Dagger-42",
+      "team": "bravo",
+      "zone": "ridge"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:15:36",
+      "team": "alpha",
+      "zone": "obj_ridge_tower",
+      "capturerId": "P_0011",
+      "capturerCallsign": "Iron-11"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T11:16:20",
+      "playerId": "P_0034",
+      "playerCallsign": "Delta-34",
+      "team": "bravo",
+      "violationType": "AGGRESSION",
+      "warningNumber": 1,
+      "maxWarnings": 0,
+      "zone": "entrance_road",
+      "action": "EJECTED"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:16:27",
+      "attackerId": "P_0043",
+      "attackerCallsign": "Venom-43",
+      "attackerTeam": "alpha",
+      "targetId": "P_0014",
+      "targetCallsign": "Bolt-14",
+      "targetTeam": "bravo",
+      "zone": "quarry_floor_south",
+      "weapon": "KJW AKM GBBR"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:19:09",
+      "attackerId": "P_0024",
+      "attackerCallsign": "Lynx-24",
+      "attackerTeam": "bravo",
+      "targetId": "P_0039",
+      "targetCallsign": "Raven-39",
+      "targetTeam": "alpha",
+      "zone": "entrance_road",
+      "weapon": "Cyma Vector SMG AEG"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:22:32",
+      "attackerId": "P_0014",
+      "attackerCallsign": "Bolt-14",
+      "attackerTeam": "bravo",
+      "targetId": "P_0023",
+      "targetCallsign": "Mantis-23",
+      "targetTeam": "alpha",
+      "zone": "quarry_floor_south",
+      "weapon": "LCT AK74U AEG"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:24:12",
+      "attackerId": "P_0032",
+      "attackerCallsign": "X-Ray-32",
+      "attackerTeam": "bravo",
+      "targetId": "P_0029",
+      "targetCallsign": "Apex-29",
+      "targetTeam": "alpha",
+      "zone": "quarry_floor_north",
+      "weapon": "Novritsch SRS A2 Bolt Action"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:26:13",
+      "team": "alpha",
+      "zone": "obj_ridge_tower",
+      "capturerId": "P_0025",
+      "capturerCallsign": "Hornet-25"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T11:29:16",
+      "medicId": "P_0013",
+      "medicCallsign": "Talon-13",
+      "revivedId": "P_0015",
+      "revivedCallsign": "Spartan-15",
+      "team": "alpha",
+      "zone": "quarry_floor_north"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:31:18",
+      "attackerId": "P_0045",
+      "attackerCallsign": "Saber-45",
+      "attackerTeam": "alpha",
+      "targetId": "P_0012",
+      "targetCallsign": "Blaze-12",
+      "targetTeam": "bravo",
+      "zone": "quarry_floor_south",
+      "weapon": "Tokyo Marui Vector SMG AEG"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:35:47",
+      "team": "alpha",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0023",
+      "capturerCallsign": "Mantis-23"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:38:49",
+      "team": "alpha",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0005",
+      "capturerCallsign": "Titan-05"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:39:41",
+      "attackerId": "P_0024",
+      "attackerCallsign": "Lynx-24",
+      "attackerTeam": "bravo",
+      "targetId": "P_0001",
+      "targetCallsign": "Bravo-01",
+      "targetTeam": "alpha",
+      "zone": "firebase",
+      "weapon": "Cyma Vector SMG AEG"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:40:59",
+      "attackerId": "P_0007",
+      "attackerCallsign": "Ghost-07",
+      "attackerTeam": "alpha",
+      "targetId": "P_0042",
+      "targetCallsign": "Dagger-42",
+      "targetTeam": "bravo",
+      "zone": "woodland_east",
+      "weapon": "KWA Glock 19 GBBR"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T11:41:36",
+      "medicId": "P_0043",
+      "medicCallsign": "Venom-43",
+      "revivedId": "P_0029",
+      "revivedCallsign": "Apex-29",
+      "team": "alpha",
+      "zone": "village"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T11:43:11",
+      "playerId": "P_0003",
+      "playerCallsign": "Cipher-03",
+      "team": "alpha",
+      "violationType": "DEAD_MAN_WALKING",
+      "warningNumber": 1,
+      "maxWarnings": 3,
+      "zone": "quarry_floor_south",
+      "action": "WARNING"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T11:47:29",
+      "playerId": "P_0048",
+      "playerCallsign": "Ember-48",
+      "team": "bravo",
+      "violationType": "BLIND_FIRE",
+      "warningNumber": 1,
+      "maxWarnings": 2,
+      "zone": "ridge",
+      "action": "WARNING"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:50:29",
+      "attackerId": "P_0015",
+      "attackerCallsign": "Spartan-15",
+      "attackerTeam": "alpha",
+      "targetId": "P_0046",
+      "targetCallsign": "Python-46",
+      "targetTeam": "bravo",
+      "zone": "quarry_floor_north",
+      "weapon": "VFC M4 CQB AEG"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T11:51:02",
+      "playerId": "P_0039",
+      "playerCallsign": "Raven-39",
+      "team": "alpha",
+      "violationType": "MED_VIOLATION",
+      "warningNumber": 1,
+      "maxWarnings": 1,
+      "zone": "entrance_road",
+      "action": "WARNING"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T11:54:10",
+      "medicId": "P_0031",
+      "medicCallsign": "Phantom-31",
+      "revivedId": "P_0017",
+      "revivedCallsign": "Yankee-17",
+      "team": "alpha",
+      "zone": "quarry_floor_north"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:57:54",
       "attackerId": "P_0050",
       "attackerCallsign": "Osprey-50",
       "attackerTeam": "bravo",
-      "targetId": "P_0007",
-      "targetCallsign": "Ghost-07",
+      "targetId": "P_0045",
+      "targetCallsign": "Saber-45",
       "targetTeam": "alpha",
-      "zone": "woodland_south",
+      "zone": "woodland_north",
       "weapon": "Modify VSR-10 Bolt Action"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T12:00:56",
-      "attackerId": "P_0048",
-      "attackerCallsign": "Ember-48",
-      "attackerTeam": "bravo",
-      "targetId": "P_0011",
-      "targetCallsign": "Iron-11",
-      "targetTeam": "alpha",
-      "zone": "hill_overlook",
+      "timestamp": "2026-11-24T12:00:45",
+      "attackerId": "P_0025",
+      "attackerCallsign": "Hornet-25",
+      "attackerTeam": "alpha",
+      "targetId": "P_0014",
+      "targetCallsign": "Bolt-14",
+      "targetTeam": "bravo",
+      "zone": "woodland_east",
       "weapon": "Krytac AK74U AEG"
     }
   ],
   "gameSession": {
-    "id": "GS_2026_001",
+    "id": "GS_HUMBER_2026_001",
     "date": "2026-11-24",
-    "field": "Blackwood Compound",
-    "fieldType": "Hybrid (Woodland + CQB)",
-    "mode": "Domination",
-    "modeDescription": "Three objectives. Capture and hold to accumulate points. Team with most points at game end wins.",
+    "field": "Humber Airsoft — Leggotts Quarry",
+    "fieldType": "Outdoor (Quarry + Woodland + CQB)",
+    "fieldAddress": "South Ferriby, DN18 6RA",
+    "mode": "Full Site Domination",
+    "modeDescription": "Three objectives across the quarry. Capture and hold Firebase, Village, and Ridge. Most points at end wins.",
     "phases": [
       {
         "name": "Registration & Chrono",
@@ -8685,7 +9451,7 @@
         "status": "completed"
       },
       {
-        "name": "Game 1 — Domination",
+        "name": "Game 1 — Firebase Assault",
         "startTime": "09:45",
         "duration": 45,
         "status": "active"
@@ -8697,7 +9463,7 @@
         "status": "pending"
       },
       {
-        "name": "Game 2 — TDM",
+        "name": "Game 2 — Village CQB",
         "startTime": "10:45",
         "duration": 45,
         "status": "pending"
@@ -8709,7 +9475,7 @@
         "status": "pending"
       },
       {
-        "name": "Game 3 — VIP Escort",
+        "name": "Game 3 — Full Site Domination",
         "startTime": "12:30",
         "duration": 45,
         "status": "pending"
@@ -8731,33 +9497,87 @@
     "playerCount": 50,
     "objectives": [
       {
-        "id": "obj_alpha",
-        "name": "Alpha Point",
-        "holder": "alpha",
-        "points": 120,
-        "x": 280,
-        "y": 415
-      },
-      {
-        "id": "obj_bravo",
-        "name": "Bravo Point",
-        "holder": "bravo",
-        "points": 95,
-        "x": 720,
-        "y": 415
-      },
-      {
-        "id": "obj_central",
-        "name": "Central Tower",
+        "id": "obj_firebase_compound",
+        "name": "Firebase Compound",
         "holder": "contested",
         "points": 0,
-        "x": 500,
-        "y": 540
+        "x": 480,
+        "y": 560
+      },
+      {
+        "id": "obj_village_centre",
+        "name": "Village Centre",
+        "holder": "alpha",
+        "points": 85,
+        "x": 460,
+        "y": 260
+      },
+      {
+        "id": "obj_ridge_tower",
+        "name": "Ridge Observation Post",
+        "holder": "bravo",
+        "points": 65,
+        "x": 80,
+        "y": 420
       }
     ],
     "score": {
-      "alpha": 120,
-      "bravo": 95
+      "alpha": 85,
+      "bravo": 65
+    },
+    "chronoTiers": {
+      "AEG": {
+        "maxFps": 350,
+        "maxJoules": 1.2,
+        "med": 0,
+        "fireMode": "Full-Auto / Semi"
+      },
+      "DMR": {
+        "maxFps": 450,
+        "maxJoules": 1.88,
+        "med": 25,
+        "fireMode": "Semi-Auto Locked"
+      },
+      "Bolt-Action": {
+        "maxFps": 500,
+        "maxJoules": 2.32,
+        "med": 35,
+        "fireMode": "Single-Shot"
+      }
+    },
+    "violationTypes": {
+      "BLIND_FIRE": {
+        "maxWarnings": 2,
+        "escalation": "TEMP_BAN_30MIN"
+      },
+      "OVERSHOOT": {
+        "maxWarnings": 2,
+        "escalation": "TEMP_BAN_30MIN"
+      },
+      "DEAD_MAN_WALKING": {
+        "maxWarnings": 3,
+        "escalation": "TEMP_BAN_15MIN"
+      },
+      "MED_VIOLATION": {
+        "maxWarnings": 1,
+        "escalation": "WEAPON_CONFISCATED"
+      },
+      "EYE_PRO_REMOVED": {
+        "maxWarnings": 2,
+        "escalation": "EJECTED"
+      },
+      "JOULE_CREEP": {
+        "maxWarnings": 1,
+        "escalation": "BANNED_FOR_DAY"
+      },
+      "AGGRESSION": {
+        "maxWarnings": 0,
+        "escalation": "EJECTED"
+      },
+      "PYRO_MISUSE": {
+        "maxWarnings": 0,
+        "escalation": "EJECTED"
+      }
     }
   }
 }
