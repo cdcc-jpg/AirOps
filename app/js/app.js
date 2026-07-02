@@ -1,15 +1,18 @@
 /**
- * AirOps v2 — Main Application Controller
- * Orchestrates all modules, handles routing between sidebar panels,
- * manages the operations forms, and coordinates interactions.
+ * AirOps v2.1 — Main Application Controller
+ * High-density tactical control panel workflow:
+ *   Phase 1: Gameday Setup & Weather Suggestions
+ *   Phase 2: Roster Sign-In & Chrono Registration (Pre-team)
+ *   Phase 3: Active Game Operations & Matchmaking Analytics
  */
 
-import { OntologyEngine } from './ontology-engine.js?v=2';
-import { TacticalMap } from './tactical-map.js?v=2';
-import { ChronoFeed } from './chrono-feed.js?v=2';
-import { IntelEngine } from './intel.js?v=2';
-import { PenaltyEngine } from './penalty-engine.js?v=2';
-import { FuzzyBalanceEngine } from './fuzzy-balance.js?v=2';
+import { OntologyEngine } from './ontology-engine.js?v=6';
+import { TacticalMap } from './tactical-map.js?v=6';
+import { ChronoFeed } from './chrono-feed.js?v=6';
+import { IntelEngine } from './intel.js?v=6';
+import { PenaltyEngine } from './penalty-engine.js?v=6';
+import { FuzzyBalanceEngine } from './fuzzy-balance.js?v=6';
+import { MatchmakingEngine } from './matchmaking.js?v=6';
 
 class AirOpsApp {
   constructor() {
@@ -19,19 +22,22 @@ class AirOpsApp {
     this.intel = null;
     this.penalty = null;
     this.balance = null;
+    this.matchmaker = null;
 
-    this._activeTab = 'players';
-    this._chronoFilter = 'all';
-    this._feedFilter = 'all';
+    this._activeTab = 'setup'; // Defaults to setup
     this._searchQuery = '';
     
-    // Sub-tab selection for Intel
-    this._intelSubTab = 'leaderboard';
-    this._leaderboardMetric = 'kills';
-
+    // Gameday State
+    this._setupLocked = false;
+    this._gamedayConditions = {
+      weather: 'Dry',
+      marshallCount: 3,
+      expectedPlayers: 40
+    };
+    
     // Game Timer State
     this._timerInterval = null;
-    this._timerSeconds = 45 * 60; // 45 mins active game
+    this._timerSeconds = 45 * 60; 
     this._timerRunning = false;
 
     // Filters for Query tab
@@ -52,17 +58,25 @@ class AirOpsApp {
     await this.engine.load();
     this._showLoading('Building intelligence graphs...', 40);
 
+    // Unassign all players by default on load to start with a sign-in pool
+    for (const p of this.engine.players) {
+      p.team = 'unassigned';
+      p.teamName = 'Unassigned';
+      p.teamColor = '#888888';
+    }
+
     // Init engines
     this.chronoFeed = new ChronoFeed(this.engine);
     this.intel = new IntelEngine(this.engine);
     this.penalty = new PenaltyEngine(this.engine);
     this.balance = new FuzzyBalanceEngine(this.engine, this.intel);
-    this._showLoading('Rendering tactical map...', 70);
+    this.matchmaker = new MatchmakingEngine(this.engine, this.intel);
+    this._showLoading('Rendering tactical control map...', 70);
 
     // Init map
     const canvas = document.getElementById('tactical-map');
     this.map = new TacticalMap(canvas, this.engine);
-    this._showLoading('Systems online.', 100);
+    this._showLoading('Control panel online.', 100);
 
     // Set up map callbacks
     this.map.onZoneHover = (zone, mousePos) => this._onZoneHover(zone, mousePos);
@@ -109,6 +123,7 @@ class AirOpsApp {
     this.intel = new IntelEngine(this.engine);
     this.penalty = new PenaltyEngine(this.engine);
     this.balance = new FuzzyBalanceEngine(this.engine, this.intel);
+    this.matchmaker = new MatchmakingEngine(this.engine, this.intel);
   }
 
   // ─── Tab Navigation ────────────────────────────────────────
@@ -120,7 +135,7 @@ class AirOpsApp {
         this._activeTab = tab.dataset.tab;
         tabs.forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
-        this._renderActivePanel();
+        this._updateUI();
       });
     });
   }
@@ -135,51 +150,121 @@ class AirOpsApp {
     }
 
     switch (this._activeTab) {
-      case 'players': this._renderPlayersPanel(); break;
-      case 'chrono': this._renderChronoPanel(); break;
-      case 'intel': this._renderIntelPanel(); break;
-      case 'ops': this._renderOpsPanel(); break;
+      case 'setup': this._renderSetupPanel(); break;
+      case 'signin': this._renderSignInPanel(); break;
+      case 'gameview': this._renderGameviewPanel(); break;
       case 'queries': this._renderQueriesPanel(); break;
     }
   }
 
-  // ─── Players Panel (Check-In & Status Board) ───────────────
+  // ─── Phase 1: Setup Panel ──────────────────────────────────
 
-  _renderPlayersPanel() {
-    const panel = document.getElementById('panel-players');
+  _renderSetupPanel() {
+    const panel = document.getElementById('panel-setup');
     if (!panel) return;
 
-    const stats = this.engine.getStatusBreakdown();
-    const players = this.engine.searchPlayers(this._searchQuery);
-
-    const alphaPlayers = players.filter(p => p.team === 'alpha');
-    const bravoPlayers = players.filter(p => p.team === 'bravo');
+    // Run matchmaking optimizer
+    const opt = this.matchmaker.optimizeGameday(
+      this._gamedayConditions.weather,
+      this._gamedayConditions.marshallCount,
+      this.engine.players.length
+    );
 
     panel.innerHTML = `
-      <!-- Status board summary -->
-      <div class="status-board">
-        <div class="sb-item active">
-          <div class="sb-val">${stats.ACTIVE}</div>
-          <div class="sb-lbl">Active</div>
-        </div>
-        <div class="sb-item eliminated">
-          <div class="sb-val">${stats.ELIMINATED}</div>
-          <div class="sb-lbl">Dead</div>
-        </div>
-        <div class="sb-item respawn">
-          <div class="sb-val">${stats.RESPAWNING}</div>
-          <div class="sb-lbl">Respawn</div>
-        </div>
-        <div class="sb-item out">
-          <div class="sb-val">${stats.OUT}</div>
-          <div class="sb-lbl">Out</div>
+      <div class="gb-section" style="margin-top: 0;">
+        <div class="gb-section-title">1. Site Conditions Setup</div>
+        <div class="chrono-form">
+          <div class="form-group">
+            <label for="se-weather">Weather Condition</label>
+            <select id="se-weather" ${this._setupLocked ? 'disabled' : ''}>
+              <option value="Dry" ${opt.weather === 'Dry' ? 'selected' : ''}>Dry (Optimal)</option>
+              <option value="Wet" ${opt.weather === 'Wet' ? 'selected' : ''}>Wet / Slippery</option>
+              <option value="Rainy" ${opt.weather === 'Rainy' ? 'selected' : ''}>Rainy (Chalk Hazards)</option>
+              <option value="Windy" ${opt.weather === 'Windy' ? 'selected' : ''}>High Wind / Drift</option>
+            </select>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div class="form-group">
+              <label for="se-marshalls">Marshalls Enrolled</label>
+              <input type="number" id="se-marshalls" min="1" max="20" value="${opt.marshallCount}" ${this._setupLocked ? 'disabled' : ''}>
+            </div>
+            <div class="form-group">
+              <label>Players Enrolled</label>
+              <div style="background: var(--bg-tertiary); border: 1px solid var(--border-primary); padding: 5px; font-size: 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-mono); text-align: center;">
+                ${opt.enrolledPlayersCount}
+              </div>
+            </div>
+          </div>
+          ${this._setupLocked 
+            ? `<button class="btn btn-secondary" id="btn-unlock-setup" style="width: 100%; margin-top: 6px;">🔓 Edit Setup</button>`
+            : `<button class="btn btn-primary" id="btn-lock-setup" style="width: 100%; margin-top: 6px;">🔒 Lock Conditions</button>`
+          }
         </div>
       </div>
 
-      <!-- Quick Check-in accordion toggle -->
+      <div class="gb-section">
+        <div class="gb-section-title">Ontology Decision Engine</div>
+        <div style="background: var(--bg-card); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-primary); font-size: 0.75rem; line-height: 1.4;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span class="label">Suggested Game Mode:</span>
+            <span class="value" style="color: var(--accent-cyan); font-weight: bold;">${opt.suggestedMode}</span>
+          </div>
+          <div style="color: var(--text-secondary); margin-bottom: 8px; font-size: 0.7rem; font-style: italic;">
+            Reason: ${opt.modeReason}
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span class="label">Marshall Safety Ratio:</span>
+            <span class="value" style="font-family: var(--font-mono);">${opt.marshallRatio} (1:${Math.round(opt.enrolledPlayersCount / opt.marshallCount) || 0})</span>
+          </div>
+        </div>
+      </div>
+
+      ${opt.warnings.length > 0 ? `
+        <div class="gb-section">
+          <div class="gb-section-title" style="color: var(--status-fail);">⚠️ Warnings & Constraints</div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
+            ${opt.warnings.map(w => `
+              <div style="padding: 6px 8px; background: rgba(231,76,60,0.06); border: 1px solid rgba(231,76,60,0.15); border-radius: 4px; color: var(--accent-red); font-size: 0.65rem;">
+                ${w}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+    `;
+
+    // Hook listeners
+    const setupLock = document.getElementById('btn-lock-setup');
+    setupLock?.addEventListener('click', () => {
+      this._setupLocked = true;
+      this._gamedayConditions.weather = document.getElementById('se-weather').value;
+      this._gamedayConditions.marshallCount = parseInt(document.getElementById('se-marshalls').value);
+      this._updateUI();
+      // Auto transition to Sign-in
+      document.querySelector('.sidebar-tab[data-tab="signin"]').click();
+    });
+
+    const setupUnlock = document.getElementById('btn-unlock-setup');
+    setupUnlock?.addEventListener('click', () => {
+      this._setupLocked = false;
+      this._renderSetupPanel();
+    });
+  }
+
+  // ─── Phase 2: Sign-In Panel ────────────────────────────────
+
+  _renderSignInPanel() {
+    const panel = document.getElementById('panel-signin');
+    if (!panel) return;
+
+    const unassigned = this.engine.players.filter(p => p.team === 'unassigned' && p.compliance !== 'BANNED');
+    const checkedIn = this.engine.players.filter(p => p.team !== 'unassigned' && p.compliance !== 'BANNED');
+    const banned = this.engine.players.filter(p => p.compliance === 'BANNED');
+
+    panel.innerHTML = `
       <div class="checkin-section">
         <button class="btn btn-secondary checkin-toggle" id="btn-toggle-checkin" style="width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center;">
-          <span>📝 Player Check-In Form</span>
+          <span>📝 Register Arriving Player</span>
           <span id="checkin-chevron">▼</span>
         </button>
         <div class="checkin-form-container hidden" id="checkin-form-panel">
@@ -192,28 +277,19 @@ class AirOpsApp {
               <label for="ci-callsign">Callsign</label>
               <input type="text" id="ci-callsign" required placeholder="Ghost">
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-              <div class="form-group">
-                <label for="ci-team">Team Assignment</label>
-                <select id="ci-team">
-                  <option value="alpha">Alpha Force</option>
-                  <option value="bravo">Bravo Company</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="ci-role">Tactical Role</label>
-                <select id="ci-role">
-                  <option value="Rifleman">Rifleman</option>
-                  <option value="Sniper">Sniper</option>
-                  <option value="Support">Support</option>
-                  <option value="Breacher">Breacher</option>
-                  <option value="Medic">Medic</option>
-                </select>
-              </div>
+            <div class="form-group">
+              <label for="ci-role">Tactical Role</label>
+              <select id="ci-role">
+                <option value="Rifleman">Rifleman</option>
+                <option value="Sniper">Sniper</option>
+                <option value="Support">Support</option>
+                <option value="Breacher">Breacher</option>
+                <option value="Medic">Medic</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="ci-replica">Primary Replica Model</label>
-              <input type="text" id="ci-replica" required placeholder="Tokyo Marui VSR-10 / Specna Arms M4">
+              <input type="text" id="ci-replica" required placeholder=" Tokyo Marui VSR-10">
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
               <div class="form-group">
@@ -244,34 +320,46 @@ class AirOpsApp {
                 <input type="number" id="ci-bb" step="0.01" required value="0.2">
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Register & Check-in</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Log Chrono & Check-in</button>
           </form>
         </div>
       </div>
 
-      <!-- Player Search -->
-      <div style="position: relative; margin-top: 12px;">
-        <input type="text" class="search-box" id="player-search"
-               placeholder="Search players, callsigns, gear, roles..."
-               value="${this._searchQuery}">
+      <!-- Matchmaker Optimizer trigger -->
+      <div style="margin-bottom: var(--space-md);">
+        <button class="btn btn-primary" id="btn-run-matchmaking" style="width: 100%; height: 36px; font-weight: bold; border-color: var(--accent-amber); text-shadow: none;">
+          ⚡ Auto-Balance & Suggest Teams
+        </button>
       </div>
 
-      <div class="gb-section-title" style="color: var(--team-alpha); margin-top: 12px;">
-        Alpha Force · ${alphaPlayers.length}
+      <!-- Chrono pools -->
+      <div class="gb-section-title" style="margin-top: 8px; color: var(--text-heading);">
+        Checked-In / Unassigned Pool · ${unassigned.length}
       </div>
-      <div id="alpha-players">
-        ${alphaPlayers.map(p => this._renderPlayerCard(p)).join('')}
+      <div id="unassigned-pool" style="max-height: 250px; overflow-y: auto; margin-bottom: 12px;">
+        ${unassigned.map(p => this._renderSignRosterCard(p)).join('')}
       </div>
 
-      <div class="gb-section-title" style="margin-top: 16px; color: var(--team-bravo);">
-        Bravo Company · ${bravoPlayers.length}
-      </div>
-      <div id="bravo-players">
-        ${bravoPlayers.map(p => this._renderPlayerCard(p)).join('')}
-      </div>
+      ${checkedIn.length > 0 ? `
+        <div class="gb-section-title" style="color: var(--accent-green);">
+          Assigned Roster · ${checkedIn.length}
+        </div>
+        <div id="assigned-pool" style="max-height: 200px; overflow-y: auto; margin-bottom: 12px;">
+          ${checkedIn.map(p => this._renderSignRosterCard(p)).join('')}
+        </div>
+      ` : ''}
+
+      ${banned.length > 0 ? `
+        <div class="gb-section-title" style="color: var(--status-fail);">
+          Banned / Non-Compliant · ${banned.length}
+        </div>
+        <div id="banned-pool" style="max-height: 150px; overflow-y: auto;">
+          ${banned.map(p => this._renderSignRosterCard(p)).join('')}
+        </div>
+      ` : ''}
     `;
 
-    // Collapsible Check-in form handler
+    // Hook collapsible form
     const toggleBtn = document.getElementById('btn-toggle-checkin');
     const formPanel = document.getElementById('checkin-form-panel');
     const chevron = document.getElementById('checkin-chevron');
@@ -287,14 +375,13 @@ class AirOpsApp {
       this._handlePlayerCheckIn();
     });
 
-    // Search handler
-    const searchBox = document.getElementById('player-search');
-    searchBox?.addEventListener('input', (e) => {
-      this._searchQuery = e.target.value;
-      this._renderPlayersPanel();
+    // Trigger matchmaking balance
+    const matchBtn = document.getElementById('btn-run-matchmaking');
+    matchBtn?.addEventListener('click', () => {
+      this._handleMatchmakingTrigger();
     });
 
-    // Player card clicks
+    // Roster clicks to details
     panel.querySelectorAll('.player-card').forEach(card => {
       card.addEventListener('click', () => {
         const player = this.engine.getPlayer(card.dataset.playerId);
@@ -303,35 +390,26 @@ class AirOpsApp {
     });
   }
 
-  _renderPlayerCard(player) {
+  _renderSignRosterCard(player) {
     const statusClass = player.compliance === 'CLEARED' ? 'cleared' :
                         player.compliance === 'FLAGGED' ? 'flagged' : 'banned';
-    const teamClass = player.team === 'alpha' ? 'alpha' : 'bravo';
     const initial = player.name.charAt(0);
     const tier = player.chrono?.tier || 'AEG';
 
-    // Status label color
-    let statusLabel = player.status;
-    let labelColor = 'var(--text-secondary)';
-    if (player.status === 'ELIMINATED') {
-      statusLabel = 'DEAD';
-      labelColor = 'var(--accent-red)';
-    } else if (player.status === 'RESPAWNING') {
-      statusLabel = 'RESPAWN';
-      labelColor = 'var(--accent-amber)';
-    } else if (player.status === 'ACTIVE') {
-      labelColor = 'var(--accent-green)';
-    }
+    // Show team if assigned
+    const teamLabel = player.team === 'unassigned' 
+      ? '<span style="color: var(--text-muted);">Unassigned</span>' 
+      : `<span style="color: ${player.teamColor}; font-weight: 600;">${player.teamName}</span>`;
 
     return `
       <div class="player-card" data-player-id="${player.id}">
-        <div class="player-avatar ${teamClass}">${initial}</div>
+        <div class="player-avatar" style="background: rgba(255,255,255,0.04); border-color: var(--border-primary); color: var(--text-secondary);">${initial}</div>
         <div class="player-info">
-          <div class="player-name">${player.callsign} <span class="card-tier-label" style="font-size: 0.65rem; padding: 1px 4px; border-radius: 4px; background: rgba(255,255,255,0.06); margin-left: 4px;">${tier}</span></div>
+          <div class="player-name">${player.callsign} <span class="card-tier-label" style="font-size: 0.65rem; padding: 1px 4px; border-radius: 4px; background: rgba(255,255,255,0.06);">${tier}</span></div>
           <div class="player-meta">
-            <span class="player-role">${player.role}</span>
+            <span>${player.role}</span>
             <span>·</span>
-            <span style="color: ${labelColor}; font-weight: 600; font-size: 0.7rem;">${statusLabel}</span>
+            <span>${teamLabel}</span>
           </div>
         </div>
         <div class="status-badge ${statusClass}">${player.compliance === 'CLEARED' ? '✓' : player.compliance === 'FLAGGED' ? '!' : '✗'}</div>
@@ -342,7 +420,6 @@ class AirOpsApp {
   _handlePlayerCheckIn() {
     const name = document.getElementById('ci-name').value;
     const callsignName = document.getElementById('ci-callsign').value;
-    const team = document.getElementById('ci-team').value;
     const role = document.getElementById('ci-role').value;
     const replicaName = document.getElementById('ci-replica').value;
     const brand = document.getElementById('ci-brand').value || 'Unknown';
@@ -374,19 +451,13 @@ class AirOpsApp {
       compliance = 'FLAGGED';
     }
 
-    // Default position near spawn
-    const spawnZone = this.engine.getZoneById(team === 'alpha' ? 'woodland_north' : 'woodland_east');
-    const bounds = spawnZone?.bounds || { x: 100, y: 100, w: 100, h: 100 };
-    const pos_x = bounds.x + Math.floor(Math.random() * bounds.w);
-    const pos_y = bounds.y + Math.floor(Math.random() * bounds.h);
-
     const newPlayer = {
       id: nextId,
       name,
       callsign,
-      team,
-      teamName: team === 'alpha' ? 'Alpha Force' : 'Bravo Company',
-      teamColor: team === 'alpha' ? '#00ff88' : '#4488ff',
+      team: 'unassigned', // Pre-team pool
+      teamName: 'Unassigned',
+      teamColor: '#888888',
       role,
       status: compliance === 'BANNED' ? 'OUT' : 'ACTIVE',
       gear: {
@@ -410,7 +481,7 @@ class AirOpsApp {
       },
       compliance,
       repairs: [],
-      position: { x: pos_x, y: pos_y },
+      position: null, // No positioning until spatial check
       isAlive: compliance !== 'BANNED',
       warnings: [],
       stats: { kills: 0, deaths: 0, assists: 0, objectiveCaptures: 0, revives: 0 }
@@ -425,276 +496,78 @@ class AirOpsApp {
       joules,
       bbWeight,
       status,
-      marshallNote: 'Initial check-in chrono check.',
+      marshallNote: 'Chrono pool check-in registration.',
       marshallAction: compliance === 'BANNED' ? 'EJECTED' : 'CLEARED'
     };
 
     this.engine.players.push(newPlayer);
     this.engine.chronoEvents.unshift(newChronoLog);
 
-    // Event entry for check-in
-    this.engine.gameEvents.push({
-      type: 'violation',
-      timestamp: new Date().toISOString(),
-      playerId: nextId,
-      playerCallsign: callsign,
-      team,
-      violationType: 'JOULE_CREEP',
-      action: compliance === 'BANNED' ? 'EJECTED' : 'CHECKED_IN',
-      zone: 'safe_zone'
-    });
-
     this._rebuildEngines();
     this._updateUI();
 
-    // Flash success notification
-    alert(`Successfully checked in ${callsign} on ${newPlayer.teamName}!`);
+    alert(`Sign-in logged. Callsign: ${callsign} assigned to unassigned pool.`);
   }
 
-  // ─── Chrono Station Tab ───────────────────────────────────
-
-  _renderChronoPanel() {
-    const panel = document.getElementById('panel-chrono');
-    if (!panel) return;
-
-    // Filter out banned/out players for dropdown
-    const activePlayers = this.engine.players.filter(p => p.compliance !== 'BANNED');
-
-    panel.innerHTML = `
-      <div class="chrono-form-container mb-md">
-        <div class="gb-section-title" style="margin-top: 0;">⏱️ Log Chrono Reading</div>
-        <form id="chrono-form" class="chrono-form">
-          <div class="form-group">
-            <label for="ch-player">Select Player</label>
-            <select id="ch-player" style="width: 100%;" required>
-              <option value="" disabled selected>-- Select Checked-In Player --</option>
-              ${activePlayers.map(p => `
-                <option value="${p.id}">${p.callsign} (${p.role} · ${p.teamName})</option>
-              `).join('')}
-            </select>
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-            <div class="form-group">
-              <label for="ch-fps">Measured FPS</label>
-              <input type="number" id="ch-fps" required min="0" max="600" placeholder="330">
-            </div>
-            <div class="form-group">
-              <label for="ch-joules">Measured Joules</label>
-              <input type="number" id="ch-joules" step="0.01" required min="0" max="4" placeholder="1.15">
-            </div>
-            <div class="form-group">
-              <label for="ch-bb">BB Weight (g)</label>
-              <input type="number" id="ch-bb" step="0.01" required value="0.20">
-            </div>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 6px;">Submit Chrono Reading</button>
-        </form>
-      </div>
-
-      ${this.chronoFeed.renderStats()}
-
-      <div class="filter-chips mb-md" style="margin-top: 12px;">
-        <button class="feed-filter ${this._chronoFilter === 'all' ? 'active' : ''}" data-filter="all">All</button>
-        <button class="feed-filter ${this._chronoFilter === 'violations' ? 'active' : ''}" data-filter="violations">Violations</button>
-        <button class="feed-filter ${this._chronoFilter === 'passed' ? 'active' : ''}" data-filter="passed">Passed</button>
-      </div>
-
-      <div id="chrono-list">
-        ${this.chronoFeed.renderEventList(this._chronoFilter)}
-      </div>
-    `;
-
-    // Hook forms
-    const chronoForm = document.getElementById('chrono-form');
-    chronoForm?.addEventListener('submit', (e) => {
-      e.preventDefault();
-      this._handleChronoSubmission();
-    });
-
-    // Hook chips
-    panel.querySelectorAll('.feed-filter').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this._chronoFilter = btn.dataset.filter;
-        this._renderChronoPanel();
-      });
-    });
-
-    // Hook logs click
-    panel.querySelectorAll('.chrono-event').forEach(ev => {
-      ev.addEventListener('click', () => {
-        const player = this.engine.getPlayer(ev.dataset.playerId);
-        if (player) this._showPlayerDetail(player);
-      });
-    });
-  }
-
-  _handleChronoSubmission() {
-    const playerId = document.getElementById('ch-player').value;
-    const fps = parseInt(document.getElementById('ch-fps').value);
-    const joules = parseFloat(document.getElementById('ch-joules').value);
-    const bbWeight = parseFloat(document.getElementById('ch-bb').value);
-
-    const player = this.engine.getPlayer(playerId);
-    if (!player) return;
-
-    const tier = player.chrono?.tier || 'AEG';
-    const tierLimits = this.engine.chronoTiers[tier];
-
-    let status = 'PASS';
-    let compliance = 'CLEARED';
-
-    if (fps > tierLimits.maxFps || joules > tierLimits.maxJoules) {
-      status = 'FAIL_OVER_POWER';
-      compliance = 'BANNED';
-    } else if (joules < 0.3) {
-      status = 'FAIL_MIN_PERFORMANCE';
-      compliance = 'FLAGGED';
+  _handleMatchmakingTrigger() {
+    const eligible = this.engine.players.filter(p => p.compliance !== 'BANNED' && p.status !== 'OUT');
+    if (eligible.length === 0) {
+      alert("No checked-in, eligible players in the pool!");
+      return;
     }
 
-    // Update player chrono properties
-    player.chrono.fps = fps;
-    player.chrono.joules = joules;
-    player.chrono.bbWeight = bbWeight;
-    player.chrono.status = status;
-    player.compliance = compliance;
+    // Run partition matchmaking
+    const rosters = this.matchmaker.generateTeams(eligible);
 
-    if (compliance === 'BANNED') {
-      player.status = 'OUT';
-      player.isAlive = false;
+    // Write back assignments to memory-graph store
+    for (const p of rosters.nonband) {
+      this.engine.assignPlayerTeam(p.id, 'nonband');
     }
-
-    // Create log record
-    const newLog = {
-      logId: `Log_${Date.now()}`,
-      playerId,
-      replica: player.gear.primary.name,
-      fps,
-      joules,
-      bbWeight,
-      status,
-      marshallNote: `Re-chrono check at station. Tier: ${tier}.`,
-      marshallAction: compliance === 'BANNED' ? 'EJECTED' : 'CLEARED'
-    };
-
-    this.engine.chronoEvents.unshift(newLog);
-
-    // If violated, log violation incident
-    if (compliance !== 'CLEARED') {
-      const vtype = compliance === 'BANNED' ? 'JOULE_CREEP' : 'MED_VIOLATION';
-      this.engine.gameEvents.push({
-        type: 'violation',
-        timestamp: new Date().toISOString(),
-        playerId,
-        playerCallsign: player.callsign,
-        team: player.team,
-        violationType: vtype,
-        warningNumber: 1,
-        maxWarnings: 1,
-        zone: 'safe_zone',
-        action: compliance === 'BANNED' ? 'EJECTED' : 'WARNING'
-      });
+    for (const p of rosters.band) {
+      this.engine.assignPlayerTeam(p.id, 'band');
     }
 
     this._rebuildEngines();
     this._updateUI();
 
-    alert(`Log added. Status: ${status} (Compliance: ${compliance}) for ${player.callsign}.`);
+    alert(`Matchmaking successfully processed. Assigned ${rosters.nonband.length} to Non-Band (Grey) and ${rosters.band.length} to Band (Yellow). Transitioning to Gameview.`);
+    
+    // Switch to Phase 3 tab
+    document.querySelector('.sidebar-tab[data-tab="gameview"]').click();
   }
 
-  // ─── Intel Tab (Leaderboards & Balance) ────────────────────
+  // ─── Phase 3: Gameview Operations Panel ────────────────────
 
-  _renderIntelPanel() {
-    const panel = document.getElementById('panel-intel');
+  _renderGameviewPanel() {
+    const panel = document.getElementById('panel-gameview');
     if (!panel) return;
 
-    panel.innerHTML = `
-      <!-- subtabs navigation -->
-      <div class="filter-chips mb-md" style="margin-top: 0;">
-        <button class="feed-filter ${this._intelSubTab === 'leaderboard' ? 'active' : ''}" data-sub="leaderboard">Ranks</button>
-        <button class="feed-filter ${this._intelSubTab === 'weapons' ? 'active' : ''}" data-sub="weapons">Weapons</button>
-        <button class="feed-filter ${this._intelSubTab === 'balance' ? 'active' : ''}" data-sub="balance">Threat Balance</button>
-      </div>
-
-      <div class="intel-sub-content">
-        ${this._renderIntelSubContent()}
-      </div>
-    `;
-
-    // Subtab listeners
-    panel.querySelectorAll('.feed-filter').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this._intelSubTab = btn.dataset.sub;
-        this._renderIntelPanel();
-      });
-    });
-
-    // leaderboards metric listeners (if leaderboard active)
-    panel.querySelectorAll('.lb-metric-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this._leaderboardMetric = btn.dataset.metric;
-        this._renderIntelPanel();
-      });
-    });
-
-    // click on leaderboard row to open player modal
-    panel.querySelectorAll('.lb-row').forEach(row => {
-      row.addEventListener('click', () => {
-        const player = this.engine.getPlayer(row.dataset.playerId);
-        if (player) this._showPlayerDetail(player);
-      });
-    });
-  }
-
-  _renderIntelSubContent() {
-    if (this._intelSubTab === 'leaderboard') {
-      const metrics = ['kills', 'kd', 'objectives', 'revives'];
-      const mLabels = { kills: 'Kills', kd: 'K/D Ratio', objectives: 'Objective Captures', revives: 'Revives' };
-      return `
-        <div class="lb-metrics-container" style="display: flex; gap: 4px; margin-bottom: 8px; justify-content: space-between;">
-          ${metrics.map(m => `
-            <button class="btn btn-secondary lb-metric-btn ${this._leaderboardMetric === m ? 'active' : ''}" 
-                    data-metric="${m}" style="flex: 1; padding: 4px 2px; font-size: 0.7rem;">
-              ${m.toUpperCase()}
-            </button>
-          `).join('')}
+    // Check if team assignment has run
+    const assignedCount = this.engine.players.filter(p => p.team !== 'unassigned').length;
+    if (assignedCount === 0) {
+      panel.innerHTML = `
+        <div style="text-align: center; padding: 32px var(--space-md); color: var(--text-secondary);">
+          <div style="font-size: 2.5rem; margin-bottom: var(--space-md);">⏱️</div>
+          <div style="font-weight: bold; margin-bottom: 6px;">Gameview Offline</div>
+          <div style="font-size: 0.75rem;">Rosters have not been assigned. Complete Gameday Setup (Phase 1) and Run Matchmaking (Phase 2) to launch active Gameview monitoring.</div>
         </div>
-        <div class="gb-section-title">${mLabels[this._leaderboardMetric]} Leaderboard</div>
-        ${this.intel.renderLeaderboardHTML(this._leaderboardMetric)}
       `;
-    } else if (this._intelSubTab === 'weapons') {
-      return `
-        <div class="gb-section-title">Replica Kill Distribution</div>
-        ${this.intel.renderWeaponStatsHTML()}
-      `;
-    } else if (this._intelSubTab === 'balance') {
-      return `
-        <div class="gb-section-title">Team Threat Score (Fuzzy Logic)</div>
-        ${this.balance.renderBalanceHTML()}
-      `;
+      return;
     }
-  }
 
-  // ─── Operations Tab (Timer, Kill Log, Incident Logger) ──────
+    const nonband = this.engine.players.filter(p => p.team === 'nonband');
+    const band = this.engine.players.filter(p => p.team === 'band');
+    const elapsedMins = Math.floor(this._timerSeconds / 60);
+    const elapsedSecs = this._timerSeconds % 60;
+    const timerStr = `${elapsedMins.toString().padStart(2, '0')}:${elapsedSecs.toString().padStart(2, '0')}`;
 
-  _renderOpsPanel() {
-    const panel = document.getElementById('panel-ops');
-    if (!panel) return;
-
-    // Active players list
-    const activePlayers = this.engine.players.filter(p => p.isAlive && p.compliance === 'CLEARED');
-    const allPlayers = this.engine.players;
-    const zones = this.engine.getZones();
-    const vtypes = Object.entries(this.penalty.violationTypes);
-
-    // Timer display
-    const mins = Math.floor(this._timerSeconds / 60);
-    const secs = this._timerSeconds % 60;
-    const timerStr = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    // Threat balances
+    const report = this.balance.getBalanceReport();
 
     panel.innerHTML = `
-      <!-- Active Timer UI -->
+      <!-- Timer -->
       <div class="timer-card mb-md">
-        <div class="timer-display" style="font-family: var(--font-mono); font-size: 2.2rem; font-weight: 800; text-align: center; color: var(--accent-green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);">
+        <div class="timer-display" style="font-family: var(--font-mono); font-size: 2.2rem; font-weight: 800; text-align: center; color: var(--accent-green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.2);">
           ${timerStr}
         </div>
         <div class="timer-controls" style="display: flex; gap: 8px; justify-content: center; margin-top: 6px;">
@@ -707,9 +580,34 @@ class AirOpsApp {
         </div>
       </div>
 
-      <!-- Quick Logger sections -->
-      <div class="logger-container">
-        <!-- 1. Kill Logger Form -->
+      <!-- Before/After Game balance telemetry stats -->
+      <div class="gb-section" style="margin-top: 0;">
+        <div class="gb-section-title">Team Telemetry Balance</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem;">
+          <div style="background: var(--bg-card); padding: 8px; border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+            <div style="font-weight: bold; color: var(--text-primary); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; margin-bottom: 4px;">Non-Band</div>
+            <div class="detail-row"><span class="label">Count:</span><span class="value">${nonband.length}</span></div>
+            <div class="detail-row"><span class="label">Avg Joule:</span><span class="value">${this.engine.getAverageJoules('nonband').toFixed(2)}J</span></div>
+            <div class="detail-row"><span class="label">Snipers:</span><span class="value">${nonband.filter(p => p.role === 'Sniper').length}</span></div>
+          </div>
+          <div style="background: var(--bg-card); padding: 8px; border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+            <div style="font-weight: bold; color: var(--accent-amber); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; margin-bottom: 4px;">Band (Yellow)</div>
+            <div class="detail-row"><span class="label">Count:</span><span class="value">${band.length}</span></div>
+            <div class="detail-row"><span class="label">Avg Joule:</span><span class="value">${this.engine.getAverageJoules('band').toFixed(2)}J</span></div>
+            <div class="detail-row"><span class="label">Snipers:</span><span class="value">${band.filter(p => p.role === 'Sniper').length}</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Threat calculations -->
+      <div class="gb-section">
+        <div class="gb-section-title">Team Threat Score (TTS)</div>
+        ${this.balance.renderBalanceHTML()}
+      </div>
+
+      <!-- Quick Actions forms -->
+      <div class="logger-container" style="margin-top: 12px;">
+        <!-- Record elimination -->
         <button class="btn btn-secondary checkin-toggle" id="toggle-kill-form" style="width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
           <span>💀 Record Elimination</span>
           <span id="kill-chevron">▼</span>
@@ -720,28 +618,28 @@ class AirOpsApp {
               <label for="k-attacker">Attacker (Shooter)</label>
               <select id="k-attacker" style="width: 100%;" required>
                 <option value="" disabled selected>-- Select Attacker --</option>
-                ${activePlayers.map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
+                ${this.engine.players.filter(p => p.isAlive && p.team !== 'unassigned').map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label for="k-target">Target (Hit Player)</label>
               <select id="k-target" style="width: 100%;" required>
                 <option value="" disabled selected>-- Select Target --</option>
-                ${activePlayers.map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
+                ${this.engine.players.filter(p => p.isAlive && p.team !== 'unassigned').map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label for="k-zone">Zone of Engagement</label>
               <select id="k-zone" style="width: 100%;" required>
                 <option value="" disabled selected>-- Select Zone --</option>
-                ${zones.map(z => `<option value="${z.id}">${z.name}</option>`).join('')}
+                ${this.engine.getZones().map(z => `<option value="${z.id}">${z.name}</option>`).join('')}
               </select>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px;">Confirm Elimination</button>
           </form>
         </div>
 
-        <!-- 2. Incident Logger Form -->
+        <!-- Log infraction -->
         <button class="btn btn-secondary checkin-toggle" id="toggle-violation-form" style="width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <span>⚠️ Log Rule Violation</span>
           <span id="violation-chevron">▼</span>
@@ -752,21 +650,21 @@ class AirOpsApp {
               <label for="v-player">Offending Player</label>
               <select id="v-player" style="width: 100%;" required>
                 <option value="" disabled selected>-- Select Player --</option>
-                ${allPlayers.map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
+                ${this.engine.players.map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label for="v-type">Violation Type</label>
               <select id="v-type" style="width: 100%;" required>
                 <option value="" disabled selected>-- Select Infraction --</option>
-                ${vtypes.map(([k, v]) => `<option value="${k}">${v.icon} ${v.label} (Max Warnings: ${v.maxWarnings})</option>`).join('')}
+                ${Object.entries(this.penalty.violationTypes).map(([k, v]) => `<option value="${k}">${v.icon} ${v.label} (Max Warnings: ${v.maxWarnings})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label for="v-zone">Incident Zone</label>
               <select id="v-zone" style="width: 100%;" required>
                 <option value="" disabled selected>-- Select Zone --</option>
-                ${zones.map(z => `<option value="${z.id}">${z.name}</option>`).join('')}
+                ${this.engine.getZones().map(z => `<option value="${z.id}">${z.name}</option>`).join('')}
               </select>
             </div>
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px;">Submit Incident Record</button>
@@ -774,26 +672,26 @@ class AirOpsApp {
         </div>
       </div>
 
-      <!-- Incident log feed -->
+      <!-- Incident log -->
       <div class="gb-section" style="margin-top: 8px;">
-        <div class="gb-section-title">Incidents & Penalty Log</div>
-        ${this.penalty.renderIncidentLogHTML(12)}
+        <div class="gb-section-title">Incidents & Violations Feed</div>
+        ${this.penalty.renderIncidentLogHTML(10)}
       </div>
     `;
 
-    // Collapsible handlers
+    // Collapsible logger toggles
     document.getElementById('toggle-kill-form')?.addEventListener('click', () => {
-      const panelEl = document.getElementById('kill-form-panel');
-      const chevEl = document.getElementById('kill-chevron');
-      const isHidden = panelEl.classList.toggle('hidden');
-      chevEl.textContent = isHidden ? '▼' : '▲';
+      const pnl = document.getElementById('kill-form-panel');
+      const chv = document.getElementById('kill-chevron');
+      const isHidden = pnl.classList.toggle('hidden');
+      chv.textContent = isHidden ? '▼' : '▲';
     });
 
     document.getElementById('toggle-violation-form')?.addEventListener('click', () => {
-      const panelEl = document.getElementById('violation-form-panel');
-      const chevEl = document.getElementById('violation-chevron');
-      const isHidden = panelEl.classList.toggle('hidden');
-      chevEl.textContent = isHidden ? '▼' : '▲';
+      const pnl = document.getElementById('violation-form-panel');
+      const chv = document.getElementById('violation-chevron');
+      const isHidden = pnl.classList.toggle('hidden');
+      chv.textContent = isHidden ? '▼' : '▲';
     });
 
     // Form submits
@@ -807,7 +705,20 @@ class AirOpsApp {
       this._handleViolationSubmission();
     });
 
-    // Row clicks inside incident list
+    // Hook timer controls
+    const toggleTimer = document.getElementById('btn-timer-toggle');
+    toggleTimer?.addEventListener('click', () => {
+      this._timerRunning = !this._timerRunning;
+      toggleTimer.textContent = this._timerRunning ? '⏸ Pause' : '▶ Start';
+    });
+
+    document.getElementById('btn-timer-reset')?.addEventListener('click', () => {
+      this._timerRunning = false;
+      this._timerSeconds = 45 * 60;
+      this._renderGameviewPanel();
+    });
+
+    // Row click inside incidents
     panel.querySelectorAll('.incident-row').forEach(row => {
       row.addEventListener('click', () => {
         const player = this.engine.getPlayer(row.dataset.playerId);
@@ -820,9 +731,7 @@ class AirOpsApp {
     this._timerInterval = setInterval(() => {
       if (this._timerRunning && this._timerSeconds > 0) {
         this._timerSeconds--;
-        
-        // Only render the timer element if we are on the ops tab
-        if (this._activeTab === 'ops') {
+        if (this._activeTab === 'gameview') {
           const displayEl = document.querySelector('.timer-display');
           if (displayEl) {
             const mins = Math.floor(this._timerSeconds / 60);
@@ -844,20 +753,18 @@ class AirOpsApp {
 
     if (!attacker || !target) return;
     if (attacker.team === target.team) {
-      alert("Friendly fire eliminations are ignored on this tactical console!");
+      alert("Friendly fire is ignored!");
       return;
     }
 
-    // Record stats
     attacker.stats.kills++;
     target.stats.deaths++;
 
-    // Eliminate target
     target.status = 'ELIMINATED';
     target.isAlive = false;
 
-    // Log elimination event
-    this.engine.gameEvents.push({
+    // Append to events (reflecting in memory store)
+    this.engine.addGameEvent({
       type: 'elimination',
       timestamp: new Date().toISOString(),
       attackerId: attacker.id,
@@ -870,17 +777,17 @@ class AirOpsApp {
       weapon: attacker.gear.primary.name
     });
 
-    // Update game scores slightly
-    if (attacker.team === 'alpha') {
-      this.engine.gameSession.score.alpha += 5;
+    // Update score
+    if (attacker.team === 'nonband') {
+      this.engine.gameSession.score.nonband += 5;
     } else {
-      this.engine.gameSession.score.bravo += 5;
+      this.engine.gameSession.score.band += 5;
     }
 
     this._rebuildEngines();
     this._updateUI();
 
-    alert(`Logged: ${attacker.callsign} eliminated ${target.callsign} in the ${zoneId.replace(/_/g, ' ')}.`);
+    alert(`Logged: ${attacker.callsign} eliminated ${target.callsign}.`);
   }
 
   _handleViolationSubmission() {
@@ -895,21 +802,16 @@ class AirOpsApp {
     const warnings = this.penalty.getPlayerWarnings(playerId);
     const existingCount = warnings.find(w => w.type === vtype)?.count || 0;
 
-    // Apply sanction
     player.warnings.push({ type: vtype, count: existingCount + 1 });
 
     if (action === 'EJECTED' || action === 'BANNED_FOR_DAY') {
-      player.compliance = 'BANNED';
-      player.status = 'OUT';
-      player.isAlive = false;
+      this.engine.updatePlayerCompliance(player.id, 'BANNED');
     } else if (action !== 'WARNING') {
-      // Temp bans
-      player.compliance = 'FLAGGED';
-      player.status = 'RESPAWNING'; // In penalty box
+      this.engine.updatePlayerCompliance(player.id, 'FLAGGED');
+      this.engine.updatePlayerStatus(player.id, 'RESPAWNING');
     }
 
-    // Append event
-    this.engine.gameEvents.push({
+    this.engine.addGameEvent({
       type: 'violation',
       timestamp: new Date().toISOString(),
       playerId: player.id,
@@ -925,7 +827,7 @@ class AirOpsApp {
     this._rebuildEngines();
     this._updateUI();
 
-    alert(`Logged Violation: ${player.callsign} was issued ${action} for ${vtype.replace(/_/g, ' ')}.`);
+    alert(`Logged violation warning for ${player.callsign} (${action}).`);
   }
 
   // ─── Queries Panel ──────────────────────────────────────────
@@ -934,7 +836,6 @@ class AirOpsApp {
     const panel = document.getElementById('panel-queries');
     if (!panel) return;
 
-    // Query matched players
     const players = this.engine.players.filter(p => {
       const f = this._queryFilters;
       if (f.team !== 'all' && p.team !== f.team) return false;
@@ -943,48 +844,35 @@ class AirOpsApp {
       if (f.powerSource !== 'all' && p.gear.primary.powerSource !== f.powerSource) return false;
       if (f.text) {
         const t = f.text.toLowerCase();
-        const matchesText = p.name.toLowerCase().includes(t) ||
-                            p.callsign.toLowerCase().includes(t) ||
-                            p.id.toLowerCase().includes(t) ||
-                            p.gear.primary.name.toLowerCase().includes(t) ||
-                            (p.chrono?.tier || '').toLowerCase().includes(t);
-        if (!matchesText) return false;
+        return p.name.toLowerCase().includes(t) ||
+               p.callsign.toLowerCase().includes(t) ||
+               p.id.toLowerCase().includes(t) ||
+               p.gear.primary.name.toLowerCase().includes(t) ||
+               (p.chrono?.tier || '').toLowerCase().includes(t);
       }
       return true;
     });
 
     panel.innerHTML = `
       <div class="gb-section" style="margin-top: 0;">
-        <div class="gb-section-title">Query Filters</div>
+        <div class="gb-section-title">Semantic Query Board</div>
         <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
-          <input type="text" class="search-box" id="query-text" placeholder="Search keyword or tier..." value="${this._queryFilters.text}">
+          <input type="text" class="search-box" id="query-text" placeholder="Search keyword, role, or tier..." value="${this._queryFilters.text}">
           
           <div class="detail-row" style="padding: 2px 0;">
             <span class="label">Team</span>
             <select class="search-box" id="query-team" style="width: 150px; padding: 4px;">
-              <option value="all" ${this._queryFilters.team === 'all' ? 'selected' : ''}>All Teams</option>
-              <option value="alpha" ${this._queryFilters.team === 'alpha' ? 'selected' : ''}>Alpha Force</option>
-              <option value="bravo" ${this._queryFilters.team === 'bravo' ? 'selected' : ''}>Bravo Company</option>
-            </select>
-          </div>
-
-          <div class="detail-row" style="padding: 2px 0;">
-            <span class="label">Tactical Role</span>
-            <select class="search-box" id="query-role" style="width: 150px; padding: 4px;">
-              <option value="all" ${this._queryFilters.role === 'all' ? 'selected' : ''}>All Roles</option>
-              <option value="Rifleman" ${this._queryFilters.role === 'Rifleman' ? 'selected' : ''}>Rifleman</option>
-              <option value="Sniper" ${this._queryFilters.role === 'Sniper' ? 'selected' : ''}>Sniper</option>
-              <option value="Support" ${this._queryFilters.role === 'Support' ? 'selected' : ''}>Support</option>
-              <option value="Breacher" ${this._queryFilters.role === 'Breacher' ? 'selected' : ''}>Breacher</option>
-              <option value="Medic" ${this._queryFilters.role === 'Medic' ? 'selected' : ''}>Medic</option>
-              <option value="Commander" ${this._queryFilters.role === 'Commander' ? 'selected' : ''}>Commander</option>
+              <option value="all" ${this._queryFilters.team === 'all' ? 'selected' : ''}>All</option>
+              <option value="nonband" ${this._queryFilters.team === 'nonband' ? 'selected' : ''}>Non-Band (Grey)</option>
+              <option value="band" ${this._queryFilters.team === 'band' ? 'selected' : ''}>Band (Yellow)</option>
+              <option value="unassigned" ${this._queryFilters.team === 'unassigned' ? 'selected' : ''}>Unassigned</option>
             </select>
           </div>
 
           <div class="detail-row" style="padding: 2px 0;">
             <span class="label">Compliance</span>
             <select class="search-box" id="query-compliance" style="width: 150px; padding: 4px;">
-              <option value="all" ${this._queryFilters.compliance === 'all' ? 'selected' : ''}>All Statuses</option>
+              <option value="all" ${this._queryFilters.compliance === 'all' ? 'selected' : ''}>All</option>
               <option value="CLEARED" ${this._queryFilters.compliance === 'CLEARED' ? 'selected' : ''}>Cleared</option>
               <option value="FLAGGED" ${this._queryFilters.compliance === 'FLAGGED' ? 'selected' : ''}>Flagged</option>
               <option value="BANNED" ${this._queryFilters.compliance === 'BANNED' ? 'selected' : ''}>Banned</option>
@@ -994,7 +882,7 @@ class AirOpsApp {
           <div class="detail-row" style="padding: 2px 0;">
             <span class="label">Power Source</span>
             <select class="search-box" id="query-power" style="width: 150px; padding: 4px;">
-              <option value="all" ${this._queryFilters.powerSource === 'all' ? 'selected' : ''}>All Sources</option>
+              <option value="all" ${this._queryFilters.powerSource === 'all' ? 'selected' : ''}>All</option>
               <option value="Electric (LiPo)" ${this._queryFilters.powerSource === 'Electric (LiPo)' ? 'selected' : ''}>Electric (LiPo)</option>
               <option value="Green Gas" ${this._queryFilters.powerSource === 'Green Gas' ? 'selected' : ''}>Green Gas</option>
               <option value="HPA (High Pressure Air)" ${this._queryFilters.powerSource === 'HPA (High Pressure Air)' ? 'selected' : ''}>HPA</option>
@@ -1007,22 +895,18 @@ class AirOpsApp {
       <div class="gb-section">
         <div class="gb-section-title">Query Results (${players.length} matched)</div>
         <div id="query-results-list" style="max-height: 400px; overflow-y: auto;">
-          ${players.length === 0 ? '<div style="font-size: 0.75rem; color: var(--text-muted); padding: 8px;">No matching records found.</div>' : players.map(p => this._renderPlayerCard(p)).join('')}
+          ${players.length === 0 ? '<div style="font-size: 0.75rem; color: var(--text-muted); padding: 8px;">No matching records found.</div>' : players.map(p => this._renderSignRosterCard(p)).join('')}
         </div>
       </div>
     `;
 
-    // Wire filters
+    // Hook filters
     panel.querySelector('#query-text').addEventListener('input', (e) => {
       this._queryFilters.text = e.target.value;
       this._renderQueriesPanel();
     });
     panel.querySelector('#query-team').addEventListener('change', (e) => {
       this._queryFilters.team = e.target.value;
-      this._renderQueriesPanel();
-    });
-    panel.querySelector('#query-role').addEventListener('change', (e) => {
-      this._queryFilters.role = e.target.value;
       this._renderQueriesPanel();
     });
     panel.querySelector('#query-compliance').addEventListener('change', (e) => {
@@ -1034,7 +918,7 @@ class AirOpsApp {
       this._renderQueriesPanel();
     });
 
-    // Wire card clicks
+    // Wire clicks
     panel.querySelectorAll('.player-card').forEach(card => {
       card.addEventListener('click', () => {
         const player = this.engine.getPlayer(card.dataset.playerId);
@@ -1050,49 +934,44 @@ class AirOpsApp {
     const detail = document.getElementById('player-detail');
     if (!overlay || !detail) return;
 
-    // Highlight map
     this.map.selectPlayer(player.id);
 
-    const teamColor = player.team === 'alpha' ? 'var(--team-alpha)' : 'var(--team-bravo)';
-    const teamClass = player.team === 'alpha' ? 'alpha' : 'bravo';
+    const teamColor = player.team === 'nonband' ? '#888888' : player.team === 'band' ? '#f1c40f' : 'var(--text-secondary)';
+    const teamClass = player.team === 'nonband' ? 'nonband' : player.team === 'band' ? 'band' : 'unassigned';
     const statusClass = player.compliance === 'CLEARED' ? 'cleared' :
                         player.compliance === 'FLAGGED' ? 'flagged' : 'banned';
 
-    // Intel & Stats
     const stats = this.intel.getPlayerStats(player.id);
-
-    // Active Warnings Log
     const pWarnings = this.penalty.getPlayerWarnings(player.id);
+    
     const warningHTML = pWarnings.length === 0
       ? '<div style="font-size: 0.75rem; color: var(--text-muted);">No active warnings issued</div>'
       : pWarnings.map(w => `
-          <div style="padding: 6px 8px; background: rgba(255, 170, 0, 0.08); border: 1px solid rgba(255, 170, 0, 0.2); border-radius: 6px; margin-bottom: 4px; font-size: 0.7rem; display: flex; justify-content: space-between; align-items: center;">
+          <div style="padding: 6px 8px; background: rgba(241, 196, 15, 0.06); border: 1px solid rgba(241, 196, 15, 0.15); border-radius: 6px; margin-bottom: 4px; font-size: 0.7rem; display: flex; justify-content: space-between; align-items: center;">
             <div>
               <span style="font-weight: 700; color: var(--accent-amber);">${w.icon} ${w.label}</span>
               <div style="color: var(--text-secondary); margin-top: 1px; font-size: 0.65rem;">Escalation action: ${w.escalationAction.replace(/_/g, ' ')}</div>
             </div>
-            <span style="font-family: var(--font-mono); font-weight: bold; font-size: 0.75rem;">${w.count} / ${w.maxWarnings}</span>
+            <span style="font-family: var(--font-mono); font-weight: bold;">${w.count} / ${w.maxWarnings}</span>
           </div>
         `).join('');
 
-    // Repair history
     const repairs = player.repairs || [];
     const repairHTML = repairs.length === 0
-      ? '<div style="font-size: 0.75rem; color: var(--text-muted);">No tech repair records in Silo 3</div>'
-      : repairs.slice(0, 3).map(r => `
+      ? '<div style="font-size: 0.75rem; color: var(--text-muted);">No repair logs in Silo 3</div>'
+      : repairs.slice(0, 2).map(r => `
           <div style="padding: 6px 8px; background: var(--bg-card); border-radius: 6px; margin-bottom: 4px; font-size: 0.7rem;">
             <div style="font-weight: 600; display: flex; justify-content: space-between;">
               <span>${r.repairId}</span>
               <span style="color: var(--accent-cyan); font-size: 0.65rem;">${r.date}</span>
             </div>
             <div style="color: var(--text-secondary); margin-top: 2px;">${r.diagnosis}</div>
-            <div style="color: var(--accent-green); margin-top: 2px; font-size: 0.65rem;">Parts: ${r.partsInstalled}</div>
           </div>
         `).join('');
 
     detail.innerHTML = `
       <div class="detail-header">
-        <div class="detail-avatar ${teamClass}" style="border-color: ${teamColor}; background: ${teamColor}22; color: ${teamColor}; font-weight: bold;">
+        <div class="detail-avatar" style="border-color: ${teamColor}; background: ${teamColor}1a; color: ${teamColor}; font-weight: bold;">
           ${player.name.charAt(0)}
         </div>
         <div>
@@ -1100,13 +979,13 @@ class AirOpsApp {
           <div class="detail-callsign">${player.callsign} <span style="font-size: 0.7rem; font-weight: normal; color: var(--text-muted);">(${player.id})</span></div>
           <div style="margin-top: 4px; display: flex; gap: 4px;">
             <span class="status-badge ${statusClass}">${player.compliance}</span>
-            <span class="status-badge" style="background: rgba(255,255,255,0.06); color: var(--text-heading); border: 1px solid var(--border-primary);">${player.status}</span>
+            <span class="status-badge" style="background: rgba(255,255,255,0.04); color: var(--text-heading);">${player.status}</span>
           </div>
         </div>
       </div>
 
-      <!-- Marshall Quick Actions Section inside modal -->
-      <div class="detail-section" style="background: rgba(255, 51, 102, 0.04); border: 1px solid rgba(255, 51, 102, 0.15); border-radius: var(--radius-md); padding: 8px;">
+      <!-- Marshall Control Actions -->
+      <div class="detail-section" style="background: rgba(231, 76, 60, 0.03); border: 1px solid rgba(231,76,60,0.15); border-radius: var(--radius-md); padding: 8px;">
         <div class="detail-section-title" style="color: var(--accent-red); margin-bottom: 6px; font-size: 0.75rem;">🛡️ Marshall Live Control Console</div>
         
         <div style="display: flex; gap: 6px; margin-bottom: 6px;">
@@ -1119,6 +998,15 @@ class AirOpsApp {
           <button class="btn btn-primary" id="modal-btn-status" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Apply</button>
         </div>
 
+        <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+          <select id="modal-team" class="search-box" style="flex: 1; padding: 4px; font-size: 0.75rem; height: 26px;">
+            <option value="unassigned" ${player.team === 'unassigned' ? 'selected' : ''}>Team: Unassigned</option>
+            <option value="nonband" ${player.team === 'nonband' ? 'selected' : ''}>Team: Non-Band (Grey)</option>
+            <option value="band" ${player.team === 'band' ? 'selected' : ''}>Team: Band (Yellow)</option>
+          </select>
+          <button class="btn btn-secondary" id="modal-btn-team" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Team</button>
+        </div>
+
         <div style="display: flex; gap: 6px;">
           <select id="modal-violation" class="search-box" style="flex: 1; padding: 4px; font-size: 0.75rem; height: 26px;">
             <option value="" disabled selected>-- Log Infraction --</option>
@@ -1127,22 +1015,31 @@ class AirOpsApp {
             <option value="DEAD_MAN_WALKING">Dead Man Walk/Talk</option>
             <option value="MED_VIOLATION">MED Infraction</option>
             <option value="EYE_PRO_REMOVED">Eye Pro Off</option>
-            <option value="AGGRESSION">Physical Contact</option>
+            <option value="AGGRESSION">Aggression / Fight</option>
           </select>
-          <button class="btn btn-secondary" id="modal-btn-violation" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Issue</button>
+          <button class="btn btn-secondary" id="modal-btn-violation" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Log</button>
+        </div>
+      </div>
+
+      <!-- Chrono validation update inside modal -->
+      <div class="detail-section" style="background: rgba(46, 204, 113, 0.02); border: 1px solid rgba(46, 204, 113, 0.15); border-radius: var(--radius-md); padding: 8px;">
+        <div class="detail-section-title" style="color: var(--accent-green); margin-bottom: 6px; font-size: 0.75rem;">⏱️ Re-Chrono Validation Check</div>
+        <div style="display: flex; gap: 4px;">
+          <input type="number" id="modal-fps" class="search-box" style="flex: 1; height: 26px; font-size: 0.75rem; padding: 4px;" placeholder="FPS" value="${player.chrono.fps}">
+          <input type="number" id="modal-joules" step="0.01" class="search-box" style="flex: 1; height: 26px; font-size: 0.75rem; padding: 4px;" placeholder="Joules" value="${player.chrono.joules}">
+          <button class="btn btn-primary" id="modal-btn-chrono" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Chrono</button>
         </div>
       </div>
 
       <div class="detail-section">
         <div class="detail-section-title">Replica Details</div>
         <div class="detail-row"><span class="label">Replica</span><span class="value" style="font-family: var(--font-body);">${player.gear.primary.name}</span></div>
-        <div class="detail-row"><span class="label">Tier / Med</span><span class="value" style="font-family: var(--font-mono); font-size: 0.75rem; font-weight: bold; color: var(--accent-cyan);">${player.chrono.tier} (${player.chrono.med}m MED)</span></div>
-        <div class="detail-row"><span class="label">Power Source</span><span class="value">${player.gear.primary.powerSource}</span></div>
-        <div class="detail-row"><span class="label">FPS / Joules</span><span class="value" style="font-family: var(--font-mono);">${player.chrono.fps} FPS · ${player.chrono.joules} J (${player.chrono.bbWeight}g)</span></div>
+        <div class="detail-row"><span class="label">Chrono Power</span><span class="value" style="font-family: var(--font-mono); font-weight: bold; color: var(--accent-cyan);">${player.chrono.fps} FPS · ${player.chrono.joules} J (${player.chrono.bbWeight}g)</span></div>
+        <div class="detail-row"><span class="label">Tier / MED</span><span class="value" style="font-family: var(--font-mono);">${player.chrono.tier} / ${player.chrono.med}m MED</span></div>
       </div>
 
       <div class="detail-section">
-        <div class="detail-section-title">Player Battle Stats</div>
+        <div class="detail-section-title">Telemetry Stats</div>
         <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 4px;">
           <div style="background: var(--bg-card); padding: 4px; border-radius: 4px;">
             <div style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: bold; color: var(--accent-green);">${stats.kills}</div>
@@ -1161,12 +1058,10 @@ class AirOpsApp {
             <div style="font-size: 0.55rem; color: var(--text-secondary);">Caps</div>
           </div>
         </div>
-        <div class="detail-row"><span class="label">Fav Weapon</span><span class="value" style="font-size: 0.7rem; font-family: var(--font-body);">${stats.favWeapon}</span></div>
-        <div class="detail-row"><span class="label">Nemesis</span><span class="value" style="font-size: 0.7rem;">${stats.nemesis}</span></div>
       </div>
 
       <div class="detail-section">
-        <div class="detail-section-title">Graduated Safety Warnings</div>
+        <div class="detail-section-title">Active Warnings</div>
         ${warningHTML}
       </div>
 
@@ -1180,7 +1075,6 @@ class AirOpsApp {
 
     overlay.classList.add('visible');
 
-    // Close listeners
     const closeModal = () => {
       overlay.classList.remove('visible');
       this.map.clearSelection();
@@ -1191,50 +1085,57 @@ class AirOpsApp {
       if (e.target === overlay) closeModal();
     });
 
-    // Quick Actions buttons
+    // Control callbacks
     document.getElementById('modal-btn-status')?.addEventListener('click', () => {
-      const newStatus = document.getElementById('modal-status').value;
-      player.status = newStatus;
-      player.isAlive = newStatus === 'ACTIVE' || newStatus === 'RESPAWNING';
-      if (newStatus === 'OUT') player.compliance = 'BANNED';
-
+      const s = document.getElementById('modal-status').value;
+      this.engine.updatePlayerStatus(player.id, s);
       this._rebuildEngines();
       this._updateUI();
-      // Re-open detail modal to show update
+      this._showPlayerDetail(player);
+    });
+
+    document.getElementById('modal-btn-team')?.addEventListener('click', () => {
+      const t = document.getElementById('modal-team').value;
+      this.engine.assignPlayerTeam(player.id, t);
+      this._rebuildEngines();
+      this._updateUI();
+      this._showPlayerDetail(player);
+    });
+
+    document.getElementById('modal-btn-chrono')?.addEventListener('click', () => {
+      const fps = parseInt(document.getElementById('modal-fps').value);
+      const joules = parseFloat(document.getElementById('modal-joules').value);
+      this.engine.updatePlayerChrono(player.id, fps, joules, player.chrono.bbWeight);
+      this._rebuildEngines();
+      this._updateUI();
       this._showPlayerDetail(player);
     });
 
     document.getElementById('modal-btn-violation')?.addEventListener('click', () => {
       const vtype = document.getElementById('modal-violation').value;
-      if (!vtype) {
-        alert("Please select a violation infraction!");
-        return;
-      }
+      if (!vtype) return;
 
       const action = this.penalty.computeAction(player.id, vtype);
       const warnings = this.penalty.getPlayerWarnings(player.id);
-      const existingCount = warnings.find(w => w.type === vtype)?.count || 0;
+      const count = warnings.find(w => w.type === vtype)?.count || 0;
 
-      // Apply warn/ban
-      player.warnings.push({ type: vtype, count: existingCount + 1 });
+      player.warnings.push({ type: vtype, count: count + 1 });
 
       if (action === 'EJECTED' || action === 'BANNED_FOR_DAY') {
-        player.compliance = 'BANNED';
-        player.status = 'OUT';
-        player.isAlive = false;
+        this.engine.updatePlayerCompliance(player.id, 'BANNED');
       } else if (action !== 'WARNING') {
-        player.compliance = 'FLAGGED';
-        player.status = 'RESPAWNING';
+        this.engine.updatePlayerCompliance(player.id, 'FLAGGED');
+        this.engine.updatePlayerStatus(player.id, 'RESPAWNING');
       }
 
-      this.engine.gameEvents.push({
+      this.engine.addGameEvent({
         type: 'violation',
         timestamp: new Date().toISOString(),
         playerId: player.id,
         playerCallsign: player.callsign,
         team: player.team,
         violationType: vtype,
-        warningNumber: existingCount + 1,
+        warningNumber: count + 1,
         maxWarnings: this.penalty.violationTypes[vtype]?.maxWarnings ?? 2,
         zone: 'safe_zone',
         action: action
@@ -1246,19 +1147,19 @@ class AirOpsApp {
     });
   }
 
-  // ─── Game Phase Overlay info ────────────────────────────────
+  // ─── Header Game Phase & Score Overlays ─────────────────────
 
   _renderGamePhase() {
-    const session = this.engine.gameSession;
-    if (!session) return;
-
-    const currentPhase = session.phases[session.currentPhase];
     const badge = document.getElementById('game-phase-badge');
     if (badge) {
+      let phaseLabel = 'Setup';
+      if (this._activeTab === 'setup') phaseLabel = 'Phase 1: Gameday Setup';
+      else if (this._activeTab === 'signin') phaseLabel = 'Phase 2: Chrono Sign-In Pool';
+      else if (this._activeTab === 'gameview') phaseLabel = 'Phase 3: Active Gameday Operations';
+
       badge.innerHTML = `
-        <div class="dot"></div>
-        <span>${currentPhase.name}</span>
-        <span style="color: var(--text-muted); font-family: var(--font-mono); font-size: 0.75rem;">${currentPhase.startTime}</span>
+        <div class="dot" style="background: var(--accent-cyan);"></div>
+        <span>${phaseLabel}</span>
       `;
     }
   }
@@ -1271,19 +1172,19 @@ class AirOpsApp {
     if (scoreEl) {
       scoreEl.innerHTML = `
         <div class="score-team">
-          <div class="team-dot" style="background: var(--team-alpha);"></div>
+          <div class="team-dot" style="background: #888888;"></div>
           <div>
-            <div class="team-name" style="color: var(--team-alpha);">Alpha</div>
-            <div class="team-score text-green">${session.score.alpha}</div>
+            <div class="team-name" style="color: #a3a3a3;">Non-Band</div>
+            <div class="team-score text-green">${session.score.nonband || 0}</div>
           </div>
         </div>
         <div class="score-divider"></div>
         <div class="score-team">
           <div>
-            <div class="team-name" style="color: var(--team-bravo);">Bravo</div>
-            <div class="team-score text-blue">${session.score.bravo}</div>
+            <div class="team-name" style="color: var(--accent-amber);">Band</div>
+            <div class="team-score text-blue">${session.score.band || 0}</div>
           </div>
-          <div class="team-dot" style="background: var(--team-bravo);"></div>
+          <div class="team-dot" style="background: var(--accent-amber);"></div>
         </div>
       `;
     }
@@ -1337,14 +1238,8 @@ class AirOpsApp {
         <span class="label">Current Players</span>
         <span class="value">${playersInZone.length}</span>
       </div>
-      ${zone.rules.length > 0 ? `
-        <ul class="zone-rules">
-          ${zone.rules.map(r => `<li>${r}</li>`).join('')}
-        </ul>
-      ` : ''}
     `;
 
-    // Position tooltip
     const mapArea = document.getElementById('map-area');
     const rect = mapArea.getBoundingClientRect();
     let x = mousePos.x + 16;
@@ -1359,10 +1254,8 @@ class AirOpsApp {
   }
 
   _onZoneClick(zone) {
-    // Zoom map onto zone bounds for a detailed overview
+    // Spatial zoom click handler
   }
-
-  // ─── Live Feed Filters ──────────────────────────────────────
 
   _setupFeedFilters() {
     document.querySelectorAll('#live-feed .feed-filter').forEach(btn => {
@@ -1396,15 +1289,18 @@ class AirOpsApp {
       switch (e.type) {
         case 'elimination':
           icon = '💀';
-          text = `<span class="highlight team-${e.attackerTeam}">${e.attackerCallsign}</span> eliminated <span class="highlight team-${e.targetTeam}">${e.targetCallsign}</span> <span class="text-muted">in ${e.zone.replace(/_/g, ' ')}</span>`;
+          const attackerTeamClass = e.attackerTeam === 'nonband' ? 'nonband' : 'band';
+          const targetTeamClass = e.targetTeam === 'nonband' ? 'nonband' : 'band';
+          text = `<span class="highlight team-${attackerTeamClass}">${e.attackerCallsign}</span> eliminated <span class="highlight team-${targetTeamClass}">${e.targetCallsign}</span> <span class="text-muted">in ${e.zone.replace(/_/g, ' ')}</span>`;
           break;
         case 'objective_capture':
           icon = '🏴';
-          text = `<span class="highlight team-${e.team}">${e.team.toUpperCase()}</span> captured <span class="highlight">${e.zone.replace(/_/g, ' ')}</span>`;
+          const teamLabel = e.team === 'nonband' ? 'NON-BAND' : 'BAND';
+          text = `<span class="highlight team-${e.team}">${teamLabel}</span> captured <span class="highlight">${e.zone.replace(/_/g, ' ')}</span>`;
           break;
         case 'medic_revive':
           icon = '💚';
-          text = `<span class="highlight team-${e.team}">${e.medicCallsign}</span> revived <span class="highlight team-${e.team}">${e.revivedCallsign}</span>`;
+          text = `<span class="highlight team-${e.team}">${e.medicCallsign}</span> revived teammate <span class="highlight team-${e.team}">${e.revivedCallsign}</span>`;
           break;
         case 'violation':
           icon = '⚠️';
@@ -1413,7 +1309,7 @@ class AirOpsApp {
           break;
         default:
           icon = '•';
-          text = 'System event logged';
+          text = 'Operational log entry recorded';
       }
 
       return `
@@ -1429,7 +1325,7 @@ class AirOpsApp {
   }
 }
 
-// ─── Bootstrap ─────────────────────────────────────────────────
+// Bootstrap
 document.addEventListener('DOMContentLoaded', () => {
   const app = new AirOpsApp();
   app.init().catch(err => {

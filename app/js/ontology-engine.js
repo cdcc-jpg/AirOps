@@ -327,6 +327,7 @@ export class OntologyEngine {
     const b = zone.bounds;
     return this.players.filter(p => {
       const pos = p.position;
+      if (!pos || pos.x == null || pos.y == null) return false;
       return pos.x >= b.x && pos.x <= b.x + b.w &&
              pos.y >= b.y && pos.y <= b.y + b.h;
     });
@@ -369,5 +370,96 @@ export class OntologyEngine {
       p.gear.primary.name.toLowerCase().includes(q) ||
       (p.chrono?.tier || '').toLowerCase().includes(q)
     );
+  }
+
+  // ─── Mutable State Operations (in-memory triple synchronization) ───
+
+  addPlayer(player) {
+    this.players.push(player);
+    this._buildIndexes();
+  }
+
+  updatePlayerStatus(playerId, status) {
+    const player = this.getPlayer(playerId);
+    if (!player) return;
+    player.status = status;
+    player.isAlive = status === 'ACTIVE' || status === 'RESPAWNING';
+    if (status === 'OUT') {
+      player.compliance = 'BANNED';
+    }
+    this._buildIndexes();
+  }
+
+  updatePlayerCompliance(playerId, compliance) {
+    const player = this.getPlayer(playerId);
+    if (!player) return;
+    player.compliance = compliance;
+    if (compliance === 'BANNED') {
+      player.status = 'OUT';
+      player.isAlive = false;
+    }
+    this._buildIndexes();
+  }
+
+  updatePlayerChrono(playerId, fps, joules, bbWeight) {
+    const player = this.getPlayer(playerId);
+    if (!player) return;
+    
+    const tier = player.chrono?.tier || 'AEG';
+    const tierLimits = this.chronoTiers[tier];
+
+    let status = 'PASS';
+    let compliance = 'CLEARED';
+
+    if (fps > tierLimits.maxFps || joules > tierLimits.maxJoules) {
+      status = 'FAIL_OVER_POWER';
+      compliance = 'BANNED';
+    } else if (joules < 0.3) {
+      status = 'FAIL_MIN_PERFORMANCE';
+      compliance = 'FLAGGED';
+    }
+
+    player.chrono.fps = fps;
+    player.chrono.joules = joules;
+    player.chrono.bbWeight = bbWeight;
+    player.chrono.status = status;
+    player.compliance = compliance;
+
+    if (compliance === 'BANNED') {
+      player.status = 'OUT';
+      player.isAlive = false;
+    }
+    
+    this._buildIndexes();
+    return { status, compliance };
+  }
+
+  assignPlayerTeam(playerId, teamId) {
+    const player = this.getPlayer(playerId);
+    if (!player) return;
+    const team = this.teams.find(t => t.id === teamId);
+    if (team) {
+      player.team = team.id;
+      player.teamName = team.name;
+      player.teamColor = team.color;
+    } else {
+      player.team = 'unassigned';
+      player.teamName = 'Unassigned';
+      player.teamColor = '#888888';
+    }
+    this._buildIndexes();
+  }
+
+  addGameEvent(event) {
+    this.gameEvents.push(event);
+  }
+
+  exportTripleStore() {
+    return JSON.stringify({
+      players: this.players,
+      chronoEvents: this.chronoEvents,
+      gameEvents: this.gameEvents,
+      gameSession: this.gameSession
+    }, null, 2);
   }
 }

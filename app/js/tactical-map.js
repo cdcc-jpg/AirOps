@@ -179,6 +179,7 @@ export class TacticalMap {
     const hitRadius = 12 / s;
 
     for (const player of this.engine.players) {
+      if (!player.position || player.position.x == null || player.position.y == null) continue;
       const dx = mapPos.x - player.position.x;
       const dy = mapPos.y - player.position.y;
       if (dx * dx + dy * dy < hitRadius * hitRadius) {
@@ -209,7 +210,7 @@ export class TacticalMap {
     ctx.clearRect(0, 0, w, h);
 
     // Background
-    ctx.fillStyle = '#0a1018';
+    ctx.fillStyle = '#12161a';
     ctx.fillRect(0, 0, w, h);
 
     // Grid
@@ -261,7 +262,7 @@ export class TacticalMap {
     const fw = this.layout.field.width;
     const fh = this.layout.field.height;
 
-    ctx.strokeStyle = 'rgba(0, 255, 136, 0.04)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
     ctx.lineWidth = 0.5;
 
     for (let x = 0; x <= fw; x += gs) {
@@ -288,7 +289,7 @@ export class TacticalMap {
     const tl = this._toScreen(0, 0);
     const br = this._toScreen(this.layout.field.width, this.layout.field.height);
 
-    ctx.strokeStyle = 'rgba(0, 255, 136, 0.2)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.lineWidth = 2;
     ctx.setLineDash([8, 4]);
     ctx.strokeRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
@@ -438,8 +439,8 @@ export class TacticalMap {
       // Static outline ring
       const pulseR = r + 4;
       let ringColor;
-      if (obj.holder === 'alpha') ringColor = 'rgba(0, 255, 136, 0.3)';
-      else if (obj.holder === 'bravo') ringColor = 'rgba(68, 136, 255, 0.3)';
+      if (obj.holder === 'nonband') ringColor = 'rgba(163, 163, 163, 0.4)';
+      else if (obj.holder === 'band') ringColor = 'rgba(241, 196, 15, 0.4)';
       else ringColor = 'rgba(255, 170, 0, 0.3)';
 
       ctx.strokeStyle = ringColor;
@@ -449,8 +450,8 @@ export class TacticalMap {
       ctx.stroke();
 
       // Diamond shape
-      ctx.fillStyle = obj.holder === 'alpha' ? '#00ff88' :
-                      obj.holder === 'bravo' ? '#4488ff' : '#ffaa00';
+      ctx.fillStyle = obj.holder === 'nonband' ? '#888888' :
+                      obj.holder === 'band' ? '#f1c40f' : '#ffaa00';
 
       ctx.beginPath();
       ctx.moveTo(p.x, p.y - r);
@@ -476,13 +477,14 @@ export class TacticalMap {
     const ctx = this.ctx;
 
     for (const player of this.engine.players) {
+      if (!player.position || player.position.x == null || player.position.y == null) continue;
       const p = this._toScreen(player.position.x, player.position.y);
       const r = 5 * this.zoom;
       const isSelected = this.selectedPlayer?.id === player.id;
 
-      // Team color
-      const color = player.team === 'alpha' ? '#00ff88' : '#4488ff';
-      const dimColor = player.team === 'alpha' ? 'rgba(0, 255, 136, 0.15)' : 'rgba(68, 136, 255, 0.15)';
+      // Team color (Non-Band = grey, Band = yellow)
+      const color = player.team === 'nonband' ? '#a3a3a3' : '#f1c40f';
+      const dimColor = player.team === 'nonband' ? 'rgba(163, 163, 163, 0.15)' : 'rgba(241, 196, 15, 0.15)';
 
       // Dead/banned players
       if (!player.isAlive) {
@@ -579,11 +581,12 @@ export class TacticalMap {
 
     for (const player of this.engine.players) {
       if (!player.isAlive) continue;
+      if (!player.position || player.position.x == null || player.position.y == null) continue;
       const p = this._toScreen(player.position.x, player.position.y);
       const r = 40 * this.zoom;
 
       const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-      const color = player.team === 'alpha' ? '0, 255, 136' : '68, 136, 255';
+      const color = player.team === 'nonband' ? '163, 163, 163' : '241, 196, 15';
       gradient.addColorStop(0, `rgba(${color}, 0.25)`);
       gradient.addColorStop(0.5, `rgba(${color}, 0.08)`);
       gradient.addColorStop(1, `rgba(${color}, 0)`);

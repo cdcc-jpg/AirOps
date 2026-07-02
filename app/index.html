@@ -34,28 +34,24 @@
       </div>
 
       <nav class="sidebar-tabs">
-        <div class="sidebar-tab active" data-tab="players">Players</div>
-        <div class="sidebar-tab" data-tab="chrono">Chrono</div>
-        <div class="sidebar-tab" data-tab="intel">Intel</div>
-        <div class="sidebar-tab" data-tab="ops">Ops</div>
+        <div class="sidebar-tab active" data-tab="setup">1. Setup</div>
+        <div class="sidebar-tab" data-tab="signin">2. Sign-In</div>
+        <div class="sidebar-tab" data-tab="gameview">3. Gameview</div>
         <div class="sidebar-tab" data-tab="queries">Queries</div>
       </nav>
 
       <div class="sidebar-content">
-        <div class="sidebar-panel active" id="panel-players">
-          <!-- Check-in & status board populated by JS -->
+        <div class="sidebar-panel active" id="panel-setup">
+          <!-- Phase 1: Setup parameters and suggestions populated by JS -->
         </div>
-        <div class="sidebar-panel" id="panel-chrono">
-          <!-- Chrono station submissions and logs populated by JS -->
+        <div class="sidebar-panel" id="panel-signin">
+          <!-- Phase 2: Chrono check-in and unassigned global pool populated by JS -->
         </div>
-        <div class="sidebar-panel" id="panel-intel">
-          <!-- K/D, Leaderboards, TTS balance populated by JS -->
-        </div>
-        <div class="sidebar-panel" id="panel-ops">
-          <!-- Timer, Kill Logger, Incident logging populated by JS -->
+        <div class="sidebar-panel" id="panel-gameview">
+          <!-- Phase 3: Active game operations and stats comparison populated by JS -->
         </div>
         <div class="sidebar-panel" id="panel-queries">
-          <!-- static queries panel populated by JS -->
+          <!-- Static semantic queries populated by JS -->
         </div>
       </div>
     </aside>
@@ -117,6 +113,6 @@
   </div>
 
   <!-- ─── App Script ─── -->
-  <script type="module" src="js/app.js?v=2"></script>
+  <script type="module" src="js/app.js?v=6"></script>
 </body>
 </html>

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-AirOps v2 Data Preparation — Humber Airsoft at Leggotts Quarry
+AirOps v2.1 Data Preparation — Humber Airsoft at Leggotts Quarry
 Generates unified JSON dataset with 3-tier chrono, kill/death tracking,
-graduated warnings, and fuzzy balance scores.
+graduated warnings, and Non-Band (grey) vs Band (yellow) teams.
+Positions are set to null (none) to support real data tracking only.
 """
 
 import json
@@ -227,9 +228,10 @@ CALLSIGNS = [
     "Delta", "Sierra", "Tango", "Whiskey", "X-Ray", "Yankee", "Zulu"
 ]
 
+# Teams: Non-Band (Grey) and Band (Yellow)
 TEAMS = [
-    {"id": "alpha", "name": "Alpha Force", "color": "#00ff88", "spawnZone": "woodland_north"},
-    {"id": "bravo", "name": "Bravo Company", "color": "#4488ff", "spawnZone": "woodland_east"},
+    {"id": "nonband", "name": "Non-Band (Grey)", "color": "#888888", "spawnZone": "woodland_north"},
+    {"id": "band", "name": "Band (Yellow)", "color": "#f1c40f", "spawnZone": "woodland_east"},
 ]
 
 def assign_role_from_tier(tier_name):
@@ -308,20 +310,19 @@ def generate_players(chrono_events, repairs, catalog):
         elif i == 2 or i == 3:
             role = "Medic"
 
-        # Player position: spread across Humber map
-        if team['id'] == 'alpha':
-            pos_x = random.randint(80, 400)
-            pos_y = random.randint(100, 650)
-        else:
-            pos_x = random.randint(550, 850)
-            pos_y = random.randint(100, 650)
-
         # Player status
         player_status = "ACTIVE"
         if compliance == "BANNED":
             player_status = "OUT"
         elif random.random() < 0.08:
             player_status = random.choice(["ELIMINATED", "RESPAWNING"])
+
+        # POSITION: SET TO NULL (None) for all players to ensure real coordinate tracking
+        # We can add a few fixed positions for 2 commanders to verify map plotting
+        position = None
+        if (i == 0 or i == 1) and player_status == "ACTIVE":
+            # Real static coordinates representing command post sensors
+            position = {'x': 160 if i == 0 else 750, 'y': 100}
 
         player = {
             'id': pid,
@@ -353,7 +354,7 @@ def generate_players(chrono_events, repairs, catalog):
             },
             'compliance': compliance,
             'repairs': player_repairs,
-            'position': {'x': pos_x, 'y': pos_y},
+            'position': position,
             'isAlive': player_status in ('ACTIVE', 'RESPAWNING'),
             'warnings': [],
             'stats': {
@@ -377,8 +378,8 @@ def generate_game_events(players):
     events = []
     base_time = datetime(2026, 11, 24, 10, 0, 0)
 
-    alive_alpha = [p for p in players if p['team'] == 'alpha' and p['isAlive']]
-    alive_bravo = [p for p in players if p['team'] == 'bravo' and p['isAlive']]
+    alive_nonband = [p for p in players if p['team'] == 'nonband' and p['isAlive']]
+    alive_band = [p for p in players if p['team'] == 'band' and p['isAlive']]
 
     kill_count = {}  # playerId -> kills
     death_count = {}  # playerId -> deaths
@@ -388,15 +389,15 @@ def generate_game_events(players):
 
         roll = random.random()
 
-        if roll < 0.50 and alive_alpha and alive_bravo:
+        if roll < 0.50 and alive_nonband and alive_band:
             # Elimination event
             zone = random.choice(HUMBER_ZONES)
             if random.random() < 0.5:
-                attacker = random.choice(alive_alpha)
-                target = random.choice(alive_bravo)
+                attacker = random.choice(alive_nonband)
+                target = random.choice(alive_band)
             else:
-                attacker = random.choice(alive_bravo)
-                target = random.choice(alive_alpha)
+                attacker = random.choice(alive_band)
+                target = random.choice(alive_nonband)
 
             kill_count[attacker['id']] = kill_count.get(attacker['id'], 0) + 1
             death_count[target['id']] = death_count.get(target['id'], 0) + 1
@@ -416,10 +417,9 @@ def generate_game_events(players):
 
         elif roll < 0.68:
             # Objective capture
-            team = random.choice(['alpha', 'bravo'])
+            team = random.choice(['nonband', 'band'])
             obj = random.choice(['obj_firebase_compound', 'obj_village_centre', 'obj_ridge_tower'])
-            zone = random.choice(HUMBER_ZONES)
-            capturer = random.choice(alive_alpha if team == 'alpha' else alive_bravo) if (alive_alpha if team == 'alpha' else alive_bravo) else None
+            capturer = random.choice(alive_nonband if team == 'nonband' else alive_band) if (alive_nonband if team == 'nonband' else alive_band) else None
             ev = {
                 'type': 'objective_capture',
                 'timestamp': t.isoformat(),
@@ -434,7 +434,7 @@ def generate_game_events(players):
 
         elif roll < 0.82:
             # Medic revive
-            team_pool = alive_alpha if random.random() < 0.5 else alive_bravo
+            team_pool = alive_nonband if random.random() < 0.5 else alive_band
             if len(team_pool) >= 2:
                 medics = [p for p in team_pool if p['role'] == 'Medic']
                 medic = random.choice(medics) if medics else random.choice(team_pool)
@@ -453,7 +453,7 @@ def generate_game_events(players):
 
         else:
             # Rule violation with graduated warning
-            all_active = alive_alpha + alive_bravo
+            all_active = alive_nonband + alive_band
             if all_active:
                 violator = random.choice(all_active)
                 vtype = random.choice(list(VIOLATION_TYPES.keys()))
@@ -515,10 +515,10 @@ def build_game_session(player_count):
         'playerCount': player_count,
         'objectives': [
             {'id': 'obj_firebase_compound', 'name': 'Firebase Compound', 'holder': 'contested', 'points': 0, 'x': 480, 'y': 560},
-            {'id': 'obj_village_centre', 'name': 'Village Centre', 'holder': 'alpha', 'points': 85, 'x': 460, 'y': 260},
-            {'id': 'obj_ridge_tower', 'name': 'Ridge Observation Post', 'holder': 'bravo', 'points': 65, 'x': 80, 'y': 420},
+            {'id': 'obj_village_centre', 'name': 'Village Centre', 'holder': 'nonband', 'points': 85, 'x': 460, 'y': 260},
+            {'id': 'obj_ridge_tower', 'name': 'Ridge Observation Post', 'holder': 'band', 'points': 65, 'x': 80, 'y': 420},
         ],
-        'score': {'alpha': 85, 'bravo': 65},
+        'score': {'nonband': 85, 'band': 65},
         'chronoTiers': CHRONO_TIERS,
         'violationTypes': VIOLATION_TYPES,
     }
@@ -527,7 +527,7 @@ def build_game_session(player_count):
 # ─── 8. Build complete dataset ───────────────────────────────────────────────
 
 def main():
-    print("AirOps v2 Data Preparation — Humber Airsoft")
+    print("AirOps v2.1 Data Preparation — Humber Airsoft")
     print("=" * 55)
 
     print("  [1/6] Parsing field logs (silo 2)...")
@@ -542,7 +542,7 @@ def main():
     repairs = parse_tech_repairs()
     print(f"         → {len(repairs)} repair records")
 
-    print("  [4/6] Generating player profiles (Humber tiers)...")
+    print("  [4/6] Generating player profiles (Humber tiers, no-pos)...")
     players = generate_players(chrono_events, repairs, catalog)
     print(f"         → {len(players)} player profiles")
 
@@ -557,8 +557,8 @@ def main():
     dataset = {
         '_meta': {
             'generated': datetime.now().isoformat(),
-            'generator': 'prepare_app_data.py (v2 — Humber)',
-            'description': 'Unified AirOps dataset for Humber Airsoft at Leggotts Quarry',
+            'generator': 'prepare_app_data.py (v2.1 — Humber)',
+            'description': 'Unified AirOps dataset for Humber Airsoft (Non-Band vs Band, no position simulation)',
             'silos': {
                 'silo1': 'Retail catalog (JSON-LD)',
                 'silo2': 'Field chrono logs (TTL)',

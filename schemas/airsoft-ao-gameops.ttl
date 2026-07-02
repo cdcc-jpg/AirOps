@@ -461,3 +461,54 @@ asoft:Violation_Pyro rdf:type owl:NamedIndividual , asoft:ViolationType ;
     asoft:hasMaxWarnings 0 ;
     asoft:hasEscalationAction "EJECTED" .
 
+
+#################################################################
+#    v2.1 — Matchmaking & Gameday Optimization
+#################################################################
+
+### A proposed team layout and game scenario.
+asoft:MatchmakingScenario rdf:type owl:Class ;
+    rdfs:comment "A generated proposal for team rosters (Non-Band vs Band), layout, and game assignment."@en ;
+    rdfs:label "Matchmaking Scenario"@en .
+
+### Parameters of the field day (marshalls, weather, count).
+asoft:GamedayConstraint rdf:type owl:Class ;
+    rdfs:comment "Environmental and operational limits for a specific day."@en ;
+    rdfs:label "Gameday Constraint"@en .
+
+### Properties
+asoft:hasWeatherCondition rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:GamedayConstraint ;
+    rdfs:range xsd:string ;
+    rdfs:label "has weather condition"@en .
+
+asoft:hasMarshallCount rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:GamedayConstraint ;
+    rdfs:range xsd:integer ;
+    rdfs:label "has marshall count"@en .
+
+asoft:hasMarshallToPlayerRatio rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:GamedayConstraint ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "has marshall to player ratio"@en .
+
+asoft:suggestedGameMode rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:MatchmakingScenario ;
+    rdfs:range asoft:GameMode ;
+    rdfs:label "suggested game mode"@en .
+
+asoft:ttsDiscrepancy rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:MatchmakingScenario ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "team threat score discrepancy"@en .
+
+### Specific Team Individuals
+asoft:Team_NonBand rdf:type owl:NamedIndividual , asoft:AirsoftTeam ;
+    rdfs:label "Non-Band Team (Grey)"@en ;
+    rdfs:comment "Team identified by the absence of armbands. Represented as transparent/grey plots."@en .
+
+asoft:Team_Band rdf:type owl:NamedIndividual , asoft:AirsoftTeam ;
+    rdfs:label "Band Team (Yellow)"@en ;
+    rdfs:comment "Team identified by yellow armbands. Represented as yellow plots."@en .
+
+

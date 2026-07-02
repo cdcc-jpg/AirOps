@@ -1,8 +1,8 @@
 {
   "_meta": {
-    "generated": "2026-07-02T22:40:29.797130",
-    "generator": "prepare_app_data.py (v2 — Humber)",
-    "description": "Unified AirOps dataset for Humber Airsoft at Leggotts Quarry",
+    "generated": "2026-07-02T23:26:16.312583",
+    "generator": "prepare_app_data.py (v2.1 — Humber)",
+    "description": "Unified AirOps dataset for Humber Airsoft (Non-Band vs Band, no position simulation)",
     "silos": {
       "silo1": "Retail catalog (JSON-LD)",
       "silo2": "Field chrono logs (TTL)",
@@ -12,15 +12,15 @@
   },
   "teams": [
     {
-      "id": "alpha",
-      "name": "Alpha Force",
-      "color": "#00ff88",
+      "id": "nonband",
+      "name": "Non-Band (Grey)",
+      "color": "#888888",
       "spawnZone": "woodland_north"
     },
     {
-      "id": "bravo",
-      "name": "Bravo Company",
-      "color": "#4488ff",
+      "id": "band",
+      "name": "Band (Yellow)",
+      "color": "#f1c40f",
       "spawnZone": "woodland_east"
     }
   ],
@@ -29,9 +29,9 @@
       "id": "P_0001",
       "name": "Blake",
       "callsign": "Bravo-01",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Commander",
       "status": "ACTIVE",
       "gear": {
@@ -66,14 +66,14 @@
         }
       ],
       "position": {
-        "x": 370,
-        "y": 422
+        "x": 160,
+        "y": 100
       },
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 1,
+        "deaths": 2,
         "assists": 0,
         "objectiveCaptures": 0,
         "revives": 0
@@ -83,9 +83,9 @@
       "id": "P_0002",
       "name": "Tyler",
       "callsign": "Zero-02",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Commander",
       "status": "ACTIVE",
       "gear": {
@@ -120,21 +120,16 @@
         }
       ],
       "position": {
-        "x": 784,
-        "y": 246
+        "x": 750,
+        "y": 100
       },
       "isAlive": true,
-      "warnings": [
-        {
-          "type": "EYE_PRO_REMOVED",
-          "count": 1
-        }
-      ],
+      "warnings": [],
       "stats": {
         "kills": 0,
         "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 1,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -142,9 +137,9 @@
       "id": "P_0003",
       "name": "Noel",
       "callsign": "Cipher-03",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Medic",
       "status": "ACTIVE",
       "gear": {
@@ -178,32 +173,24 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 379,
-        "y": 538
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [
-        {
-          "type": "DEAD_MAN_WALKING",
-          "count": 1
-        }
-      ],
+      "warnings": [],
       "stats": {
-        "kills": 0,
-        "deaths": 0,
+        "kills": 2,
+        "deaths": 1,
         "assists": 0,
         "objectiveCaptures": 0,
-        "revives": 0
+        "revives": 1
       }
     },
     {
       "id": "P_0004",
       "name": "Dakota",
       "callsign": "Storm-04",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Medic",
       "status": "OUT",
       "gear": {
@@ -237,10 +224,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 620,
-        "y": 621
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -255,9 +239,9 @@
       "id": "P_0005",
       "name": "Riley",
       "callsign": "Titan-05",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Sniper",
       "status": "ACTIVE",
       "gear": {
@@ -291,17 +275,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 104,
-        "y": 212
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 0,
+        "deaths": 1,
         "assists": 0,
-        "objectiveCaptures": 1,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -309,10 +290,10 @@
       "id": "P_0006",
       "name": "Zephyr",
       "callsign": "Jackal-06",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Rifleman",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Medic",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -345,10 +326,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 582,
-        "y": 494
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -363,10 +341,10 @@
       "id": "P_0007",
       "name": "Cameron",
       "callsign": "Ghost-07",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Support",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Breacher",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -399,14 +377,11 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 208,
-        "y": 111
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 1,
+        "kills": 0,
         "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
@@ -417,10 +392,10 @@
       "id": "P_0008",
       "name": "Avery",
       "callsign": "Viper-08",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Support",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Breacher",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -453,14 +428,11 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 686,
-        "y": 448
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [
         {
-          "type": "OVERSHOOT",
+          "type": "JOULE_CREEP",
           "count": 1
         }
       ],
@@ -476,10 +448,10 @@
       "id": "P_0009",
       "name": "Flynn",
       "callsign": "Reaper-09",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Support",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -512,10 +484,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 214,
-        "y": 612
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -530,9 +499,9 @@
       "id": "P_0010",
       "name": "Kai",
       "callsign": "Shadow-10",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Medic",
       "status": "OUT",
       "gear": {
@@ -566,10 +535,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 702,
-        "y": 619
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -584,10 +550,10 @@
       "id": "P_0011",
       "name": "Hunter",
       "callsign": "Iron-11",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Breacher",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -620,17 +586,19 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 162,
-        "y": 643
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [],
+      "warnings": [
+        {
+          "type": "PYRO_MISUSE",
+          "count": 1
+        }
+      ],
       "stats": {
         "kills": 0,
         "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 1,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -638,9 +606,9 @@
       "id": "P_0012",
       "name": "Reese",
       "callsign": "Blaze-12",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Rifleman",
       "status": "ACTIVE",
       "gear": {
@@ -674,15 +642,17 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 735,
-        "y": 414
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [],
+      "warnings": [
+        {
+          "type": "EYE_PRO_REMOVED",
+          "count": 1
+        }
+      ],
       "stats": {
-        "kills": 1,
-        "deaths": 2,
+        "kills": 2,
+        "deaths": 1,
         "assists": 0,
         "objectiveCaptures": 0,
         "revives": 0
@@ -692,11 +662,11 @@
       "id": "P_0013",
       "name": "Emery",
       "callsign": "Talon-13",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Medic",
-      "status": "ACTIVE",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Rifleman",
+      "status": "RESPAWNING",
       "gear": {
         "primary": {
           "name": "LCT AK74U AEG",
@@ -728,28 +698,25 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 123,
-        "y": 597
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 1,
+        "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
-        "revives": 1
+        "revives": 0
       }
     },
     {
       "id": "P_0014",
       "name": "Casey",
       "callsign": "Bolt-14",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Rifleman",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Support",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -782,15 +749,12 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 793,
-        "y": 269
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 3,
-        "deaths": 2,
+        "kills": 0,
+        "deaths": 1,
         "assists": 0,
         "objectiveCaptures": 0,
         "revives": 0
@@ -800,10 +764,10 @@
       "id": "P_0015",
       "name": "Phoenix",
       "callsign": "Spartan-15",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Medic",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Support",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -836,14 +800,16 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 356,
-        "y": 305
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [],
+      "warnings": [
+        {
+          "type": "OVERSHOOT",
+          "count": 1
+        }
+      ],
       "stats": {
-        "kills": 1,
+        "kills": 0,
         "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
@@ -854,10 +820,10 @@
       "id": "P_0016",
       "name": "Oakley",
       "callsign": "Tango-16",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Support",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Sniper",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -890,17 +856,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 774,
-        "y": 629
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 0,
+        "deaths": 2,
         "assists": 0,
-        "objectiveCaptures": 1,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -908,9 +871,9 @@
       "id": "P_0017",
       "name": "Charlie",
       "callsign": "Yankee-17",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Sniper",
       "status": "ACTIVE",
       "gear": {
@@ -944,10 +907,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 253,
-        "y": 121
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
@@ -962,11 +922,11 @@
       "id": "P_0018",
       "name": "Val",
       "callsign": "Wraith-18",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Rifleman",
-      "status": "ELIMINATED",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Cyma SCAR-L AEG",
@@ -998,14 +958,11 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 580,
-        "y": 334
-      },
-      "isAlive": false,
+      "position": null,
+      "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 0,
+        "kills": 2,
         "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
@@ -1016,10 +973,10 @@
       "id": "P_0019",
       "name": "Lane",
       "callsign": "Flint-19",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Support",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Breacher",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -1052,10 +1009,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 222,
-        "y": 597
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -1070,10 +1024,10 @@
       "id": "P_0020",
       "name": "Alex",
       "callsign": "Sentinel-20",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Breacher",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Medic",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -1106,10 +1060,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 842,
-        "y": 584
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -1124,9 +1075,9 @@
       "id": "P_0021",
       "name": "Uri",
       "callsign": "Kodiak-21",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Breacher",
       "status": "OUT",
       "gear": {
@@ -1160,10 +1111,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 177,
-        "y": 196
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -1178,10 +1126,10 @@
       "id": "P_0022",
       "name": "Mason",
       "callsign": "Onyx-22",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Rifleman",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Breacher",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -1214,17 +1162,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 760,
-        "y": 578
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 0,
+        "deaths": 1,
         "assists": 0,
-        "objectiveCaptures": 0,
+        "objectiveCaptures": 1,
         "revives": 0
       }
     },
@@ -1232,9 +1177,9 @@
       "id": "P_0023",
       "name": "Jules",
       "callsign": "Mantis-23",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Medic",
       "status": "ACTIVE",
       "gear": {
@@ -1268,27 +1213,24 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 130,
-        "y": 162
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 1,
+        "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 1,
-        "revives": 0
+        "objectiveCaptures": 2,
+        "revives": 2
       }
     },
     {
       "id": "P_0024",
       "name": "Cruz",
       "callsign": "Lynx-24",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Rifleman",
       "status": "ACTIVE",
       "gear": {
@@ -1322,17 +1264,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 648,
-        "y": 294
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 2,
-        "deaths": 0,
+        "deaths": 1,
         "assists": 0,
-        "objectiveCaptures": 0,
+        "objectiveCaptures": 1,
         "revives": 0
       }
     },
@@ -1340,10 +1279,10 @@
       "id": "P_0025",
       "name": "Sky",
       "callsign": "Hornet-25",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Breacher",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -1376,17 +1315,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 207,
-        "y": 177
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 1,
+        "kills": 0,
         "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 1,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -1394,10 +1330,10 @@
       "id": "P_0026",
       "name": "Grey",
       "callsign": "Zulu-26",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Rifleman",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Support",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -1430,10 +1366,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 826,
-        "y": 115
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -1448,10 +1381,10 @@
       "id": "P_0027",
       "name": "Ellis",
       "callsign": "Frost-27",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Breacher",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Support",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -1484,14 +1417,11 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 165,
-        "y": 516
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 0,
+        "kills": 1,
         "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
@@ -1502,11 +1432,11 @@
       "id": "P_0028",
       "name": "Parker",
       "callsign": "Grizzly-28",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Medic",
-      "status": "RESPAWNING",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "WE Tech Glock 19 GBBR",
@@ -1538,27 +1468,29 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 634,
-        "y": 488
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [],
+      "warnings": [
+        {
+          "type": "AGGRESSION",
+          "count": 1
+        }
+      ],
       "stats": {
-        "kills": 0,
+        "kills": 1,
         "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 0,
-        "revives": 2
+        "objectiveCaptures": 1,
+        "revives": 0
       }
     },
     {
       "id": "P_0029",
       "name": "Sage",
       "callsign": "Apex-29",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Sniper",
       "status": "ACTIVE",
       "gear": {
@@ -1592,10 +1524,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 312,
-        "y": 392
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
@@ -1610,10 +1539,10 @@
       "id": "P_0030",
       "name": "Tate",
       "callsign": "Nitro-30",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Support",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Medic",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -1646,10 +1575,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 799,
-        "y": 258
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -1664,10 +1590,10 @@
       "id": "P_0031",
       "name": "Ash",
       "callsign": "Phantom-31",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Medic",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Support",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -1700,32 +1626,24 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 376,
-        "y": 162
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [
-        {
-          "type": "AGGRESSION",
-          "count": 1
-        }
-      ],
+      "warnings": [],
       "stats": {
-        "kills": 0,
+        "kills": 1,
         "deaths": 1,
         "assists": 0,
-        "objectiveCaptures": 0,
-        "revives": 1
+        "objectiveCaptures": 1,
+        "revives": 0
       }
     },
     {
       "id": "P_0032",
       "name": "Marlow",
       "callsign": "X-Ray-32",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Sniper",
       "status": "ACTIVE",
       "gear": {
@@ -1759,14 +1677,11 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 794,
-        "y": 614
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 1,
+        "kills": 0,
         "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
@@ -1777,11 +1692,11 @@
       "id": "P_0033",
       "name": "Indigo",
       "callsign": "Fox-33",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Medic",
-      "status": "ELIMINATED",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Support",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Tokyo Marui M4 CQB AEG",
@@ -1813,17 +1728,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 121,
-        "y": 290
-      },
-      "isAlive": false,
+      "position": null,
+      "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 0,
+        "deaths": 2,
         "assists": 0,
-        "objectiveCaptures": 0,
+        "objectiveCaptures": 1,
         "revives": 0
       }
     },
@@ -1831,9 +1743,9 @@
       "id": "P_0034",
       "name": "Wren",
       "callsign": "Delta-34",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Rifleman",
       "status": "ACTIVE",
       "gear": {
@@ -1867,22 +1779,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 841,
-        "y": 352
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [
-        {
-          "type": "AGGRESSION",
-          "count": 1
-        }
-      ],
+      "warnings": [],
       "stats": {
-        "kills": 0,
-        "deaths": 0,
+        "kills": 1,
+        "deaths": 1,
         "assists": 0,
-        "objectiveCaptures": 2,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -1890,9 +1794,9 @@
       "id": "P_0035",
       "name": "Frankie",
       "callsign": "Whiskey-35",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Sniper",
       "status": "ACTIVE",
       "gear": {
@@ -1926,17 +1830,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 294,
-        "y": 635
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 3,
+        "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 0,
+        "objectiveCaptures": 1,
         "revives": 0
       }
     },
@@ -1944,11 +1845,11 @@
       "id": "P_0036",
       "name": "Dex",
       "callsign": "Sierra-36",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Support",
-      "status": "ACTIVE",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Sniper",
+      "status": "RESPAWNING",
       "gear": {
         "primary": {
           "name": "LCT SR25 AEG",
@@ -1980,20 +1881,12 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 672,
-        "y": 371
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [
-        {
-          "type": "DEAD_MAN_WALKING",
-          "count": 1
-        }
-      ],
+      "warnings": [],
       "stats": {
-        "kills": 0,
-        "deaths": 0,
+        "kills": 1,
+        "deaths": 1,
         "assists": 0,
         "objectiveCaptures": 0,
         "revives": 0
@@ -2003,10 +1896,10 @@
       "id": "P_0037",
       "name": "Briar",
       "callsign": "Nomad-37",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Support",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Rifleman",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -2039,10 +1932,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 117,
-        "y": 109
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -2057,11 +1947,11 @@
       "id": "P_0038",
       "name": "Sam",
       "callsign": "Hawk-38",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Sniper",
-      "status": "ELIMINATED",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Tokyo Marui Steyr Scout Bolt Action",
@@ -2093,17 +1983,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 838,
-        "y": 202
-      },
-      "isAlive": false,
+      "position": null,
+      "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
         "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 0,
+        "objectiveCaptures": 1,
         "revives": 0
       }
     },
@@ -2111,10 +1998,10 @@
       "id": "P_0039",
       "name": "Drew",
       "callsign": "Raven-39",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Medic",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Rifleman",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -2147,38 +2034,26 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 115,
-        "y": 350
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [
-        {
-          "type": "MED_VIOLATION",
-          "count": 1
-        },
-        {
-          "type": "MED_VIOLATION",
-          "count": 2
-        }
-      ],
+      "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 1,
+        "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
-        "revives": 1
+        "revives": 0
       }
     },
     {
       "id": "P_0040",
       "name": "Nash",
       "callsign": "Echo-40",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Support",
-      "status": "ACTIVE",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Sniper",
+      "status": "ELIMINATED",
       "gear": {
         "primary": {
           "name": "G&G SR25 AEG",
@@ -2210,11 +2085,8 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 820,
-        "y": 108
-      },
-      "isAlive": true,
+      "position": null,
+      "isAlive": false,
       "warnings": [],
       "stats": {
         "kills": 0,
@@ -2228,9 +2100,9 @@
       "id": "P_0041",
       "name": "Morgan",
       "callsign": "Raptor-41",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Breacher",
       "status": "ACTIVE",
       "gear": {
@@ -2264,12 +2136,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 148,
-        "y": 370
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [],
+      "warnings": [
+        {
+          "type": "BLIND_FIRE",
+          "count": 1
+        }
+      ],
       "stats": {
         "kills": 1,
         "deaths": 0,
@@ -2282,10 +2156,10 @@
       "id": "P_0042",
       "name": "Kit",
       "callsign": "Dagger-42",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Rifleman",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Medic",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -2318,27 +2192,24 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 694,
-        "y": 315
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 2,
+        "kills": 1,
         "deaths": 1,
         "assists": 0,
-        "objectiveCaptures": 0,
-        "revives": 0
+        "objectiveCaptures": 1,
+        "revives": 1
       }
     },
     {
       "id": "P_0043",
       "name": "Taylor",
       "callsign": "Venom-43",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Medic",
       "status": "ACTIVE",
       "gear": {
@@ -2372,34 +2243,31 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 338,
-        "y": 600
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [
         {
-          "type": "BLIND_FIRE",
+          "type": "JOULE_CREEP",
           "count": 1
         }
       ],
       "stats": {
-        "kills": 1,
-        "deaths": 0,
+        "kills": 2,
+        "deaths": 2,
         "assists": 0,
         "objectiveCaptures": 0,
-        "revives": 2
+        "revives": 0
       }
     },
     {
       "id": "P_0044",
       "name": "Quinn",
       "callsign": "Warden-44",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Rifleman",
-      "status": "RESPAWNING",
+      "status": "ACTIVE",
       "gear": {
         "primary": {
           "name": "Tokyo Marui SCAR-L AEG",
@@ -2431,17 +2299,19 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 766,
-        "y": 383
-      },
+      "position": null,
       "isAlive": true,
-      "warnings": [],
+      "warnings": [
+        {
+          "type": "MED_VIOLATION",
+          "count": 1
+        }
+      ],
       "stats": {
-        "kills": 1,
+        "kills": 0,
         "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 1,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -2449,10 +2319,10 @@
       "id": "P_0045",
       "name": "Harley",
       "callsign": "Saber-45",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Medic",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Support",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -2485,10 +2355,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 162,
-        "y": 552
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
@@ -2503,9 +2370,9 @@
       "id": "P_0046",
       "name": "Jesse",
       "callsign": "Python-46",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Sniper",
       "status": "ACTIVE",
       "gear": {
@@ -2539,17 +2406,14 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 607,
-        "y": 177
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
         "kills": 0,
-        "deaths": 1,
+        "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 1,
+        "objectiveCaptures": 0,
         "revives": 0
       }
     },
@@ -2557,9 +2421,9 @@
       "id": "P_0047",
       "name": "Logan",
       "callsign": "Wolf-47",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
       "role": "Support",
       "status": "ACTIVE",
       "gear": {
@@ -2593,14 +2457,11 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 269,
-        "y": 251
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [],
       "stats": {
-        "kills": 0,
+        "kills": 1,
         "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
@@ -2611,10 +2472,10 @@
       "id": "P_0048",
       "name": "Jordan",
       "callsign": "Ember-48",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
-      "role": "Medic",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
+      "role": "Support",
       "status": "ACTIVE",
       "gear": {
         "primary": {
@@ -2647,33 +2508,30 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 570,
-        "y": 466
-      },
+      "position": null,
       "isAlive": true,
       "warnings": [
         {
-          "type": "BLIND_FIRE",
+          "type": "EYE_PRO_REMOVED",
           "count": 1
         }
       ],
       "stats": {
-        "kills": 0,
+        "kills": 2,
         "deaths": 0,
         "assists": 0,
-        "objectiveCaptures": 0,
-        "revives": 1
+        "objectiveCaptures": 1,
+        "revives": 0
       }
     },
     {
       "id": "P_0049",
       "name": "Jamie",
       "callsign": "Cobra-49",
-      "team": "alpha",
-      "teamName": "Alpha Force",
-      "teamColor": "#00ff88",
-      "role": "Rifleman",
+      "team": "nonband",
+      "teamName": "Non-Band (Grey)",
+      "teamColor": "#888888",
+      "role": "Medic",
       "status": "OUT",
       "gear": {
         "primary": {
@@ -2706,10 +2564,7 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 366,
-        "y": 516
-      },
+      "position": null,
       "isAlive": false,
       "warnings": [],
       "stats": {
@@ -2724,11 +2579,11 @@
       "id": "P_0050",
       "name": "Remy",
       "callsign": "Osprey-50",
-      "team": "bravo",
-      "teamName": "Bravo Company",
-      "teamColor": "#4488ff",
+      "team": "band",
+      "teamName": "Band (Yellow)",
+      "teamColor": "#f1c40f",
       "role": "Sniper",
-      "status": "ACTIVE",
+      "status": "ELIMINATED",
       "gear": {
         "primary": {
           "name": "Modify VSR-10 Bolt Action",
@@ -2760,14 +2615,11 @@
           "status": "COMPLETED"
         }
       ],
-      "position": {
-        "x": 671,
-        "y": 266
-      },
-      "isAlive": true,
+      "position": null,
+      "isAlive": false,
       "warnings": [],
       "stats": {
-        "kills": 1,
+        "kills": 0,
         "deaths": 0,
         "assists": 0,
         "objectiveCaptures": 0,
@@ -8945,39 +8797,73 @@
   ],
   "gameEvents": [
     {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:00:22",
-      "attackerId": "P_0044",
-      "attackerCallsign": "Warden-44",
-      "attackerTeam": "bravo",
-      "targetId": "P_0045",
-      "targetCallsign": "Saber-45",
-      "targetTeam": "alpha",
-      "zone": "ridge",
-      "weapon": "Tokyo Marui SCAR-L AEG"
-    },
-    {
       "type": "violation",
-      "timestamp": "2026-11-24T10:08:42",
-      "playerId": "P_0008",
-      "playerCallsign": "Viper-08",
-      "team": "bravo",
-      "violationType": "OVERSHOOT",
+      "timestamp": "2026-11-24T10:00:33",
+      "playerId": "P_0044",
+      "playerCallsign": "Warden-44",
+      "team": "band",
+      "violationType": "MED_VIOLATION",
       "warningNumber": 1,
-      "maxWarnings": 2,
-      "zone": "quarry_floor_north",
+      "maxWarnings": 1,
+      "zone": "quarry_floor_south",
       "action": "WARNING"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T10:13:37",
-      "attackerId": "P_0042",
-      "attackerCallsign": "Dagger-42",
-      "attackerTeam": "bravo",
-      "targetId": "P_0031",
-      "targetCallsign": "Phantom-31",
-      "targetTeam": "alpha",
+      "timestamp": "2026-11-24T10:01:07",
+      "attackerId": "P_0036",
+      "attackerCallsign": "Sierra-36",
+      "attackerTeam": "band",
+      "targetId": "P_0045",
+      "targetCallsign": "Saber-45",
+      "targetTeam": "nonband",
+      "zone": "woodland_north",
+      "weapon": "LCT SR25 AEG"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T10:03:11",
+      "medicId": "P_0023",
+      "medicCallsign": "Mantis-23",
+      "revivedId": "P_0017",
+      "revivedCallsign": "Yankee-17",
+      "team": "nonband",
+      "zone": "quarry_floor_north"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T10:09:45",
+      "attackerId": "P_0043",
+      "attackerCallsign": "Venom-43",
+      "attackerTeam": "nonband",
+      "targetId": "P_0012",
+      "targetCallsign": "Blaze-12",
+      "targetTeam": "band",
       "zone": "quarry_floor_north",
+      "weapon": "KJW AKM GBBR"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T10:11:40",
+      "attackerId": "P_0027",
+      "attackerCallsign": "Frost-27",
+      "attackerTeam": "nonband",
+      "targetId": "P_0016",
+      "targetCallsign": "Tango-16",
+      "targetTeam": "band",
+      "zone": "quarry_floor_north",
+      "weapon": "KJW MP7 GBBR"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T10:14:56",
+      "attackerId": "P_0047",
+      "attackerCallsign": "Wolf-47",
+      "attackerTeam": "nonband",
+      "targetId": "P_0022",
+      "targetCallsign": "Onyx-22",
+      "targetTeam": "band",
+      "zone": "woodland_north",
       "weapon": "Cyma M4 CQB AEG"
     },
     {
@@ -8985,19 +8871,29 @@
       "timestamp": "2026-11-24T10:17:09",
       "attackerId": "P_0012",
       "attackerCallsign": "Blaze-12",
-      "attackerTeam": "bravo",
-      "targetId": "P_0035",
-      "targetCallsign": "Whiskey-35",
-      "targetTeam": "alpha",
+      "attackerTeam": "band",
+      "targetId": "P_0033",
+      "targetCallsign": "Fox-33",
+      "targetTeam": "nonband",
       "zone": "woodland_north",
       "weapon": "LCT SCAR-L AEG"
     },
     {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T10:20:50",
+      "medicId": "P_0003",
+      "medicCallsign": "Cipher-03",
+      "revivedId": "P_0041",
+      "revivedCallsign": "Raptor-41",
+      "team": "nonband",
+      "zone": "woodland_east"
+    },
+    {
       "type": "violation",
       "timestamp": "2026-11-24T10:22:37",
-      "playerId": "P_0043",
-      "playerCallsign": "Venom-43",
-      "team": "alpha",
+      "playerId": "P_0041",
+      "playerCallsign": "Raptor-41",
+      "team": "nonband",
       "violationType": "BLIND_FIRE",
       "warningNumber": 1,
       "maxWarnings": 2,
@@ -9005,105 +8901,11 @@
       "action": "WARNING"
     },
     {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T10:24:26",
-      "team": "bravo",
-      "zone": "obj_ridge_tower",
-      "capturerId": "P_0034",
-      "capturerCallsign": "Delta-34"
-    },
-    {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T10:28:11",
-      "medicId": "P_0048",
-      "medicCallsign": "Ember-48",
-      "revivedId": "P_0008",
-      "revivedCallsign": "Viper-08",
-      "team": "bravo",
-      "zone": "woodland_east"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:28:51",
-      "attackerId": "P_0041",
-      "attackerCallsign": "Raptor-41",
-      "attackerTeam": "alpha",
-      "targetId": "P_0012",
-      "targetCallsign": "Blaze-12",
-      "targetTeam": "bravo",
-      "zone": "firebase",
-      "weapon": "Tokyo Marui Glock 19 GBBR"
-    },
-    {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T10:41:21",
-      "medicId": "P_0043",
-      "medicCallsign": "Venom-43",
-      "revivedId": "P_0023",
-      "revivedCallsign": "Mantis-23",
-      "team": "alpha",
-      "zone": "village"
-    },
-    {
       "type": "violation",
-      "timestamp": "2026-11-24T10:44:19",
-      "playerId": "P_0039",
-      "playerCallsign": "Raven-39",
-      "team": "alpha",
-      "violationType": "MED_VIOLATION",
-      "warningNumber": 2,
-      "maxWarnings": 1,
-      "zone": "firebase",
-      "action": "WEAPON_CONFISCATED"
-    },
-    {
-      "type": "violation",
-      "timestamp": "2026-11-24T10:46:40",
-      "playerId": "P_0036",
-      "playerCallsign": "Sierra-36",
-      "team": "bravo",
-      "violationType": "DEAD_MAN_WALKING",
-      "warningNumber": 1,
-      "maxWarnings": 3,
-      "zone": "ridge",
-      "action": "WARNING"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T10:49:57",
-      "team": "bravo",
-      "zone": "obj_firebase_compound",
-      "capturerId": "P_0002",
-      "capturerCallsign": "Zero-02"
-    },
-    {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T10:49:57",
-      "medicId": "P_0028",
-      "medicCallsign": "Grizzly-28",
-      "revivedId": "P_0044",
-      "revivedCallsign": "Warden-44",
-      "team": "bravo",
-      "zone": "entrance_road"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T10:51:15",
-      "attackerId": "P_0014",
-      "attackerCallsign": "Bolt-14",
-      "attackerTeam": "bravo",
-      "targetId": "P_0035",
-      "targetCallsign": "Whiskey-35",
-      "targetTeam": "alpha",
-      "zone": "firebase",
-      "weapon": "LCT AK74U AEG"
-    },
-    {
-      "type": "violation",
-      "timestamp": "2026-11-24T10:51:35",
-      "playerId": "P_0002",
-      "playerCallsign": "Zero-02",
-      "team": "bravo",
+      "timestamp": "2026-11-24T10:25:52",
+      "playerId": "P_0012",
+      "playerCallsign": "Blaze-12",
+      "team": "band",
       "violationType": "EYE_PRO_REMOVED",
       "warningNumber": 1,
       "maxWarnings": 2,
@@ -9111,107 +8913,189 @@
       "action": "WARNING"
     },
     {
+      "type": "elimination",
+      "timestamp": "2026-11-24T10:26:43",
+      "attackerId": "P_0043",
+      "attackerCallsign": "Venom-43",
+      "attackerTeam": "nonband",
+      "targetId": "P_0042",
+      "targetCallsign": "Dagger-42",
+      "targetTeam": "band",
+      "zone": "village",
+      "weapon": "KJW AKM GBBR"
+    },
+    {
       "type": "objective_capture",
-      "timestamp": "2026-11-24T10:52:21",
-      "team": "bravo",
+      "timestamp": "2026-11-24T10:28:01",
+      "team": "band",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0028",
+      "capturerCallsign": "Grizzly-28"
+    },
+    {
+      "type": "medic_revive",
+      "timestamp": "2026-11-24T10:28:11",
+      "medicId": "P_0042",
+      "medicCallsign": "Dagger-42",
+      "revivedId": "P_0008",
+      "revivedCallsign": "Viper-08",
+      "team": "band",
+      "zone": "woodland_east"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T10:31:09",
+      "team": "nonband",
       "zone": "obj_firebase_compound",
-      "capturerId": "P_0044",
-      "capturerCallsign": "Warden-44"
+      "capturerId": "P_0033",
+      "capturerCallsign": "Fox-33"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T10:55:31",
-      "attackerId": "P_0042",
-      "attackerCallsign": "Dagger-42",
-      "attackerTeam": "bravo",
-      "targetId": "P_0013",
-      "targetCallsign": "Talon-13",
-      "targetTeam": "alpha",
-      "zone": "quarry_floor_south",
-      "weapon": "Cyma M4 CQB AEG"
+      "timestamp": "2026-11-24T10:36:10",
+      "attackerId": "P_0048",
+      "attackerCallsign": "Ember-48",
+      "attackerTeam": "band",
+      "targetId": "P_0001",
+      "targetCallsign": "Bravo-01",
+      "targetTeam": "nonband",
+      "zone": "quarry_floor_north",
+      "weapon": "Krytac AK74U AEG"
     },
     {
       "type": "objective_capture",
-      "timestamp": "2026-11-24T10:55:50",
-      "team": "bravo",
-      "zone": "obj_village_centre",
-      "capturerId": "P_0046",
-      "capturerCallsign": "Python-46"
+      "timestamp": "2026-11-24T10:36:32",
+      "team": "band",
+      "zone": "obj_firebase_compound",
+      "capturerId": "P_0024",
+      "capturerCallsign": "Lynx-24"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T10:40:59",
+      "attackerId": "P_0031",
+      "attackerCallsign": "Phantom-31",
+      "attackerTeam": "nonband",
+      "targetId": "P_0016",
+      "targetCallsign": "Tango-16",
+      "targetTeam": "band",
+      "zone": "quarry_floor_south",
+      "weapon": "KJW M4A1 GBBR"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T10:49:57",
+      "team": "band",
+      "zone": "obj_firebase_compound",
+      "capturerId": "P_0042",
+      "capturerCallsign": "Dagger-42"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T10:52:21",
+      "team": "band",
+      "zone": "obj_firebase_compound",
+      "capturerId": "P_0022",
+      "capturerCallsign": "Onyx-22"
     },
     {
       "type": "violation",
-      "timestamp": "2026-11-24T10:58:26",
-      "playerId": "P_0031",
-      "playerCallsign": "Phantom-31",
-      "team": "alpha",
-      "violationType": "AGGRESSION",
+      "timestamp": "2026-11-24T10:55:04",
+      "playerId": "P_0008",
+      "playerCallsign": "Viper-08",
+      "team": "band",
+      "violationType": "JOULE_CREEP",
       "warningNumber": 1,
-      "maxWarnings": 0,
-      "zone": "entrance_road",
-      "action": "EJECTED"
+      "maxWarnings": 1,
+      "zone": "village",
+      "action": "WARNING"
     },
     {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T11:00:01",
-      "medicId": "P_0039",
-      "medicCallsign": "Raven-39",
-      "revivedId": "P_0017",
-      "revivedCallsign": "Yankee-17",
-      "team": "alpha",
-      "zone": "village"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T11:04:19",
-      "team": "bravo",
-      "zone": "obj_village_centre",
-      "capturerId": "P_0016",
-      "capturerCallsign": "Tango-16"
+      "type": "violation",
+      "timestamp": "2026-11-24T10:58:39",
+      "playerId": "P_0015",
+      "playerCallsign": "Spartan-15",
+      "team": "nonband",
+      "violationType": "OVERSHOOT",
+      "warningNumber": 1,
+      "maxWarnings": 2,
+      "zone": "woodland_east",
+      "action": "WARNING"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:04:41",
-      "attackerId": "P_0014",
-      "attackerCallsign": "Bolt-14",
-      "attackerTeam": "bravo",
-      "targetId": "P_0035",
-      "targetCallsign": "Whiskey-35",
-      "targetTeam": "alpha",
+      "timestamp": "2026-11-24T10:59:28",
+      "attackerId": "P_0018",
+      "attackerCallsign": "Wraith-18",
+      "attackerTeam": "band",
+      "targetId": "P_0005",
+      "targetCallsign": "Titan-05",
+      "targetTeam": "nonband",
+      "zone": "woodland_east",
+      "weapon": "Cyma SCAR-L AEG"
+    },
+    {
+      "type": "violation",
+      "timestamp": "2026-11-24T11:00:39",
+      "playerId": "P_0011",
+      "playerCallsign": "Iron-11",
+      "team": "nonband",
+      "violationType": "PYRO_MISUSE",
+      "warningNumber": 1,
+      "maxWarnings": 0,
       "zone": "ridge",
-      "weapon": "LCT AK74U AEG"
+      "action": "EJECTED"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:04:16",
+      "attackerId": "P_0024",
+      "attackerCallsign": "Lynx-24",
+      "attackerTeam": "band",
+      "targetId": "P_0029",
+      "targetCallsign": "Apex-29",
+      "targetTeam": "nonband",
+      "zone": "quarry_floor_south",
+      "weapon": "Cyma Vector SMG AEG"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:10:09",
+      "attackerId": "P_0003",
+      "attackerCallsign": "Cipher-03",
+      "attackerTeam": "nonband",
+      "targetId": "P_0036",
+      "targetCallsign": "Sierra-36",
+      "targetTeam": "band",
+      "zone": "firebase",
+      "weapon": "LCT SCAR-L AEG"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:10:53",
+      "attackerId": "P_0045",
+      "attackerCallsign": "Saber-45",
+      "attackerTeam": "nonband",
+      "targetId": "P_0034",
+      "targetCallsign": "Delta-34",
+      "targetTeam": "band",
+      "zone": "quarry_floor_north",
+      "weapon": "Tokyo Marui Vector SMG AEG"
     },
     {
       "type": "objective_capture",
-      "timestamp": "2026-11-24T11:05:42",
-      "team": "bravo",
-      "zone": "obj_firebase_compound",
-      "capturerId": "P_0034",
-      "capturerCallsign": "Delta-34"
-    },
-    {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T11:06:59",
-      "medicId": "P_0028",
-      "medicCallsign": "Grizzly-28",
-      "revivedId": "P_0042",
-      "revivedCallsign": "Dagger-42",
-      "team": "bravo",
-      "zone": "ridge"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T11:15:36",
-      "team": "alpha",
+      "timestamp": "2026-11-24T11:16:02",
+      "team": "band",
       "zone": "obj_ridge_tower",
-      "capturerId": "P_0011",
-      "capturerCallsign": "Iron-11"
+      "capturerId": "P_0048",
+      "capturerCallsign": "Ember-48"
     },
     {
       "type": "violation",
       "timestamp": "2026-11-24T11:16:20",
-      "playerId": "P_0034",
-      "playerCallsign": "Delta-34",
-      "team": "bravo",
+      "playerId": "P_0028",
+      "playerCallsign": "Grizzly-28",
+      "team": "band",
       "violationType": "AGGRESSION",
       "warningNumber": 1,
       "maxWarnings": 0,
@@ -9221,211 +9105,183 @@
     {
       "type": "elimination",
       "timestamp": "2026-11-24T11:16:27",
-      "attackerId": "P_0043",
-      "attackerCallsign": "Venom-43",
-      "attackerTeam": "alpha",
+      "attackerId": "P_0041",
+      "attackerCallsign": "Raptor-41",
+      "attackerTeam": "nonband",
       "targetId": "P_0014",
       "targetCallsign": "Bolt-14",
-      "targetTeam": "bravo",
+      "targetTeam": "band",
       "zone": "quarry_floor_south",
-      "weapon": "KJW AKM GBBR"
+      "weapon": "Tokyo Marui Glock 19 GBBR"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:19:09",
-      "attackerId": "P_0024",
-      "attackerCallsign": "Lynx-24",
-      "attackerTeam": "bravo",
-      "targetId": "P_0039",
-      "targetCallsign": "Raven-39",
-      "targetTeam": "alpha",
+      "timestamp": "2026-11-24T11:19:47",
+      "attackerId": "P_0018",
+      "attackerCallsign": "Wraith-18",
+      "attackerTeam": "band",
+      "targetId": "P_0033",
+      "targetCallsign": "Fox-33",
+      "targetTeam": "nonband",
+      "zone": "woodland_east",
+      "weapon": "Cyma SCAR-L AEG"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:21:16",
+      "attackerId": "P_0042",
+      "attackerCallsign": "Dagger-42",
+      "attackerTeam": "band",
+      "targetId": "P_0043",
+      "targetCallsign": "Venom-43",
+      "targetTeam": "nonband",
       "zone": "entrance_road",
-      "weapon": "Cyma Vector SMG AEG"
+      "weapon": "Cyma M4 CQB AEG"
     },
     {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:22:32",
-      "attackerId": "P_0014",
-      "attackerCallsign": "Bolt-14",
-      "attackerTeam": "bravo",
-      "targetId": "P_0023",
-      "targetCallsign": "Mantis-23",
-      "targetTeam": "alpha",
+      "timestamp": "2026-11-24T11:25:41",
+      "attackerId": "P_0012",
+      "attackerCallsign": "Blaze-12",
+      "attackerTeam": "band",
+      "targetId": "P_0001",
+      "targetCallsign": "Bravo-01",
+      "targetTeam": "nonband",
       "zone": "quarry_floor_south",
-      "weapon": "LCT AK74U AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:24:12",
-      "attackerId": "P_0032",
-      "attackerCallsign": "X-Ray-32",
-      "attackerTeam": "bravo",
-      "targetId": "P_0029",
-      "targetCallsign": "Apex-29",
-      "targetTeam": "alpha",
-      "zone": "quarry_floor_north",
-      "weapon": "Novritsch SRS A2 Bolt Action"
+      "weapon": "LCT SCAR-L AEG"
     },
     {
       "type": "objective_capture",
-      "timestamp": "2026-11-24T11:26:13",
-      "team": "alpha",
-      "zone": "obj_ridge_tower",
-      "capturerId": "P_0025",
-      "capturerCallsign": "Hornet-25"
-    },
-    {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T11:29:16",
-      "medicId": "P_0013",
-      "medicCallsign": "Talon-13",
-      "revivedId": "P_0015",
-      "revivedCallsign": "Spartan-15",
-      "team": "alpha",
-      "zone": "quarry_floor_north"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:31:18",
-      "attackerId": "P_0045",
-      "attackerCallsign": "Saber-45",
-      "attackerTeam": "alpha",
-      "targetId": "P_0012",
-      "targetCallsign": "Blaze-12",
-      "targetTeam": "bravo",
-      "zone": "quarry_floor_south",
-      "weapon": "Tokyo Marui Vector SMG AEG"
-    },
-    {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T11:35:47",
-      "team": "alpha",
-      "zone": "obj_village_centre",
+      "timestamp": "2026-11-24T11:25:52",
+      "team": "nonband",
+      "zone": "obj_firebase_compound",
       "capturerId": "P_0023",
       "capturerCallsign": "Mantis-23"
     },
     {
-      "type": "objective_capture",
-      "timestamp": "2026-11-24T11:38:49",
-      "team": "alpha",
-      "zone": "obj_village_centre",
-      "capturerId": "P_0005",
-      "capturerCallsign": "Titan-05"
-    },
-    {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:39:41",
-      "attackerId": "P_0024",
-      "attackerCallsign": "Lynx-24",
-      "attackerTeam": "bravo",
-      "targetId": "P_0001",
-      "targetCallsign": "Bravo-01",
-      "targetTeam": "alpha",
-      "zone": "firebase",
-      "weapon": "Cyma Vector SMG AEG"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T11:40:59",
-      "attackerId": "P_0007",
-      "attackerCallsign": "Ghost-07",
-      "attackerTeam": "alpha",
-      "targetId": "P_0042",
-      "targetCallsign": "Dagger-42",
-      "targetTeam": "bravo",
+      "timestamp": "2026-11-24T11:26:19",
+      "attackerId": "P_0003",
+      "attackerCallsign": "Cipher-03",
+      "attackerTeam": "nonband",
+      "targetId": "P_0024",
+      "targetCallsign": "Lynx-24",
+      "targetTeam": "band",
       "zone": "woodland_east",
-      "weapon": "KWA Glock 19 GBBR"
-    },
-    {
-      "type": "medic_revive",
-      "timestamp": "2026-11-24T11:41:36",
-      "medicId": "P_0043",
-      "medicCallsign": "Venom-43",
-      "revivedId": "P_0029",
-      "revivedCallsign": "Apex-29",
-      "team": "alpha",
-      "zone": "village"
+      "weapon": "LCT SCAR-L AEG"
     },
     {
       "type": "violation",
-      "timestamp": "2026-11-24T11:43:11",
-      "playerId": "P_0003",
-      "playerCallsign": "Cipher-03",
-      "team": "alpha",
-      "violationType": "DEAD_MAN_WALKING",
-      "warningNumber": 1,
-      "maxWarnings": 3,
-      "zone": "quarry_floor_south",
-      "action": "WARNING"
-    },
-    {
-      "type": "violation",
-      "timestamp": "2026-11-24T11:47:29",
+      "timestamp": "2026-11-24T11:26:47",
       "playerId": "P_0048",
       "playerCallsign": "Ember-48",
-      "team": "bravo",
-      "violationType": "BLIND_FIRE",
+      "team": "band",
+      "violationType": "EYE_PRO_REMOVED",
       "warningNumber": 1,
       "maxWarnings": 2,
       "zone": "ridge",
       "action": "WARNING"
     },
     {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:26:53",
+      "team": "nonband",
+      "zone": "obj_firebase_compound",
+      "capturerId": "P_0023",
+      "capturerCallsign": "Mantis-23"
+    },
+    {
       "type": "elimination",
-      "timestamp": "2026-11-24T11:50:29",
-      "attackerId": "P_0015",
-      "attackerCallsign": "Spartan-15",
-      "attackerTeam": "alpha",
-      "targetId": "P_0046",
-      "targetCallsign": "Python-46",
-      "targetTeam": "bravo",
+      "timestamp": "2026-11-24T11:26:55",
+      "attackerId": "P_0024",
+      "attackerCallsign": "Lynx-24",
+      "attackerTeam": "band",
+      "targetId": "P_0045",
+      "targetCallsign": "Saber-45",
+      "targetTeam": "nonband",
+      "zone": "village",
+      "weapon": "Cyma Vector SMG AEG"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:29:18",
+      "team": "nonband",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0031",
+      "capturerCallsign": "Phantom-31"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:31:21",
+      "attackerId": "P_0028",
+      "attackerCallsign": "Grizzly-28",
+      "attackerTeam": "band",
+      "targetId": "P_0003",
+      "targetCallsign": "Cipher-03",
+      "targetTeam": "nonband",
       "zone": "quarry_floor_north",
-      "weapon": "VFC M4 CQB AEG"
+      "weapon": "WE Tech Glock 19 GBBR"
+    },
+    {
+      "type": "elimination",
+      "timestamp": "2026-11-24T11:32:57",
+      "attackerId": "P_0034",
+      "attackerCallsign": "Delta-34",
+      "attackerTeam": "band",
+      "targetId": "P_0031",
+      "targetCallsign": "Phantom-31",
+      "targetTeam": "nonband",
+      "zone": "quarry_floor_north",
+      "weapon": "WE Tech Glock 19 GBBR"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:38:49",
+      "team": "nonband",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0035",
+      "capturerCallsign": "Whiskey-35"
     },
     {
       "type": "violation",
-      "timestamp": "2026-11-24T11:51:02",
-      "playerId": "P_0039",
-      "playerCallsign": "Raven-39",
-      "team": "alpha",
-      "violationType": "MED_VIOLATION",
+      "timestamp": "2026-11-24T11:50:04",
+      "playerId": "P_0043",
+      "playerCallsign": "Venom-43",
+      "team": "nonband",
+      "violationType": "JOULE_CREEP",
       "warningNumber": 1,
       "maxWarnings": 1,
-      "zone": "entrance_road",
+      "zone": "ridge",
       "action": "WARNING"
+    },
+    {
+      "type": "objective_capture",
+      "timestamp": "2026-11-24T11:53:40",
+      "team": "band",
+      "zone": "obj_village_centre",
+      "capturerId": "P_0038",
+      "capturerCallsign": "Hawk-38"
     },
     {
       "type": "medic_revive",
       "timestamp": "2026-11-24T11:54:10",
-      "medicId": "P_0031",
-      "medicCallsign": "Phantom-31",
+      "medicId": "P_0023",
+      "medicCallsign": "Mantis-23",
       "revivedId": "P_0017",
       "revivedCallsign": "Yankee-17",
-      "team": "alpha",
+      "team": "nonband",
       "zone": "quarry_floor_north"
     },
     {
       "type": "elimination",
       "timestamp": "2026-11-24T11:57:54",
-      "attackerId": "P_0050",
-      "attackerCallsign": "Osprey-50",
-      "attackerTeam": "bravo",
-      "targetId": "P_0045",
-      "targetCallsign": "Saber-45",
-      "targetTeam": "alpha",
+      "attackerId": "P_0048",
+      "attackerCallsign": "Ember-48",
+      "attackerTeam": "band",
+      "targetId": "P_0043",
+      "targetCallsign": "Venom-43",
+      "targetTeam": "nonband",
       "zone": "woodland_north",
-      "weapon": "Modify VSR-10 Bolt Action"
-    },
-    {
-      "type": "elimination",
-      "timestamp": "2026-11-24T12:00:45",
-      "attackerId": "P_0025",
-      "attackerCallsign": "Hornet-25",
-      "attackerTeam": "alpha",
-      "targetId": "P_0014",
-      "targetCallsign": "Bolt-14",
-      "targetTeam": "bravo",
-      "zone": "woodland_east",
       "weapon": "Krytac AK74U AEG"
     }
   ],
@@ -9507,7 +9363,7 @@
       {
         "id": "obj_village_centre",
         "name": "Village Centre",
-        "holder": "alpha",
+        "holder": "nonband",
         "points": 85,
         "x": 460,
         "y": 260
@@ -9515,15 +9371,15 @@
       {
         "id": "obj_ridge_tower",
         "name": "Ridge Observation Post",
-        "holder": "bravo",
+        "holder": "band",
         "points": 65,
         "x": 80,
         "y": 420
       }
     ],
     "score": {
-      "alpha": 85,
-      "bravo": 65
+      "nonband": 85,
+      "band": 65
     },
     "chronoTiers": {
       "AEG": {
