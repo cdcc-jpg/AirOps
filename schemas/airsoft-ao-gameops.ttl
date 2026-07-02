@@ -1,0 +1,301 @@
+@prefix : <https://github.com/cdcc-jpg/ontologies#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix asoft: <https://github.com/cdcc-jpg/ontologies#> .
+@prefix schema: <http://schema.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@base <https://github.com/cdcc-jpg/ontologies/gameops#> .
+
+<https://github.com/cdcc-jpg/ontologies/gameops#> rdf:type owl:Ontology ;
+    owl:imports <https://github.com/cdcc-jpg/ontologies#> ;
+    dcterms:created "2026-07-02"^^xsd:date ;
+    dcterms:creator "clement.dhollande@leurn.co" ;
+    dcterms:description "Extension ontology for AirOps game operations — tactical maps, game sessions, field zones, in-game events, player roles, and compliance tracking." ;
+    dcterms:title "Airsoft Game Operations Ontology" ;
+    owl:versionInfo "0.1" .
+
+
+#################################################################
+#    Game Session & Modes
+#################################################################
+
+### A specific instance of a game being played on a game day.
+asoft:GameSession rdf:type owl:Class ;
+    rdfs:comment "A single, bounded instance of an airsoft game. A game day may contain multiple GameSessions."@en ;
+    rdfs:label "Game Session"@en .
+
+### The type of game being played.
+asoft:GameMode rdf:type owl:Class ;
+    rdfs:comment "A classification of airsoft game types, e.g. TDM, Domination, VIP Escort, MilSim."@en ;
+    rdfs:label "Game Mode"@en .
+
+### Links a session to its mode.
+asoft:hasGameMode rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:GameSession ;
+    rdfs:range asoft:GameMode ;
+    rdfs:label "has game mode"@en .
+
+### Links a player to a session they participate in.
+asoft:participatesIn rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    rdfs:range asoft:GameSession ;
+    rdfs:label "participates in"@en .
+
+### Links a session to the field it's played on.
+asoft:playedOnField rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:GameSession ;
+    rdfs:range asoft:AirsoftField ;
+    rdfs:label "played on field"@en .
+
+
+#################################################################
+#    Field Zones — Spatial Subdivisions
+#################################################################
+
+### Abstract zone within a field.
+asoft:FieldZone rdf:type owl:Class ;
+    rdfs:subClassOf schema:Place ;
+    rdfs:comment "A spatial subdivision of an AirsoftField with its own rules and constraints."@en ;
+    rdfs:label "Field Zone"@en .
+
+### Spawn zone where teams start.
+asoft:SpawnZone rdf:type owl:Class ;
+    rdfs:subClassOf asoft:FieldZone ;
+    rdfs:comment "A designated area where a team spawns or respawns during a game."@en ;
+    rdfs:label "Spawn Zone"@en .
+
+### Objective zone — a capture point.
+asoft:ObjectiveZone rdf:type owl:Class ;
+    rdfs:subClassOf asoft:FieldZone ;
+    rdfs:comment "A zone containing a game objective that can be captured or held."@en ;
+    rdfs:label "Objective Zone"@en .
+
+### No-fire safe zone.
+asoft:SafeZone rdf:type owl:Class ;
+    rdfs:subClassOf asoft:FieldZone ;
+    rdfs:comment "A zone where firing is strictly prohibited. Typically the staging/registration area."@en ;
+    rdfs:label "Safe Zone"@en .
+
+### CQB (Close Quarters Battle) zone with reduced power limits.
+asoft:CQBZone rdf:type owl:Class ;
+    rdfs:subClassOf asoft:FieldZone ;
+    rdfs:comment "An indoor or close-quarters zone with reduced joule limits and semi-auto-only rules."@en ;
+    rdfs:label "CQB Zone"@en .
+
+### Links a field to its sub-zones.
+asoft:hasZone rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:AirsoftField ;
+    rdfs:range asoft:FieldZone ;
+    rdfs:label "has zone"@en .
+
+### Zone-specific maximum joule limit.
+asoft:hasMaxJouleLimit rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:FieldZone ;
+    rdfs:range xsd:decimal ;
+    rdfs:comment "The maximum allowed muzzle energy in Joules for this specific zone."@en ;
+    rdfs:label "has max joule limit"@en .
+
+### Zone player capacity.
+asoft:hasPlayerCapacity rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:FieldZone ;
+    rdfs:range xsd:integer ;
+    rdfs:comment "The maximum number of players allowed in this zone simultaneously."@en ;
+    rdfs:label "has player capacity"@en .
+
+
+#################################################################
+#    Chrono Events (Formalising the silo 2 data)
+#################################################################
+
+### A single chronograph reading event.
+asoft:ChronoEvent rdf:type owl:Class ;
+    rdfs:comment "A single chronograph test event recording a replica's muzzle velocity and energy."@en ;
+    rdfs:label "Chrono Event"@en .
+
+### Links a chrono event to the player being tested.
+asoft:chronoPlayer rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:ChronoEvent ;
+    rdfs:range asoft:AirsoftPlayer ;
+    rdfs:label "chrono player"@en .
+
+### Chrono test status result.
+asoft:hasChronoStatus rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:ChronoEvent ;
+    rdfs:range xsd:string ;
+    rdfs:comment "The result status of a chrono test, e.g. PASS, PASS_DMR_RULES, FAILED_MIN_PERFORMANCE, JOULE_CREEP_DETECTED."@en ;
+    rdfs:label "has chrono status"@en .
+
+
+#################################################################
+#    In-Game Events
+#################################################################
+
+### Abstract superclass for all in-game events.
+asoft:GameEvent rdf:type owl:Class ;
+    rdfs:comment "An event that occurs during a GameSession."@en ;
+    rdfs:label "Game Event"@en .
+
+### A player elimination.
+asoft:EliminationEvent rdf:type owl:Class ;
+    rdfs:subClassOf asoft:GameEvent ;
+    rdfs:comment "An event where one player eliminates another."@en ;
+    rdfs:label "Elimination Event"@en .
+
+### An objective capture.
+asoft:ObjectiveCaptureEvent rdf:type owl:Class ;
+    rdfs:subClassOf asoft:GameEvent ;
+    rdfs:comment "An event where a team captures an objective zone."@en ;
+    rdfs:label "Objective Capture Event"@en .
+
+### A rule violation during gameplay.
+asoft:RuleViolationEvent rdf:type owl:Class ;
+    rdfs:subClassOf asoft:GameEvent ;
+    rdfs:comment "An event where a player commits a rule violation during a game."@en ;
+    rdfs:label "Rule Violation Event"@en .
+
+### A medic revive event.
+asoft:MedicReviveEvent rdf:type owl:Class ;
+    rdfs:subClassOf asoft:GameEvent ;
+    rdfs:comment "An event where a medic-role player revives a teammate."@en ;
+    rdfs:label "Medic Revive Event"@en .
+
+### Links an event to the session it occurred in.
+asoft:occurredIn rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:GameEvent ;
+    rdfs:range asoft:GameSession ;
+    rdfs:label "occurred in"@en .
+
+### Links an event to the zone where it happened.
+asoft:atLocation rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:GameEvent ;
+    rdfs:range asoft:FieldZone ;
+    rdfs:label "at location"@en .
+
+### Timestamp of the event.
+asoft:hasTimestamp rdf:type owl:DatatypeProperty ;
+    rdfs:domain asoft:GameEvent ;
+    rdfs:range xsd:dateTime ;
+    rdfs:label "has timestamp"@en .
+
+### Links an elimination to the attacker.
+asoft:hasAttacker rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:EliminationEvent ;
+    rdfs:range asoft:AirsoftPlayer ;
+    rdfs:label "has attacker"@en .
+
+### Links an elimination to the target.
+asoft:hasTarget rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:EliminationEvent ;
+    rdfs:range asoft:AirsoftPlayer ;
+    rdfs:label "has target"@en .
+
+
+#################################################################
+#    Player Roles & Compliance
+#################################################################
+
+### A tactical role assigned to a player during a game.
+asoft:PlayerRole rdf:type owl:Class ;
+    rdfs:comment "A tactical role assigned to a player, such as Rifleman, Sniper, Support, Breacher, Medic, or Commander."@en ;
+    rdfs:label "Player Role"@en .
+
+### Links a player to their role.
+asoft:hasRole rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    rdfs:range asoft:PlayerRole ;
+    rdfs:label "has role"@en .
+
+### Compliance status classification.
+asoft:ComplianceStatus rdf:type owl:Class ;
+    rdfs:comment "A classification of a player's compliance status: CLEARED (passed chrono), FLAGGED (warning), or BANNED (failed/confiscated)."@en ;
+    rdfs:label "Compliance Status"@en .
+
+### Links a player to their compliance status.
+asoft:hasComplianceStatus rdf:type owl:ObjectProperty ;
+    rdfs:domain asoft:AirsoftPlayer ;
+    rdfs:range asoft:ComplianceStatus ;
+    rdfs:label "has compliance status"@en .
+
+
+#################################################################
+#    Individuals — Player Roles
+#################################################################
+
+asoft:Role_Rifleman rdf:type owl:NamedIndividual ,
+                             asoft:PlayerRole ;
+    rdfs:label "Rifleman"@en ;
+    rdfs:comment "Standard infantry role using assault rifles or carbines."@en .
+
+asoft:Role_Sniper rdf:type owl:NamedIndividual ,
+                           asoft:PlayerRole ;
+    rdfs:label "Sniper"@en ;
+    rdfs:comment "Marksman role using bolt-action or DMR platforms with elevated joule limits."@en .
+
+asoft:Role_Support rdf:type owl:NamedIndividual ,
+                            asoft:PlayerRole ;
+    rdfs:label "Support"@en ;
+    rdfs:comment "Support gunner role using LMGs or high-capacity platforms."@en .
+
+asoft:Role_Breacher rdf:type owl:NamedIndividual ,
+                             asoft:PlayerRole ;
+    rdfs:label "Breacher"@en ;
+    rdfs:comment "CQB specialist using SMGs, shotguns, or compact platforms."@en .
+
+asoft:Role_Medic rdf:type owl:NamedIndividual ,
+                          asoft:PlayerRole ;
+    rdfs:label "Medic"@en ;
+    rdfs:comment "Support role that can revive eliminated teammates under medic rules."@en .
+
+asoft:Role_Commander rdf:type owl:NamedIndividual ,
+                              asoft:PlayerRole ;
+    rdfs:label "Commander"@en ;
+    rdfs:comment "Team leader role responsible for tactical coordination and comms."@en .
+
+
+#################################################################
+#    Individuals — Compliance Statuses
+#################################################################
+
+asoft:Compliance_CLEARED rdf:type owl:NamedIndividual ,
+                                  asoft:ComplianceStatus ;
+    rdfs:label "Cleared"@en ;
+    rdfs:comment "Player has passed chrono and is cleared to play."@en .
+
+asoft:Compliance_FLAGGED rdf:type owl:NamedIndividual ,
+                                  asoft:ComplianceStatus ;
+    rdfs:label "Flagged"@en ;
+    rdfs:comment "Player's gear requires attention (e.g. low performance) but is not banned."@en .
+
+asoft:Compliance_BANNED rdf:type owl:NamedIndividual ,
+                                 asoft:ComplianceStatus ;
+    rdfs:label "Banned"@en ;
+    rdfs:comment "Player's gear has been confiscated or banned from play due to safety violations."@en .
+
+
+#################################################################
+#    Individuals — Game Modes
+#################################################################
+
+asoft:GameMode_TDM rdf:type owl:NamedIndividual ,
+                            asoft:GameMode ;
+    rdfs:label "Team Deathmatch"@en ;
+    rdfs:comment "Standard elimination-based game mode. Team with most kills wins."@en .
+
+asoft:GameMode_Domination rdf:type owl:NamedIndividual ,
+                                   asoft:GameMode ;
+    rdfs:label "Domination"@en ;
+    rdfs:comment "Objective-based mode with capture points. Hold objectives to accumulate points."@en .
+
+asoft:GameMode_VIPEscort rdf:type owl:NamedIndividual ,
+                                  asoft:GameMode ;
+    rdfs:label "VIP Escort"@en ;
+    rdfs:comment "Asymmetric mode where one team escorts a VIP to extraction while the other team intercepts."@en .
+
+asoft:GameMode_MilSim rdf:type owl:NamedIndividual ,
+                               asoft:GameMode ;
+    rdfs:label "MilSim"@en ;
+    rdfs:comment "Military simulation mode with multi-phase objectives, radio comms, and tactical realism."@en .

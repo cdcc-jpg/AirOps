@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AirOps — Ontology-powered airsoft tactical operations platform for real-time situational awareness, game management, and chrono compliance.">
+  <title>AirOps — Tactical Operations Platform</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+  <!-- ═══ Loading Screen ═══ -->
+  <div id="loading-screen">
+    <div class="loading-logo">AIROPS</div>
+    <div class="loading-bar">
+      <div class="loading-bar-fill"></div>
+    </div>
+    <div class="loading-text">Initializing...</div>
+  </div>
+
+  <!-- ═══ Main App Layout ═══ -->
+  <div id="app">
+
+    <!-- ─── Sidebar ─── -->
+    <aside id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand">
+          <div class="logo">🎯</div>
+          <div>
+            <h1>AIROPS</h1>
+            <div class="subtitle">Tactical Operations Platform</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-tabs">
+        <div class="sidebar-tab active" data-tab="players">Players</div>
+        <div class="sidebar-tab" data-tab="chrono">Chrono</div>
+        <div class="sidebar-tab" data-tab="builder">Builder</div>
+        <div class="sidebar-tab" data-tab="aar">AAR</div>
+      </nav>
+
+      <div class="sidebar-content">
+        <div class="sidebar-panel active" id="panel-players">
+          <!-- Populated by JS -->
+        </div>
+        <div class="sidebar-panel" id="panel-chrono">
+          <!-- Populated by JS -->
+        </div>
+        <div class="sidebar-panel" id="panel-builder">
+          <!-- Populated by JS -->
+        </div>
+        <div class="sidebar-panel" id="panel-aar">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- ─── Tactical Map ─── -->
+    <main id="map-area">
+      <canvas id="tactical-map"></canvas>
+
+      <!-- Map info overlay -->
+      <div class="map-info">
+        <div class="game-phase-badge" id="game-phase-badge">
+          <div class="dot"></div>
+          <span>Loading...</span>
+        </div>
+      </div>
+
+      <!-- Map controls -->
+      <div class="map-controls">
+        <button class="map-btn active" id="btn-players" title="Toggle player markers">👥</button>
+        <button class="map-btn active" id="btn-labels" title="Toggle zone labels">🏷️</button>
+        <button class="map-btn" id="btn-heatmap" title="Toggle heatmap">🔥</button>
+        <button class="map-btn" id="btn-reset" title="Reset view">⟳</button>
+      </div>
+
+      <!-- Score display -->
+      <div class="score-display" id="score-display">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Zone tooltip -->
+      <div class="zone-tooltip" id="zone-tooltip"></div>
+    </main>
+
+    <!-- ─── Live Feed ─── -->
+    <section id="live-feed">
+      <div class="feed-header">
+        <h3>
+          <span class="feed-dot"></span>
+          Live Operations Feed
+        </h3>
+        <div class="feed-filters">
+          <button class="feed-filter active" data-filter="all">All</button>
+          <button class="feed-filter" data-filter="elimination">Kills</button>
+          <button class="feed-filter" data-filter="objective_capture">Obj</button>
+          <button class="feed-filter" data-filter="violation">Violations</button>
+        </div>
+      </div>
+      <div class="feed-entries" id="feed-entries">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+  </div>
+
+  <!-- ─── Player Detail Overlay ─── -->
+  <div class="player-detail-overlay" id="player-detail-overlay">
+    <div class="player-detail" id="player-detail">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- ─── App Script ─── -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

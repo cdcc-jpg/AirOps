@@ -3,7 +3,7 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-asoft:AirsoftReplica a sh:NodeShape ;
+asoft:AirsoftReplicaShape a sh:NodeShape ;
     sh:targetClass asoft:AirsoftReplica ;
     sh:property [
         sh:path asoft:hasPowerLimit ;
@@ -11,5 +11,67 @@ asoft:AirsoftReplica a sh:NodeShape ;
         sh:datatype xsd:decimal ;
         sh:name "Power Limit CHECK" ;
         sh:description "No replica can exceed the 1.2 Joule safety limit." ;
-        sh:message "Power Limit VIOLATION detected: Replica should not exceed the 1.2 Joule maximum output." ;
+        sh:message "Power Limit VIOLATION: Replica exceeds the 1.2 Joule maximum output." ;
+    ] ;
+    sh:property [
+        sh:path asoft:hasFPS ;
+        sh:datatype xsd:integer ;
+        sh:maxInclusive 500 ;
+        sh:name "FPS Max Limit" ;
+        sh:message "Velocity VIOLATION: FPS exceeds extreme field safety limits (500 FPS)." ;
+    ] ;
+    sh:property [
+        sh:path asoft:hasAmmunitionCapacity ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:message "Ammunition capacity must be a non-negative integer." ;
+    ] .
+
+# 2. BALLISTICS & CONSUMABLES (Enforcing Ontology Restrictions via SHACL)
+asoft:AirsoftBBShape a sh:NodeShape ;
+    sh:targetClass asoft:AirsoftBB ;
+    sh:property [
+        sh:path asoft:hasWeight ;
+        sh:datatype xsd:decimal ;
+        sh:maxInclusive 0.6 ;
+        sh:message "BB Weight VIOLATION: Projectile weight exceeds the certified 0.6g limit." ;
+    ] .
+
+asoft:AirsoftGrenadeShape a sh:NodeShape ;
+    sh:targetClass asoft:AirsoftGrenade ;
+    sh:property [
+        sh:path asoft:hasDecibel ;
+        sh:maxInclusive 120 ;
+        sh:datatype xsd:integer ;
+        sh:message "Noise Limit VIOLATION: Pyrotechnic/gas grenade sound pressure level exceeds 120 dB field safety threshold." ;
+    ] .
+
+# 3. GAMEPLAY & OBJECT RELATIONSHIPS (Graph Topology Validation)
+asoft:AirsoftPlayerShape a sh:NodeShape ;
+    sh:targetClass asoft:AirsoftPlayer ;
+    sh:property [
+        sh:path asoft:belongsToTeam ;
+        sh:class asoft:AirsoftTeam ;
+        sh:maxCount 1 ;
+        sh:message "Integrity Error: A player must belong to a valid AirsoftTeam and cannot be rostered on multiple teams simultaneously." ;
+    ] ;
+    sh:property [
+        sh:path asoft:playsOnField ;
+        sh:class asoft:AirsoftField ;
+        sh:message "Mapping Error: Object assigned to playsOnField must be an instance of AirsoftField." ;
+    ] ;
+    sh:property [
+        sh:path asoft:usesGear ;
+        sh:minCount 1 ;
+        sh:message "Safety Deployment Violation: Player must be mapped to at least one piece of AirsoftGear (e.g., Mandatory Eye Protection)." ;
+    ] .
+
+# 4. MARSHALLING & REGULATION VALIDATION
+asoft:AirsoftMarshallShape a sh:NodeShape ;
+    sh:targetClass asoft:AirsoftMarshall ;
+    sh:property [
+        sh:path asoft:enforcesRule ;
+        sh:class asoft:AirsoftRule ;
+        sh:minCount 1 ;
+        sh:message "Operational Error: Active marshalls must be associated with enforcing at least one AirsoftRule." ;
     ] .
