@@ -6,13 +6,13 @@
  *   Phase 3: Active Game Operations & Matchmaking Analytics
  */
 
-import { OntologyEngine } from './ontology-engine.js?v=6';
-import { TacticalMap } from './tactical-map.js?v=6';
-import { ChronoFeed } from './chrono-feed.js?v=6';
-import { IntelEngine } from './intel.js?v=6';
-import { PenaltyEngine } from './penalty-engine.js?v=6';
-import { FuzzyBalanceEngine } from './fuzzy-balance.js?v=6';
-import { MatchmakingEngine } from './matchmaking.js?v=6';
+import { OntologyEngine } from './ontology-engine.js?v=2.11.1';
+import { TacticalMap } from './tactical-map.js?v=2.11.1';
+import { ChronoFeed } from './chrono-feed.js?v=2.11.1';
+import { IntelEngine } from './intel.js?v=2.11.1';
+import { PenaltyEngine } from './penalty-engine.js?v=2.11.1';
+import { FuzzyBalanceEngine } from './fuzzy-balance.js?v=2.11.1';
+import { MatchmakingEngine } from './matchmaking.js?v=2.11.1';
 
 class AirOpsApp {
   constructor() {
@@ -71,6 +71,8 @@ class AirOpsApp {
     this.penalty = new PenaltyEngine(this.engine);
     this.balance = new FuzzyBalanceEngine(this.engine, this.intel);
     this.matchmaker = new MatchmakingEngine(this.engine, this.intel);
+    this._optimizedGameday = { weather: 'Dry', marshallCount: 3, enrolledPlayersCount: 0, marshallRatio: '0.000', suggestedMode: 'Full Site Domination', modeReason: 'Initializing...', warnings: [] };
+    await this._updateMatchmakingSuggestions();
     this._showLoading('Rendering tactical control map...', 70);
 
     // Init map
@@ -106,6 +108,14 @@ class AirOpsApp {
     const label = document.querySelector('.loading-text');
     if (bar) bar.style.width = percent + '%';
     if (label) label.textContent = text;
+  }
+
+  async _updateMatchmakingSuggestions() {
+    this._optimizedGameday = await this.matchmaker.optimizeGameday(
+      this._gamedayConditions.weather,
+      this._gamedayConditions.marshallCount,
+      this.engine.players.length
+    );
   }
 
   // ─── Central UI Refresh ────────────────────────────────────
@@ -164,11 +174,17 @@ class AirOpsApp {
     if (!panel) return;
 
     // Run matchmaking optimizer
-    const opt = this.matchmaker.optimizeGameday(
-      this._gamedayConditions.weather,
-      this._gamedayConditions.marshallCount,
-      this.engine.players.length
-    );
+    const opt = this._optimizedGameday || {
+      weather: 'Dry',
+      marshallCount: 3,
+      enrolledPlayersCount: 0,
+      marshallRatio: '0.000',
+      suggestedMode: 'Full Site Domination',
+      modeReason: 'Connecting to semantic server...',
+      warnings: []
+    };
+
+    const warnings = opt.warnings || [];
 
     panel.innerHTML = `
       <div class="gb-section" style="margin-top: 0;">
@@ -191,7 +207,7 @@ class AirOpsApp {
             <div class="form-group">
               <label>Players Enrolled</label>
               <div style="background: var(--bg-tertiary); border: 1px solid var(--border-primary); padding: 5px; font-size: 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-mono); text-align: center;">
-                ${opt.enrolledPlayersCount}
+                ${opt.enrolledPlayersCount || 0}
               </div>
             </div>
           </div>
@@ -207,23 +223,23 @@ class AirOpsApp {
         <div style="background: var(--bg-card); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-primary); font-size: 0.75rem; line-height: 1.4;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
             <span class="label">Suggested Game Mode:</span>
-            <span class="value" style="color: var(--accent-cyan); font-weight: bold;">${opt.suggestedMode}</span>
+            <span class="value" style="color: var(--accent-cyan); font-weight: bold;">${opt.suggestedMode || 'Full Site Domination'}</span>
           </div>
           <div style="color: var(--text-secondary); margin-bottom: 8px; font-size: 0.7rem; font-style: italic;">
-            Reason: ${opt.modeReason}
+            Reason: ${opt.modeReason || ''}
           </div>
           <div style="display: flex; justify-content: space-between;">
             <span class="label">Marshall Safety Ratio:</span>
-            <span class="value" style="font-family: var(--font-mono);">${opt.marshallRatio} (1:${Math.round(opt.enrolledPlayersCount / opt.marshallCount) || 0})</span>
+            <span class="value" style="font-family: var(--font-mono);">${opt.marshallRatio || '0.000'} (1:${Math.round(opt.enrolledPlayersCount / opt.marshallCount) || 0})</span>
           </div>
         </div>
       </div>
 
-      ${opt.warnings.length > 0 ? `
+      ${warnings.length > 0 ? `
         <div class="gb-section">
           <div class="gb-section-title" style="color: var(--status-fail);">⚠️ Warnings & Constraints</div>
           <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
-            ${opt.warnings.map(w => `
+            ${warnings.map(w => `
               <div style="padding: 6px 8px; background: rgba(231,76,60,0.06); border: 1px solid rgba(231,76,60,0.15); border-radius: 4px; color: var(--accent-red); font-size: 0.65rem;">
                 ${w}
               </div>
@@ -235,10 +251,11 @@ class AirOpsApp {
 
     // Hook listeners
     const setupLock = document.getElementById('btn-lock-setup');
-    setupLock?.addEventListener('click', () => {
+    setupLock?.addEventListener('click', async () => {
       this._setupLocked = true;
       this._gamedayConditions.weather = document.getElementById('se-weather').value;
       this._gamedayConditions.marshallCount = parseInt(document.getElementById('se-marshalls').value);
+      await this._updateMatchmakingSuggestions();
       this._updateUI();
       // Auto transition to Sign-in
       document.querySelector('.sidebar-tab[data-tab="signin"]').click();
@@ -417,7 +434,7 @@ class AirOpsApp {
     `;
   }
 
-  _handlePlayerCheckIn() {
+  async _handlePlayerCheckIn() {
     const name = document.getElementById('ci-name').value;
     const callsignName = document.getElementById('ci-callsign').value;
     const role = document.getElementById('ci-role').value;
@@ -500,7 +517,7 @@ class AirOpsApp {
       marshallAction: compliance === 'BANNED' ? 'EJECTED' : 'CLEARED'
     };
 
-    this.engine.players.push(newPlayer);
+    await this.engine.addPlayer(newPlayer);
     this.engine.chronoEvents.unshift(newChronoLog);
 
     this._rebuildEngines();
@@ -509,22 +526,40 @@ class AirOpsApp {
     alert(`Sign-in logged. Callsign: ${callsign} assigned to unassigned pool.`);
   }
 
-  _handleMatchmakingTrigger() {
+  async _handleMatchmakingTrigger() {
     const eligible = this.engine.players.filter(p => p.compliance !== 'BANNED' && p.status !== 'OUT');
     if (eligible.length === 0) {
       alert("No checked-in, eligible players in the pool!");
       return;
     }
 
-    // Run partition matchmaking
-    const rosters = this.matchmaker.generateTeams(eligible);
+    // Run partition matchmaking on Python RDF backend
+    const rosters = await this.matchmaker.generateTeams(
+      eligible,
+      this._gamedayConditions.weather,
+      this._gamedayConditions.marshallCount
+    );
 
-    // Write back assignments to memory-graph store
-    for (const p of rosters.nonband) {
-      this.engine.assignPlayerTeam(p.id, 'nonband');
+    if (!rosters) {
+      alert("Matchmaking execution failed on Python RDF backend!");
+      return;
     }
-    for (const p of rosters.band) {
-      this.engine.assignPlayerTeam(p.id, 'band');
+
+    // Apply assignments to local player profiles
+    for (const p of this.engine.players) {
+      if (rosters.nonband.includes(p.id)) {
+        p.team = 'nonband';
+        p.teamName = 'Non-Band';
+        p.teamColor = '#888888';
+      } else if (rosters.band.includes(p.id)) {
+        p.team = 'band';
+        p.teamName = 'Band';
+        p.teamColor = '#f1c40f';
+      } else {
+        p.team = 'unassigned';
+        p.teamName = 'Unassigned';
+        p.teamColor = '#888888';
+      }
     }
 
     this._rebuildEngines();
@@ -743,7 +778,7 @@ class AirOpsApp {
     }, 1000);
   }
 
-  _handleKillSubmission() {
+  async _handleKillSubmission() {
     const attackerId = document.getElementById('k-attacker').value;
     const targetId = document.getElementById('k-target').value;
     const zoneId = document.getElementById('k-zone').value;
@@ -764,7 +799,7 @@ class AirOpsApp {
     target.isAlive = false;
 
     // Append to events (reflecting in memory store)
-    this.engine.addGameEvent({
+    await this.engine.addGameEvent({
       type: 'elimination',
       timestamp: new Date().toISOString(),
       attackerId: attacker.id,
@@ -790,7 +825,7 @@ class AirOpsApp {
     alert(`Logged: ${attacker.callsign} eliminated ${target.callsign}.`);
   }
 
-  _handleViolationSubmission() {
+  async _handleViolationSubmission() {
     const playerId = document.getElementById('v-player').value;
     const vtype = document.getElementById('v-type').value;
     const zoneId = document.getElementById('v-zone').value;
@@ -805,13 +840,13 @@ class AirOpsApp {
     player.warnings.push({ type: vtype, count: existingCount + 1 });
 
     if (action === 'EJECTED' || action === 'BANNED_FOR_DAY') {
-      this.engine.updatePlayerCompliance(player.id, 'BANNED');
+      await this.engine.updatePlayerCompliance(player.id, 'BANNED');
     } else if (action !== 'WARNING') {
-      this.engine.updatePlayerCompliance(player.id, 'FLAGGED');
-      this.engine.updatePlayerStatus(player.id, 'RESPAWNING');
+      await this.engine.updatePlayerCompliance(player.id, 'FLAGGED');
+      await this.engine.updatePlayerStatus(player.id, 'RESPAWNING');
     }
 
-    this.engine.addGameEvent({
+    await this.engine.addGameEvent({
       type: 'violation',
       timestamp: new Date().toISOString(),
       playerId: player.id,
@@ -836,94 +871,97 @@ class AirOpsApp {
     const panel = document.getElementById('panel-queries');
     if (!panel) return;
 
-    const players = this.engine.players.filter(p => {
-      const f = this._queryFilters;
-      if (f.team !== 'all' && p.team !== f.team) return false;
-      if (f.role !== 'all' && p.role !== f.role) return false;
-      if (f.compliance !== 'all' && p.compliance !== f.compliance) return false;
-      if (f.powerSource !== 'all' && p.gear.primary.powerSource !== f.powerSource) return false;
-      if (f.text) {
-        const t = f.text.toLowerCase();
-        return p.name.toLowerCase().includes(t) ||
-               p.callsign.toLowerCase().includes(t) ||
-               p.id.toLowerCase().includes(t) ||
-               p.gear.primary.name.toLowerCase().includes(t) ||
-               (p.chrono?.tier || '').toLowerCase().includes(t);
-      }
-      return true;
-    });
+    const defaultQuery = `PREFIX asoft: <https://github.com/cdcc-jpg/ontologies#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+SELECT ?player ?callsign ?joules ?compliance
+WHERE {
+  ?player a asoft:AirsoftPlayer ;
+          asoft:callsign ?callsign ;
+          asoft:complianceStatus ?compliance ;
+          asoft:usesGear ?replica .
+  ?replica asoft:hasPowerLimit ?joules .
+}
+ORDER BY DESC(?joules)
+LIMIT 8`;
 
     panel.innerHTML = `
       <div class="gb-section" style="margin-top: 0;">
-        <div class="gb-section-title">Semantic Query Board</div>
+        <div class="gb-section-title">SPARQL Editor (Python rdflib)</div>
         <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
-          <input type="text" class="search-box" id="query-text" placeholder="Search keyword, role, or tier..." value="${this._queryFilters.text}">
-          
-          <div class="detail-row" style="padding: 2px 0;">
-            <span class="label">Team</span>
-            <select class="search-box" id="query-team" style="width: 150px; padding: 4px;">
-              <option value="all" ${this._queryFilters.team === 'all' ? 'selected' : ''}>All</option>
-              <option value="nonband" ${this._queryFilters.team === 'nonband' ? 'selected' : ''}>Non-Band (Grey)</option>
-              <option value="band" ${this._queryFilters.team === 'band' ? 'selected' : ''}>Band (Yellow)</option>
-              <option value="unassigned" ${this._queryFilters.team === 'unassigned' ? 'selected' : ''}>Unassigned</option>
-            </select>
-          </div>
-
-          <div class="detail-row" style="padding: 2px 0;">
-            <span class="label">Compliance</span>
-            <select class="search-box" id="query-compliance" style="width: 150px; padding: 4px;">
-              <option value="all" ${this._queryFilters.compliance === 'all' ? 'selected' : ''}>All</option>
-              <option value="CLEARED" ${this._queryFilters.compliance === 'CLEARED' ? 'selected' : ''}>Cleared</option>
-              <option value="FLAGGED" ${this._queryFilters.compliance === 'FLAGGED' ? 'selected' : ''}>Flagged</option>
-              <option value="BANNED" ${this._queryFilters.compliance === 'BANNED' ? 'selected' : ''}>Banned</option>
-            </select>
-          </div>
-
-          <div class="detail-row" style="padding: 2px 0;">
-            <span class="label">Power Source</span>
-            <select class="search-box" id="query-power" style="width: 150px; padding: 4px;">
-              <option value="all" ${this._queryFilters.powerSource === 'all' ? 'selected' : ''}>All</option>
-              <option value="Electric (LiPo)" ${this._queryFilters.powerSource === 'Electric (LiPo)' ? 'selected' : ''}>Electric (LiPo)</option>
-              <option value="Green Gas" ${this._queryFilters.powerSource === 'Green Gas' ? 'selected' : ''}>Green Gas</option>
-              <option value="HPA (High Pressure Air)" ${this._queryFilters.powerSource === 'HPA (High Pressure Air)' ? 'selected' : ''}>HPA</option>
-              <option value="Spring Action" ${this._queryFilters.powerSource === 'Spring Action' ? 'selected' : ''}>Spring Action</option>
-            </select>
-          </div>
+          <textarea id="sparql-query-input" class="search-box" style="font-family: var(--font-mono); font-size: 0.7rem; height: 160px; width: 100%; resize: vertical; line-height: 1.3; background: #12161a; padding: 8px; border-color: var(--border-primary);" spellcheck="false">${defaultQuery}</textarea>
+          <button class="btn btn-primary" id="btn-run-sparql" style="width: 100%; margin-top: 6px;">⚡ Execute SPARQL Query</button>
         </div>
       </div>
 
       <div class="gb-section">
-        <div class="gb-section-title">Query Results (${players.length} matched)</div>
-        <div id="query-results-list" style="max-height: 400px; overflow-y: auto;">
-          ${players.length === 0 ? '<div style="font-size: 0.75rem; color: var(--text-muted); padding: 8px;">No matching records found.</div>' : players.map(p => this._renderSignRosterCard(p)).join('')}
+        <div class="gb-section-title">Execution Console Output</div>
+        <div id="sparql-status" style="font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 6px; font-family: var(--font-mono);">Ready. Enter SELECT query.</div>
+        <div id="sparql-results-container" style="max-height: 250px; overflow-y: auto; overflow-x: auto; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-primary); font-size: 0.65rem;">
+          <div style="padding: 12px; color: var(--text-muted); text-align: center;">No query results loaded.</div>
         </div>
       </div>
     `;
 
-    // Hook filters
-    panel.querySelector('#query-text').addEventListener('input', (e) => {
-      this._queryFilters.text = e.target.value;
-      this._renderQueriesPanel();
-    });
-    panel.querySelector('#query-team').addEventListener('change', (e) => {
-      this._queryFilters.team = e.target.value;
-      this._renderQueriesPanel();
-    });
-    panel.querySelector('#query-compliance').addEventListener('change', (e) => {
-      this._queryFilters.compliance = e.target.value;
-      this._renderQueriesPanel();
-    });
-    panel.querySelector('#query-power').addEventListener('change', (e) => {
-      this._queryFilters.powerSource = e.target.value;
-      this._renderQueriesPanel();
-    });
+    // Hook execute button
+    document.getElementById('btn-run-sparql')?.addEventListener('click', async () => {
+      const qInput = document.getElementById('sparql-query-input').value;
+      const statusEl = document.getElementById('sparql-status');
+      const resultsContainer = document.getElementById('sparql-results-container');
+      
+      statusEl.textContent = 'Executing query over Python RDF Graph...';
+      statusEl.style.color = 'var(--accent-cyan)';
+      
+      const startTime = performance.now();
+      try {
+        const res = await fetch('/api/query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: qInput })
+        });
+        const data = await res.json();
+        const duration = (performance.now() - startTime).toFixed(1);
 
-    // Wire clicks
-    panel.querySelectorAll('.player-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const player = this.engine.getPlayer(card.dataset.playerId);
-        if (player) this._showPlayerDetail(player);
-      });
+        if (data.error) {
+          statusEl.textContent = `Error: ${data.error}`;
+          statusEl.style.color = 'var(--accent-red)';
+          resultsContainer.innerHTML = `<div style="padding: 12px; color: var(--accent-red); font-family: var(--font-mono); font-size: 0.65rem; white-space: pre-wrap;">${data.error}</div>`;
+          return;
+        }
+
+        statusEl.textContent = `Completed in ${duration}ms · Returned ${data.results.length} rows`;
+        statusEl.style.color = 'var(--accent-green)';
+
+        if (data.results.length === 0) {
+          resultsContainer.innerHTML = '<div style="padding: 12px; color: var(--text-muted); text-align: center;">Empty result set.</div>';
+          return;
+        }
+
+        // Render table
+        let tableHTML = `<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-mono); font-size: 0.62rem;">`;
+        tableHTML += `<thead style="background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border-primary);"><tr>`;
+        for (const v of data.vars) {
+          tableHTML += `<th style="padding: 6px; font-weight: bold; color: var(--text-heading); border-right: 1px solid rgba(255,255,255,0.05);">${v}</th>`;
+        }
+        tableHTML += `</tr></thead><tbody>`;
+
+        for (const row of data.results) {
+          tableHTML += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.02); hover: background-color: var(--bg-hover);">`;
+          for (const v of data.vars) {
+            let val = row[v] || "";
+            // Truncate URIs to make output clean
+            if (val.includes('#')) val = val.split('#')[1];
+            tableHTML += `<td style="padding: 6px; border-right: 1px solid rgba(255,255,255,0.05); white-space: nowrap; max-width: 140px; overflow: hidden; text-overflow: ellipsis;" title="${row[v]}">${val}</td>`;
+          }
+          tableHTML += `</tr>`;
+        }
+        tableHTML += `</tbody></table>`;
+        resultsContainer.innerHTML = tableHTML;
+      } catch (err) {
+        statusEl.textContent = `Fatal: ${err.message}`;
+        statusEl.style.color = 'var(--accent-red)';
+        resultsContainer.innerHTML = `<div style="padding: 12px; color: var(--accent-red); font-family: var(--font-mono);">${err.message}</div>`;
+      }
     });
   }
 
@@ -1086,32 +1124,32 @@ class AirOpsApp {
     });
 
     // Control callbacks
-    document.getElementById('modal-btn-status')?.addEventListener('click', () => {
+    document.getElementById('modal-btn-status')?.addEventListener('click', async () => {
       const s = document.getElementById('modal-status').value;
-      this.engine.updatePlayerStatus(player.id, s);
+      await this.engine.updatePlayerStatus(player.id, s);
       this._rebuildEngines();
       this._updateUI();
       this._showPlayerDetail(player);
     });
 
-    document.getElementById('modal-btn-team')?.addEventListener('click', () => {
+    document.getElementById('modal-btn-team')?.addEventListener('click', async () => {
       const t = document.getElementById('modal-team').value;
-      this.engine.assignPlayerTeam(player.id, t);
+      await this.engine.assignPlayerTeam(player.id, t);
       this._rebuildEngines();
       this._updateUI();
       this._showPlayerDetail(player);
     });
 
-    document.getElementById('modal-btn-chrono')?.addEventListener('click', () => {
+    document.getElementById('modal-btn-chrono')?.addEventListener('click', async () => {
       const fps = parseInt(document.getElementById('modal-fps').value);
       const joules = parseFloat(document.getElementById('modal-joules').value);
-      this.engine.updatePlayerChrono(player.id, fps, joules, player.chrono.bbWeight);
+      await this.engine.updatePlayerChrono(player.id, fps, joules, player.chrono.bbWeight);
       this._rebuildEngines();
       this._updateUI();
       this._showPlayerDetail(player);
     });
 
-    document.getElementById('modal-btn-violation')?.addEventListener('click', () => {
+    document.getElementById('modal-btn-violation')?.addEventListener('click', async () => {
       const vtype = document.getElementById('modal-violation').value;
       if (!vtype) return;
 
@@ -1122,13 +1160,13 @@ class AirOpsApp {
       player.warnings.push({ type: vtype, count: count + 1 });
 
       if (action === 'EJECTED' || action === 'BANNED_FOR_DAY') {
-        this.engine.updatePlayerCompliance(player.id, 'BANNED');
+        await this.engine.updatePlayerCompliance(player.id, 'BANNED');
       } else if (action !== 'WARNING') {
-        this.engine.updatePlayerCompliance(player.id, 'FLAGGED');
-        this.engine.updatePlayerStatus(player.id, 'RESPAWNING');
+        await this.engine.updatePlayerCompliance(player.id, 'FLAGGED');
+        await this.engine.updatePlayerStatus(player.id, 'RESPAWNING');
       }
 
-      this.engine.addGameEvent({
+      await this.engine.addGameEvent({
         type: 'violation',
         timestamp: new Date().toISOString(),
         playerId: player.id,

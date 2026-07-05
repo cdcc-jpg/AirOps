@@ -16,7 +16,7 @@
     dcterms:creator "clement.dhollande@leurn.co" ;
     dcterms:description "Extension ontology for AirOps game operations — tactical maps, game sessions, field zones, in-game events, player roles, and compliance tracking." ;
     dcterms:title "Airsoft Game Operations Ontology" ;
-    owl:versionInfo "0.1" .
+    owl:versionInfo "2.11.0"^^xsd:string .
 
 
 #################################################################

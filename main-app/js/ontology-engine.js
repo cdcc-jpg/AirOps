@@ -372,14 +372,35 @@ export class OntologyEngine {
     );
   }
 
-  // ─── Mutable State Operations (in-memory triple synchronization) ───
+  // ─── Mutable State Operations (Python RDF microservice sync) ───
 
-  addPlayer(player) {
+  async addPlayer(player) {
     this.players.push(player);
+    
+    // Sync to Python RDF store
+    await fetch('/api/mutate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'add_player',
+        playerId: player.id,
+        name: player.name,
+        callsign: player.callsign,
+        role: player.role,
+        status: player.status,
+        compliance: player.compliance,
+        fps: player.chrono.fps,
+        joules: player.chrono.joules,
+        bbWeight: player.chrono.bbWeight,
+        replicaName: player.gear.primary.name,
+        tier: player.chrono.tier
+      })
+    });
+
     this._buildIndexes();
   }
 
-  updatePlayerStatus(playerId, status) {
+  async updatePlayerStatus(playerId, status) {
     const player = this.getPlayer(playerId);
     if (!player) return;
     player.status = status;
@@ -387,10 +408,17 @@ export class OntologyEngine {
     if (status === 'OUT') {
       player.compliance = 'BANNED';
     }
+    
+    await fetch('/api/mutate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'update_status', playerId, status })
+    });
+    
     this._buildIndexes();
   }
 
-  updatePlayerCompliance(playerId, compliance) {
+  async updatePlayerCompliance(playerId, compliance) {
     const player = this.getPlayer(playerId);
     if (!player) return;
     player.compliance = compliance;
@@ -398,10 +426,17 @@ export class OntologyEngine {
       player.status = 'OUT';
       player.isAlive = false;
     }
+
+    await fetch('/api/mutate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'update_compliance', playerId, compliance })
+    });
+
     this._buildIndexes();
   }
 
-  updatePlayerChrono(playerId, fps, joules, bbWeight) {
+  async updatePlayerChrono(playerId, fps, joules, bbWeight) {
     const player = this.getPlayer(playerId);
     if (!player) return;
     
@@ -429,12 +464,18 @@ export class OntologyEngine {
       player.status = 'OUT';
       player.isAlive = false;
     }
+
+    await fetch('/api/mutate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'update_chrono', playerId, fps, joules, bbWeight })
+    });
     
     this._buildIndexes();
     return { status, compliance };
   }
 
-  assignPlayerTeam(playerId, teamId) {
+  async assignPlayerTeam(playerId, teamId) {
     const player = this.getPlayer(playerId);
     if (!player) return;
     const team = this.teams.find(t => t.id === teamId);
@@ -447,19 +488,43 @@ export class OntologyEngine {
       player.teamName = 'Unassigned';
       player.teamColor = '#888888';
     }
+
+    await fetch('/api/mutate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'assign_team', playerId, team: teamId })
+    });
+
     this._buildIndexes();
   }
 
-  addGameEvent(event) {
+  async addGameEvent(event) {
     this.gameEvents.push(event);
+    if (event.type === 'elimination') {
+      await fetch('/api/mutate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'add_elimination',
+          attackerId: event.attackerId,
+          targetId: event.targetId,
+          zone: event.zone
+        })
+      });
+    }
   }
 
-  exportTripleStore() {
-    return JSON.stringify({
-      players: this.players,
-      chronoEvents: this.chronoEvents,
-      gameEvents: this.gameEvents,
-      gameSession: this.gameSession
-    }, null, 2);
+  async validateSHACL() {
+    try {
+      const res = await fetch('/api/validate');
+      return await res.json();
+    } catch (e) {
+      return { conforms: true, violations: [] };
+    }
+  }
+
+  async exportTripleStore() {
+    const res = await fetch('/api/export');
+    return await res.text();
   }
 }

@@ -1,0 +1,25 @@
+{
+  "name": "airops",
+  "version": "2.11.0",
+  "description": "Ontology-driven Airsoft Tactical Operations Platform",
+  "main": "main-app/server.py",
+  "scripts": {
+    "start": "python3 main-app/server.py",
+    "test:semantic": "python3 scripts/test_rdf_server.py"
+  },
+  "keywords": [
+    "airsoft",
+    "ontology",
+    "sparql",
+    "rdf",
+    "shacl",
+    "pyshacl"
+  ],
+  "author": "clement.dhollande@leurn.co",
+  "license": "MIT",
+  "dependencies": {
+    "flask": "^2.0.0",
+    "rdflib": "^6.0.0",
+    "pyshacl": "^0.18.0"
+  }
+}

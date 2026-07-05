@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPARQL Academy — Interactive Semantic Sandbox</title>
+  
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- CodeMirror CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
+  
+  <style>
+    :root {
+      /* Curated Slate Neutral Color Palette */
+      --bg-primary: #0a0d10;
+      --bg-secondary: #0e1217;
+      --bg-tertiary: #131920;
+      --bg-card: #182029;
+      --bg-hover: #1e2834;
+      
+      --border-primary: rgba(255, 255, 255, 0.07);
+      --border-focus: rgba(33, 150, 243, 0.4);
+      
+      --text-heading: #eef2f7;
+      --text-primary: #cbd5e1;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --accent-cyan: #00e5ff;
+      --accent-green: #2ecc71;
+      --accent-red: #e74c3c;
+      --accent-amber: #f39c12;
+      
+      --font-sans: 'Outfit', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      
+      --space-xs: 8px;
+      --space-sm: 12px;
+      --space-md: 16px;
+      --space-lg: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header styling */
+    header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
+      padding: 0 var(--space-md);
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #2196f3, var(--accent-cyan));
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-primary);
+      font-weight: 700;
+      font-size: 0.8rem;
+    }
+
+    .app-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: var(--text-heading);
+    }
+
+    .app-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      background: var(--bg-primary);
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-primary);
+    }
+
+    /* Layout divisions */
+    .sandbox-container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      height: calc(100vh - 52px);
+      background-color: var(--bg-primary);
+    }
+
+    /* Column sections */
+    .sidebar {
+      background-color: var(--bg-secondary);
+      border-right: 1px solid var(--border-primary);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .sidebar-right {
+      border-right: none;
+      border-left: 1px solid var(--border-primary);
+    }
+
+    .sidebar-header {
+      padding: var(--space-sm);
+      border-bottom: 1px solid var(--border-primary);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-heading);
+      background-color: rgba(255, 255, 255, 0.01);
+    }
+
+    .scroll-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: var(--space-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+    }
+
+    /* Main Console section */
+    .console-pane {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* CodeMirror Overrides */
+    .CodeMirror {
+      height: 220px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      border-bottom: 1px solid var(--border-primary);
+      background-color: #0b0d10 !important;
+    }
+
+    /* Action bar controls */
+    .action-bar {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
+      padding: 8px var(--space-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 0.78rem;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-cyan);
+      color: var(--bg-primary);
+      font-weight: 600;
+    }
+    .btn-primary:hover {
+      background-color: #00c6dd;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border-color: var(--border-primary);
+      color: var(--text-secondary);
+    }
+    .btn-secondary:hover {
+      background-color: var(--bg-hover);
+      color: var(--text-heading);
+    }
+
+    /* Mission cards styling */
+    .mission-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mission-card:hover {
+      background-color: var(--bg-hover);
+      border-color: var(--text-muted);
+    }
+
+    .mission-card.active {
+      border-color: var(--accent-cyan);
+      background-color: rgba(0, 229, 255, 0.02);
+    }
+
+    .mission-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+    }
+
+    .mission-level {
+      color: var(--accent-cyan);
+    }
+
+    .mission-status {
+      padding: 1px 4px;
+      border-radius: 2px;
+      font-size: 0.6rem;
+    }
+    .status-todo { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+    .status-done { background: rgba(46,204,113,0.15); color: var(--accent-green); }
+
+    .mission-title {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-heading);
+    }
+
+    /* Mission Details display panel */
+    .mission-detail-panel {
+      background-color: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-md);
+      padding: var(--space-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .mission-desc {
+      font-size: 0.78rem;
+      line-height: 1.4;
+      color: var(--text-secondary);
+    }
+
+    .mission-constraint {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      background-color: var(--bg-primary);
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-primary);
+      color: var(--accent-amber);
+    }
+
+    /* Tab Layout Outputs */
+    .output-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .tabs-header {
+      background-color: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-primary);
+      display: flex;
+    }
+
+    .tab-btn {
+      padding: var(--space-sm) var(--space-md);
+      background-color: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-heading);
+    }
+
+    .tab-btn.active {
+      color: var(--accent-cyan);
+      border-bottom-color: var(--accent-cyan);
+      background-color: rgba(255, 255, 255, 0.01);
+    }
+
+    .tab-content {
+      flex: 1;
+      display: none;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Graph Visualizer container */
+    #graph-container {
+      width: 100%;
+      height: 100%;
+      background-color: #0b0d10;
+    }
+
+    /* Data grid styling */
+    .table-container {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.02);
+      color: var(--text-heading);
+      font-weight: 600;
+      padding: 10px;
+      border-bottom: 1px solid var(--border-primary);
+      border-right: 1px solid rgba(255, 255, 255, 0.03);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      border-right: 1px solid rgba(255, 255, 255, 0.02);
+      color: var(--text-primary);
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    tr:hover {
+      background-color: var(--bg-hover);
+    }
+
+    /* Schema Tree dictionary list */
+    .schema-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+    }
+
+    .schema-category-title {
+      font-family: var(--font-sans);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-heading);
+      margin-top: 10px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .schema-item {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-sm);
+      padding: 6px 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      transition: all 0.15s ease;
+    }
+
+    .schema-item:hover {
+      border-color: var(--accent-cyan);
+      background-color: var(--bg-hover);
+    }
+
+    .schema-item-uri {
+      color: var(--accent-cyan);
+      font-weight: 500;
+    }
+
+    .schema-item-desc {
+      color: var(--text-secondary);
+      font-size: 0.65rem;
+    }
+
+    /* Console logs badge styling */
+    .validation-badge {
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 500;
+    }
+    .badge-ready { background: var(--bg-tertiary); color: var(--text-secondary); }
+    .badge-error { background: rgba(231,76,60,0.15); color: var(--accent-red); border: 1px solid rgba(231,76,60,0.25); }
+    .badge-success { background: rgba(46,204,113,0.15); color: var(--accent-green); border: 1px solid rgba(46,204,113,0.25); }
+
+    /* Float button back to main app */
+    .back-btn {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s ease;
+    }
+    .back-btn:hover {
+      color: var(--text-heading);
+    }
+
+    /* Scrollbars customization */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-primary);
+      border-radius: var(--radius-sm);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header>
+    <div class="logo-container">
+      <div class="logo-badge">S</div>
+      <div class="app-title">SPARQL Academy</div>
+      <div class="app-subtitle">AirOps v2.11 Sandbox</div>
+    </div>
+    <a href="/" class="back-btn">
+      ← Return to Tactical Console
+    </a>
+  </header>
+
+  <!-- Main divisions -->
+  <div class="sandbox-container">
+    
+    <!-- Left Sidebar: Guided Missions -->
+    <div class="sidebar">
+      <div class="sidebar-header">Practice Missions</div>
+      <div class="scroll-content" id="missions-list">
+        <!-- Loaded dynamically via JS -->
+      </div>
+    </div>
+    
+    <!-- Center Pane: Editor and Visual Output -->
+    <div class="console-pane">
+      <!-- Editor Container -->
+      <textarea id="editor"></textarea>
+      
+      <!-- Actions Toolbar -->
+      <div class="action-bar">
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-primary" id="btn-execute">⚡ Run Query</button>
+          <button class="btn btn-secondary" id="btn-reset">Reset Editor</button>
+        </div>
+        <div id="validation-status" class="validation-badge badge-ready">
+          Status: Ready
+        </div>
+      </div>
+      
+      <!-- Visual Tabs output -->
+      <div class="output-pane">
+        <div class="tabs-header">
+          <button class="tab-btn active" data-output="table">Data Grid</button>
+          <button class="tab-btn" data-output="graph">Relationship Network Graph</button>
+        </div>
+        
+        <!-- Table container -->
+        <div class="tab-content active" id="output-table">
+          <div class="table-container" id="grid-container">
+            <div style="padding: 24px; color: var(--text-muted); text-align: center;">No query results. Click "Run Query" to execute.</div>
+          </div>
+        </div>
+        
+        <!-- Cytoscape container -->
+        <div class="tab-content" id="output-graph">
+          <div id="graph-container"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right Sidebar: Interactive Dictionary -->
+    <div class="sidebar sidebar-right">
+      <div class="sidebar-header">Ontology Dictionary</div>
+      <div class="scroll-content">
+        <div class="schema-list" id="schema-dictionary">
+          <!-- Loaded dynamically via JS -->
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <!-- Third Party Libraries -->
+  <!-- CodeMirror core JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+  <!-- CodeMirror SPARQL mode -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/sparql/sparql.min.js"></script>
+  <!-- Cytoscape core JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+
+  <!-- App Main Code -->
+  <script type="module" src="js/sandbox.js?v=2.11.1"></script>
+</body>
+</html>

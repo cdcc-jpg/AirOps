@@ -16,7 +16,7 @@
                                            dcterms:creator "clement.dhollande@leurn.co" ;
                                            dcterms:description "A comprehensive ontology covering airsoft replicas, gear, and game rules." ;
                                            dcterms:title "An Airsoft Ontology" ;
-                                           owl:versionInfo "1.0" .
+                                           owl:versionInfo "2.11.0"^^xsd:string .
 
 #################################################################
 #    Annotation properties
