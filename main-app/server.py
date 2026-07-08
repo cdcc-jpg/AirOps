@@ -179,6 +179,20 @@ def run_query():
     query_str = request.json.get('query', '')
     try:
         res = graph.query(query_str)
+        # Check if result is a Graph (CONSTRUCT / DESCRIBE queries)
+        if isinstance(res, rdflib.Graph) or not hasattr(res, 'vars') or res.vars is None:
+            results = []
+            for s, p, o in res:
+                results.append({
+                    'subject': str(s),
+                    'predicate': str(p),
+                    'object': str(o)
+                })
+            return jsonify({
+                'vars': ['subject', 'predicate', 'object'],
+                'results': results
+            })
+
         results = []
         for row in res:
             row_dict = {}

@@ -499,10 +499,16 @@
   <!-- Main divisions -->
   <div class="sandbox-container">
     
-    <!-- Left Sidebar: Guided Missions -->
+    <!-- Left Sidebar: Guided Mode Toggle -->
     <div class="sidebar">
-      <div class="sidebar-header">Practice Missions</div>
+      <div class="sidebar-tabs" style="display: flex; border-bottom: 1px solid var(--border-primary); background-color: rgba(255,255,255,0.01);">
+        <button class="sidebar-tab active" id="tab-missions" style="flex: 1; padding: var(--space-sm); background: transparent; border: none; border-bottom: 2px solid var(--accent-cyan); color: var(--text-heading); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.15s ease;">Missions</button>
+        <button class="sidebar-tab" id="tab-tutorials" style="flex: 1; padding: var(--space-sm); background: transparent; border: none; border-bottom: 2px solid transparent; color: var(--text-secondary); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.15s ease;">Tutorials</button>
+      </div>
       <div class="scroll-content" id="missions-list">
+        <!-- Loaded dynamically via JS -->
+      </div>
+      <div class="scroll-content" id="tutorials-list" style="display: none;">
         <!-- Loaded dynamically via JS -->
       </div>
     </div>
@@ -511,6 +517,20 @@
     <div class="console-pane">
       <!-- Editor Container -->
       <textarea id="editor"></textarea>
+      
+      <!-- Tutorial Step Banner -->
+      <div id="tutorial-step-banner" style="display: none; background-color: var(--bg-tertiary); border-bottom: 1px solid var(--border-primary); padding: var(--space-sm) var(--space-md); flex-direction: column; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span id="tutorial-step-title" style="font-weight: 600; color: var(--accent-cyan); font-size: 0.8rem;">Step 1 of 3: The First Triple</span>
+          <div style="display: flex; gap: 6px;">
+            <button class="btn btn-secondary" id="btn-tutorial-hint" style="padding: 4px 8px; font-size: 0.65rem;">💡 Hint</button>
+            <button class="btn btn-secondary" id="btn-tutorial-prev" style="padding: 4px 8px; font-size: 0.65rem;">← Prev</button>
+            <button class="btn btn-primary" id="btn-tutorial-next" style="padding: 4px 8px; font-size: 0.65rem;" disabled>Next →</button>
+          </div>
+        </div>
+        <div id="tutorial-step-instruction" style="font-size: 0.78rem; line-height: 1.4; color: var(--text-primary);">...</div>
+        <div id="tutorial-step-hint" class="mission-constraint" style="margin-top: 4px; display: none;">...</div>
+      </div>
       
       <!-- Actions Toolbar -->
       <div class="action-bar">
@@ -563,6 +583,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/sparql/sparql.min.js"></script>
   <!-- Cytoscape core JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+  <!-- Cytoscape Dagre layout -->
+  <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
 
   <!-- App Main Code -->
   <script type="module" src="js/sandbox.js?v=2.11.1"></script>
