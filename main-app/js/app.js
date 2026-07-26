@@ -13,6 +13,7 @@ import { IntelEngine } from './intel.js?v=2.11.1';
 import { PenaltyEngine } from './penalty-engine.js?v=2.11.1';
 import { FuzzyBalanceEngine } from './fuzzy-balance.js?v=2.11.1';
 import { MatchmakingEngine } from './matchmaking.js?v=2.11.1';
+import { initOntologyVisualizer, openOntologyStudio } from './ontology-visualizer.js?v=2.11.1';
 
 class AirOpsApp {
   constructor() {
@@ -93,6 +94,7 @@ class AirOpsApp {
     this._setupMapControls();
     this._setupFeedFilters();
     this._setupTimer();
+    initOntologyVisualizer();
     this._updateUI();
 
     // Hide loading screen
@@ -164,6 +166,7 @@ class AirOpsApp {
       case 'signin': this._renderSignInPanel(); break;
       case 'gameview': this._renderGameviewPanel(); break;
       case 'queries': this._renderQueriesPanel(); break;
+      case 'ontology': openOntologyStudio(); break;
     }
   }
 

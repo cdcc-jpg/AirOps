@@ -25,11 +25,17 @@ SCHEMA_DIR = os.path.join(os.path.dirname(__file__), '..', 'schemas')
 OWL_PATH = os.path.join(SCHEMA_DIR, 'airsoft-ao-owl-AO.ttl')
 GAMEOPS_PATH = os.path.join(SCHEMA_DIR, 'airsoft-ao-gameops.ttl')
 SHACL_PATH = os.path.join(SCHEMA_DIR, 'airsoft-ao-shacl.ttl')
+BFO_PATH = os.path.join(SCHEMA_DIR, 'bfo.ttl')
+ALIGNMENTS_PATH = os.path.join(SCHEMA_DIR, 'airsoft-bfo-alignments.ttl')
 
 print("Loading OWL/Turtle schemas into rdflib graph...")
 try:
     graph.parse(OWL_PATH, format="turtle")
     graph.parse(GAMEOPS_PATH, format="turtle")
+    if os.path.exists(BFO_PATH):
+        graph.parse(BFO_PATH, format="turtle")
+    if os.path.exists(ALIGNMENTS_PATH):
+        graph.parse(ALIGNMENTS_PATH, format="turtle")
     print(f"Loaded schema graph successfully. Triples count: {len(graph)}")
 except Exception as e:
     print(f"Error loading RDF schemas: {e}")
@@ -485,6 +491,170 @@ def run_matchmaking():
         'nonband': [p['id'] for p in nonband],
         'band': [p['id'] for p in band]
     })
+
+@app.route('/api/ontology/schema', methods=['GET'])
+def get_ontology_schema():
+    OWL = Namespace("http://www.w3.org/2002/07/owl#")
+    
+    def compact(uri):
+        if not uri: return ""
+        u = str(uri)
+        if u.startswith("https://github.com/cdcc-jpg/ontologies#"):
+            return "asoft:" + u.split("#")[-1]
+        elif u.startswith("http://purl.obolibrary.org/obo/BFO_"):
+            return "bfo:" + u.split("BFO_")[-1]
+        elif u.startswith("http://purl.obolibrary.org/obo/"):
+            return "obo:" + u.split("/")[-1]
+        elif u.startswith("http://xmlns.com/foaf/0.1/"):
+            return "foaf:" + u.split("/")[-1]
+        elif u.startswith("http://schema.org/"):
+            return "schema:" + u.split("/")[-1]
+        elif u.startswith("http://www.w3.org/2000/01/rdf-schema#"):
+            return "rdfs:" + u.split("#")[-1]
+        elif u.startswith("http://www.w3.org/2002/07/owl#"):
+            return "owl:" + u.split("#")[-1]
+        return u
+
+    airops_classes = []
+    bfo_classes = []
+    
+    for c in graph.subjects(RDF.type, OWL.Class):
+        uri_str = str(c)
+        label = str(graph.value(c, RDFS.label) or uri_str.split("#")[-1].split("/")[-1])
+        comment = str(graph.value(c, RDFS.comment) or "")
+        super_classes = [compact(s) for s in graph.objects(c, RDFS.subClassOf) if isinstance(s, URIRef)]
+        
+        item = {
+            'uri': uri_str,
+            'prefixed': compact(c),
+            'label': label,
+            'comment': comment,
+            'superClasses': super_classes
+        }
+        
+        if "purl.obolibrary.org/obo/BFO_" in uri_str or uri_str.startswith("http://purl.obolibrary.org/obo/bfo"):
+            bfo_classes.append(item)
+        elif "cdcc-jpg/ontologies" in uri_str or uri_str.startswith("https://github.com/cdcc-jpg/"):
+            airops_classes.append(item)
+        elif not uri_str.startswith("http://www.w3.org/"):
+            airops_classes.append(item)
+
+    airops_props = []
+    bfo_props = []
+    for p in graph.subjects(RDF.type, OWL.ObjectProperty):
+        uri_str = str(p)
+        label = str(graph.value(p, RDFS.label) or uri_str.split("#")[-1].split("/")[-1])
+        domain = compact(graph.value(p, RDFS.domain))
+        range_ = compact(graph.value(p, RDFS.range))
+        comment = str(graph.value(p, RDFS.comment) or "")
+        sub_props = [compact(s) for s in graph.objects(p, RDFS.subPropertyOf)]
+        
+        item = {
+            'uri': uri_str,
+            'prefixed': compact(p),
+            'label': label,
+            'domain': domain,
+            'range': range_,
+            'comment': comment,
+            'subPropertyOf': sub_props
+        }
+        if "purl.obolibrary.org/obo/BFO_" in uri_str:
+            bfo_props.append(item)
+        else:
+            airops_props.append(item)
+
+    alignments = []
+    for s, p, o in graph:
+        p_str = str(p)
+        if p_str in [str(RDFS.subClassOf), str(OWL.equivalentClass), str(OWL.equivalentProperty), str(OWL.sameAs)]:
+            s_str = str(s)
+            o_str = str(o)
+            if ("cdcc-jpg" in s_str and "BFO_" in o_str) or ("BFO_" in s_str and "cdcc-jpg" in o_str) or ("alignments" in s_str or "alignments" in o_str):
+                alignments.append({
+                    'subject': compact(s),
+                    'subjectUri': s_str,
+                    'predicate': compact(p),
+                    'predicateUri': p_str,
+                    'object': compact(o),
+                    'objectUri': o_str
+                })
+
+    return jsonify({
+        'airops': {
+            'classes': airops_classes,
+            'properties': airops_props
+        },
+        'bfo': {
+            'classes': bfo_classes,
+            'properties': bfo_props
+        },
+        'alignments': alignments
+    })
+
+@app.route('/api/ontology/alignments', methods=['GET', 'POST'])
+def handle_alignments():
+    OWL = Namespace("http://www.w3.org/2002/07/owl#")
+    if request.method == 'POST':
+        data = request.json or {}
+        new_alignments = data.get('alignments', [])
+        
+        align_graph = rdflib.Graph()
+        if os.path.exists(ALIGNMENTS_PATH):
+            try:
+                align_graph.parse(ALIGNMENTS_PATH, format="turtle")
+            except Exception:
+                pass
+                
+        for item in new_alignments:
+            s_raw = item.get('subjectUri') or item.get('subject')
+            p_raw = item.get('predicateUri') or item.get('predicate')
+            o_raw = item.get('objectUri') or item.get('object')
+            
+            def resolve(uri_or_prefix):
+                if not uri_or_prefix: return None
+                if uri_or_prefix.startswith("http://") or uri_or_prefix.startswith("https://"):
+                    return URIRef(uri_or_prefix)
+                if uri_or_prefix.startswith("asoft:"):
+                    return URIRef("https://github.com/cdcc-jpg/ontologies#" + uri_or_prefix[6:])
+                if uri_or_prefix.startswith("bfo:") or uri_or_prefix.startswith("obo:"):
+                    val = uri_or_prefix.split(":")[-1]
+                    if not val.startswith("BFO_"):
+                        val = "BFO_" + val
+                    return URIRef("http://purl.obolibrary.org/obo/" + val)
+                if uri_or_prefix.startswith("rdfs:"):
+                    return URIRef("http://www.w3.org/2000/01/rdf-schema#" + uri_or_prefix[5:])
+                if uri_or_prefix.startswith("owl:"):
+                    return URIRef("http://www.w3.org/2002/07/owl#" + uri_or_prefix[4:])
+                return URIRef(uri_or_prefix)
+
+            s_uri = resolve(s_raw)
+            p_uri = resolve(p_raw)
+            o_uri = resolve(o_raw)
+
+            if s_uri and p_uri and o_uri:
+                graph.add((s_uri, p_uri, o_uri))
+                align_graph.add((s_uri, p_uri, o_uri))
+                
+        try:
+            align_graph.serialize(destination=ALIGNMENTS_PATH, format="turtle")
+        except Exception as e:
+            print(f"Error saving alignments TTL: {e}")
+
+        return jsonify({'success': True, 'count': len(new_alignments)})
+
+    alignments = []
+    for s, p, o in graph:
+        p_str = str(p)
+        if p_str in [str(RDFS.subClassOf), str(OWL.equivalentClass), str(OWL.equivalentProperty), str(OWL.sameAs)]:
+            s_str = str(s)
+            o_str = str(o)
+            if ("cdcc-jpg" in s_str and "BFO_" in o_str) or ("BFO_" in s_str and "cdcc-jpg" in o_str):
+                alignments.append({
+                    'subject': str(s),
+                    'predicate': str(p),
+                    'object': str(o)
+                })
+    return jsonify({'alignments': alignments})
 
 @app.route('/api/export', methods=['GET'])
 def export_turtle():

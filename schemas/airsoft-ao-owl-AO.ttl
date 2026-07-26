@@ -1,5 +1,4 @@
 @prefix : <https://github.com/cdcc-jpg/ontologies#> .
-@prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
@@ -50,9 +49,6 @@ xsd:date rdf:type rdfs:Datatype .
 #    Object Properties
 #################################################################
 
-###  http://purl.obolibrary.org/obo/BFO_0000051
-obo:BFO_0000051 rdf:type owl:ObjectProperty .
-
 
 ###  https://github.com/cdcc-jpg/ontologies#belongsToTeam
 asoft:belongsToTeam rdf:type owl:ObjectProperty ;
@@ -70,7 +66,6 @@ asoft:enforcesRule rdf:type owl:ObjectProperty ;
 
 ###  https://github.com/cdcc-jpg/ontologies#hasPhases
 asoft:hasPhases rdf:type owl:ObjectProperty ;
-                rdfs:subPropertyOf obo:BFO_0000051 ;
                 rdfs:domain asoft:StandardAirsoftSchedule ;
                 rdfs:range rdf:List ;
                 rdfs:label "has phases"@en .
@@ -149,9 +144,6 @@ asoft:hasWeight rdf:type owl:DatatypeProperty ;
 #################################################################
 #    Classes
 #################################################################
-
-###  http://purl.obolibrary.org/obo/BFO_0000015
-obo:BFO_0000015 rdf:type owl:Class .
 
 
 ###  http://schema.org/Place
@@ -287,7 +279,6 @@ asoft:AirsoftTeam rdf:type owl:Class ;
 
 ###  https://github.com/cdcc-jpg/ontologies#Briefing
 asoft:Briefing rdf:type owl:Class ;
-               rdfs:subClassOf obo:BFO_0000015 ;
                rdfs:label "Briefing"@en .
 
 
@@ -307,13 +298,11 @@ asoft:EyeProtection rdf:type owl:Class ;
 
 ###  https://github.com/cdcc-jpg/ontologies#GameEnd
 asoft:GameEnd rdf:type owl:Class ;
-              rdfs:subClassOf obo:BFO_0000015 ;
               rdfs:label "Game End"@en .
 
 
 ###  https://github.com/cdcc-jpg/ontologies#GameStart
 asoft:GameStart rdf:type owl:Class ;
-                rdfs:subClassOf obo:BFO_0000015 ;
                 rdfs:label "Game Start"@en .
 
 
@@ -347,7 +336,6 @@ asoft:Kill rdf:type owl:Class ;
 
 ###  https://github.com/cdcc-jpg/ontologies#LunchBreak
 asoft:LunchBreak rdf:type owl:Class ;
-                 rdfs:subClassOf obo:BFO_0000015 ;
                  rdfs:label "Lunch Break"@en .
 
 
@@ -416,7 +404,7 @@ asoft:Replica_CustomM4 rdf:type owl:NamedIndividual ,
 
 ###  https://github.com/cdcc-jpg/ontologies#StandardAirsoftSchedule
 asoft:StandardAirsoftSchedule rdf:type owl:NamedIndividual ,
-                                       obo:BFO_0000015 ;
+                                       asoft:StandardAirsoftSchedule ;
                               asoft:hasPhases [ ] .
 
 
