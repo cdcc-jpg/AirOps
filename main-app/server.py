@@ -20,22 +20,31 @@ SH = Namespace("http://www.w3.org/ns/shacl#")
 # Global In-Memory RDF Store
 graph = rdflib.Graph()
 
-# Load Ontologies & SHACL shapes on startup
-SCHEMA_DIR = os.path.join(os.path.dirname(__file__), '..', 'schemas')
-OWL_PATH = os.path.join(SCHEMA_DIR, 'airsoft-ao-owl-AO.ttl')
-GAMEOPS_PATH = os.path.join(SCHEMA_DIR, 'airsoft-ao-gameops.ttl')
-SHACL_PATH = os.path.join(SCHEMA_DIR, 'airsoft-ao-shacl.ttl')
-BFO_PATH = os.path.join(SCHEMA_DIR, 'bfo.ttl')
-ALIGNMENTS_PATH = os.path.join(SCHEMA_DIR, 'airsoft-bfo-alignments.ttl')
+# Load Ontologies & SHACL shapes on startup from master Ontologies repository
+ONTOLOGIES_DIR = os.getenv('ONTOLOGIES_DIR', os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'Ontologies')))
 
-print("Loading OWL/Turtle schemas into rdflib graph...")
+ONTOLOGY_FILES = [
+    os.path.join(ONTOLOGIES_DIR, '1-Upper', 'bfo.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '1-Upper', 'foaf.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '3-Domain', 'airsoft', 'airsoft-core.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '3-Domain', 'airsoft', 'airsoft-gameops.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '3-Domain', 'airsoft', 'airsoft-field.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '3-Domain', 'airsoft', 'airsoft-safety.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '4-Application', 'profiles', 'airsoft-gameday-marshal-app.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '4-Application', 'alignments', 'alignments-airsoft-bfo.ttl'),
+    os.path.join(ONTOLOGIES_DIR, 'Grouped-Vocabularies-and-Restrictions', 'airsoft', 'vocabularies', 'airsoft-skos-taxonomy.ttl')
+]
+
+SHACL_PATH = os.path.join(ONTOLOGIES_DIR, 'Grouped-Vocabularies-and-Restrictions', 'airsoft', 'shapes', 'airsoft-shacl-shapes.ttl')
+ALIGNMENTS_PATH = os.path.join(ONTOLOGIES_DIR, '4-Application', 'alignments', 'alignments-airsoft-bfo.ttl')
+
+print(f"Loading modular OWL/Turtle schemas from {ONTOLOGIES_DIR} into rdflib graph...")
 try:
-    graph.parse(OWL_PATH, format="turtle")
-    graph.parse(GAMEOPS_PATH, format="turtle")
-    if os.path.exists(BFO_PATH):
-        graph.parse(BFO_PATH, format="turtle")
-    if os.path.exists(ALIGNMENTS_PATH):
-        graph.parse(ALIGNMENTS_PATH, format="turtle")
+    for filepath in ONTOLOGY_FILES:
+        if os.path.exists(filepath):
+            graph.parse(filepath, format="turtle")
+        else:
+            print(f"Warning: Ontology file not found: {filepath}")
     print(f"Loaded schema graph successfully. Triples count: {len(graph)}")
 except Exception as e:
     print(f"Error loading RDF schemas: {e}")

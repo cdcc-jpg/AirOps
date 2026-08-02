@@ -1,14 +1,24 @@
+import os
 from pyshacl import validate
 from rdflib import Graph
+
+ONTOLOGIES_DIR = os.getenv('ONTOLOGIES_DIR', os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'Ontologies')))
 
 def run_validation_pipeline():
     print("[*] Merging datasets for validation checks...")
     data_graph = Graph()
-    data_graph.parse("normalized_graph.ttl", format="turtle")
-    data_graph.parse("alignments.ttl", format="turtle")
+    
+    norm_path = "normalized_graph.ttl" if os.path.exists("normalized_graph.ttl") else os.path.join(ONTOLOGIES_DIR, "4-Application", "profiles", "normalized-graph.ttl")
+    align_path = "alignments.ttl" if os.path.exists("alignments.ttl") else os.path.join(ONTOLOGIES_DIR, "4-Application", "alignments", "alignments-airsoft-bfo.ttl")
+    
+    if os.path.exists(norm_path):
+        data_graph.parse(norm_path, format="turtle")
+    if os.path.exists(align_path):
+        data_graph.parse(align_path, format="turtle")
     
     shacl_graph = Graph()
-    shacl_graph.parse("schemas/airsoft-ao-shacl.ttl", format="turtle")
+    shacl_shapes = os.path.join(ONTOLOGIES_DIR, "Grouped-Vocabularies-and-Restrictions", "airsoft", "shapes", "airsoft-shacl-shapes.ttl")
+    shacl_graph.parse(shacl_shapes, format="turtle")
     
     print("[*] Running SHACL engine evaluation...")
     conforms, results_graph, results_text = validate(

@@ -217,20 +217,25 @@ field:Log_2026_{i:04d} a field:ChronoEvent ;
         silo4_md.append(f"### Discord - General\n**@{username}:** Had a solid day. {brand} ran flawlessly, didn't even have to mess with the hop up. Sometimes stock is best.\n")
 
 # Save Silo 1
-with open("/Users/clementd/Documents/GitHub/ontologies/silo1_retail_catalog.jsonld", "w") as f:
+import os
+
+OUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'synthetic_data'))
+os.makedirs(OUT_DIR, exist_ok=True)
+
+with open(os.path.join(OUT_DIR, "silo1_retail_catalog.jsonld"), "w") as f:
     json.dump(silo1_catalog, f, indent=2)
 
 # Save Silo 2
-with open("/Users/clementd/Documents/GitHub/ontologies/silo2_field_logs.ttl", "w") as f:
+with open(os.path.join(OUT_DIR, "silo2_field_logs.ttl"), "w") as f:
     f.writelines(silo2_ttl)
 
 # Save Silo 3
-with open("/Users/clementd/Documents/GitHub/ontologies/silo3_tech_repairs.csv", "w", newline="") as f:
+with open(os.path.join(OUT_DIR, "silo3_tech_repairs.csv"), "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerows(silo3_csv)
 
 # Save Silo 4
-with open("/Users/clementd/Documents/GitHub/ontologies/silo4_social_scrape.md", "w") as f:
+with open(os.path.join(OUT_DIR, "silo4_social_scrape.md"), "w") as f:
     f.writelines(silo4_md)
 
 print("Massive 50x Dataset successfully generated.")
