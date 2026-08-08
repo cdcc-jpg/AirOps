@@ -134,40 +134,6 @@
               </div>
             </div>
 
-            <div class="form-section-title">3. Replica Type & Brand Filters</div>
-
-            <div class="form-group">
-              <label for="filter-propulsion">Propulsion Mechanism:</label>
-              <select id="filter-propulsion" class="advisor-select">
-                <option value="ALL">All Propulsion Types (AEG, GBB, Spring, HPA)</option>
-                <option value="AEG">Electric (AEG / NGRS)</option>
-                <option value="GBBR">Gas Blowback (GBB / GBBR)</option>
-                <option value="Spring">Spring Bolt-Action</option>
-                <option value="HPA">High Pressure Air (HPA)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="filter-weapon-type">Weapon / Platform Category:</label>
-              <select id="filter-weapon-type" class="advisor-select">
-                <option value="ALL">All Weapon Categories</option>
-                <option value="Assault">Assault Rifle / Carbine (M4, AK-12, HK416, SCAR)</option>
-                <option value="CQB">Submachine Gun / CQB (MP5, MP7, P90, Vector, ARP9, EVO)</option>
-                <option value="SniperRifle">Sniper Rifle (VSR-10, TAC-41, SRS-A2, L96)</option>
-                <option value="DMR">Designated Marksman Rifle (HK417)</option>
-                <option value="SupportLMG">Light Machine Gun (M249, PKM)</option>
-                <option value="Sidearm">Pistol / Sidearm (Hi-Capa, Glock, 1911, AAP-01)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="filter-brand">Manufacturer Brand:</label>
-              <select id="filter-brand" class="advisor-select">
-                <option value="ALL">All Replica Brands</option>
-                ${Array.from(new Set((advisorData.replicas || []).map(r => r.brand))).sort().map(b => `<option value="${b}">${b}</option>`).join('')}
-              </select>
-            </div>
-
             <button id="btn-evaluate" class="btn-primary-evaluate">
               <span>⚡</span> Run Suitability Assessment
             </button>
@@ -176,12 +142,52 @@
           <!-- ═══ Right Panel: Assessment Results ═══ -->
           <section class="advisor-results-card">
             <div class="results-header">
-              <h3>3. Candidate Suitability Ranking</h3>
+              <div>
+                <h3>3. Candidate Suitability Ranking</h3>
+                <span class="results-count-badge" id="results-count-badge">Showing candidate replicas</span>
+              </div>
               <div class="skos-filter-legend">
                 <span class="badge status-optimal">Optimal</span>
                 <span class="badge status-permissible">Permissible</span>
                 <span class="badge status-suboptimal">Suboptimal</span>
                 <span class="badge status-noncompliant">Non-Compliant</span>
+              </div>
+            </div>
+
+            <!-- 🔍 Search & Filter Toolbar directly inside Section 3 -->
+            <div class="results-filter-toolbar">
+              <div class="results-search-box">
+                <input type="text" id="results-search-input" class="advisor-search-input" placeholder="🔍 Search candidate replicas by name, model, brand, SKOS tag..." autocomplete="off">
+                <button id="results-search-clear" class="btn-clear-search" style="display:none;">&times;</button>
+              </div>
+              <div class="results-filter-dropdowns">
+                <select id="results-filter-propulsion" class="advisor-filter-select">
+                  <option value="ALL">All Propulsion</option>
+                  <option value="AEG">Electric (AEG)</option>
+                  <option value="GBBR">Gas Blowback (GBB)</option>
+                  <option value="Spring">Spring Bolt-Action</option>
+                  <option value="HPA">HPA Rig</option>
+                </select>
+                <select id="results-filter-weapon" class="advisor-filter-select">
+                  <option value="ALL">All Weapon Types</option>
+                  <option value="Assault">Assault Rifle</option>
+                  <option value="CQB">SMG / CQB</option>
+                  <option value="SniperRifle">Sniper Rifle</option>
+                  <option value="DMR">DMR Marksman</option>
+                  <option value="SupportLMG">Light Machine Gun</option>
+                  <option value="Sidearm">Pistol / Sidearm</option>
+                </select>
+                <select id="results-filter-brand" class="advisor-filter-select">
+                  <option value="ALL">All Brands</option>
+                  ${Array.from(new Set((advisorData.replicas || []).map(r => r.brand))).sort().map(b => `<option value="${b}">${b}</option>`).join('')}
+                </select>
+                <select id="results-filter-status" class="advisor-filter-select">
+                  <option value="ALL">All Match Tiers</option>
+                  <option value="Optimal Match">Optimal Match Only</option>
+                  <option value="Permissible Match">Permissible Match Only</option>
+                  <option value="Suboptimal Match">Suboptimal Match Only</option>
+                  <option value="Non-Compliant Match">Non-Compliant Only</option>
+                </select>
               </div>
             </div>
 
@@ -213,6 +219,8 @@
       </div>
     `;
   }
+
+  let latestEvaluatedResults = [];
 
   function bindEvents() {
     const presetSelect = document.getElementById('field-preset-select');
@@ -262,9 +270,34 @@
       });
     }
 
-    ['chk-semi-only', 'chk-bio-bb', 'chk-tracer', 'filter-propulsion', 'filter-weapon-type', 'filter-brand'].forEach(id => {
+    ['chk-semi-only', 'chk-bio-bb', 'chk-tracer'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('change', triggerEvaluate);
+    });
+
+    // 🔍 Section 3 Live Search & Filter Listeners
+    const searchInput = document.getElementById('results-search-input');
+    const searchClear = document.getElementById('results-search-clear');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        if (searchClear) {
+          searchClear.style.display = e.target.value.trim() ? 'block' : 'none';
+        }
+        applyResultsFilterAndRender();
+      });
+    }
+
+    if (searchClear && searchInput) {
+      searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchClear.style.display = 'none';
+        applyResultsFilterAndRender();
+      });
+    }
+
+    ['results-filter-propulsion', 'results-filter-weapon', 'results-filter-brand', 'results-filter-status'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('change', applyResultsFilterAndRender);
     });
 
     const roleGrid = document.getElementById('role-btn-grid');
@@ -343,10 +376,6 @@
     const activeRoleBtn = document.querySelector('.role-btn.active');
     const roleId = activeRoleBtn ? activeRoleBtn.dataset.roleId : 'role_assault';
 
-    const propFilter = document.getElementById('filter-propulsion') ? document.getElementById('filter-propulsion').value : 'ALL';
-    const weaponTypeFilter = document.getElementById('filter-weapon-type') ? document.getElementById('filter-weapon-type').value : 'ALL';
-    const brandFilter = document.getElementById('filter-brand') ? document.getElementById('filter-brand').value : 'ALL';
-
     const currentFieldState = {
       name: selectedField ? selectedField.name : 'Custom Site',
       maxJoules: joules,
@@ -369,31 +398,104 @@
         body: JSON.stringify({
           field: currentFieldState,
           targetRole: roleId,
-          temperatureC: tempC,
-          propulsionFilter: propFilter,
-          weaponTypeFilter: weaponTypeFilter,
-          brandFilter: brandFilter
+          temperatureC: tempC
         })
       });
 
       if (res.ok) {
         const data = await res.json();
-        renderResults(data.results);
+        latestEvaluatedResults = data.results || [];
       } else {
-        renderResultsFallback(currentFieldState, tempC, propFilter, weaponTypeFilter, brandFilter);
+        latestEvaluatedResults = getResultsFallback(currentFieldState, tempC);
       }
     } catch (err) {
       console.warn('API error during evaluation, using client fallback logic:', err);
-      renderResultsFallback(currentFieldState, tempC, propFilter, weaponTypeFilter, brandFilter);
+      latestEvaluatedResults = getResultsFallback(currentFieldState, tempC);
     }
+
+    applyResultsFilterAndRender();
   }
 
-  function renderResults(results) {
+  function applyResultsFilterAndRender() {
+    const searchInput = document.getElementById('results-search-input');
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+    const propFilter = document.getElementById('results-filter-propulsion') ? document.getElementById('results-filter-propulsion').value : 'ALL';
+    const weaponFilter = document.getElementById('results-filter-weapon') ? document.getElementById('results-filter-weapon').value : 'ALL';
+    const brandFilter = document.getElementById('results-filter-brand') ? document.getElementById('results-filter-brand').value : 'ALL';
+    const statusFilter = document.getElementById('results-filter-status') ? document.getElementById('results-filter-status').value : 'ALL';
+
+    const filtered = latestEvaluatedResults.filter(res => {
+      const r = res.replica || {};
+
+      // 1. Search Bar match
+      if (query) {
+        const haystack = [
+          r.name, r.brand, r.propulsion, r.description,
+          r.skosPlatform, r.skosPropulsion, r.skosBrand, r.skosRole,
+          r.owlClass
+        ].filter(Boolean).join(' ').toLowerCase();
+
+        if (!haystack.includes(query)) return false;
+      }
+
+      // 2. Propulsion Filter
+      if (propFilter !== 'ALL') {
+        const p = r.skosPropulsion || '';
+        const pText = r.propulsion || '';
+        if (!p.includes(propFilter) && !pText.toLowerCase().includes(propFilter.toLowerCase())) {
+          return false;
+        }
+      }
+
+      // 3. Weapon Type Filter
+      if (weaponFilter !== 'ALL') {
+        const role = r.skosRole || '';
+        const plat = r.skosPlatform || '';
+        const cls = r.owlClass || '';
+        if (!role.includes(weaponFilter) && !plat.includes(weaponFilter) && !cls.includes(weaponFilter)) {
+          return false;
+        }
+      }
+
+      // 4. Brand Filter
+      if (brandFilter !== 'ALL') {
+        if (!r.brand || !r.brand.toLowerCase().includes(brandFilter.toLowerCase())) {
+          return false;
+        }
+      }
+
+      // 5. Match Status Tier Filter
+      if (statusFilter !== 'ALL') {
+        if (res.status !== statusFilter) return false;
+      }
+
+      return true;
+    });
+
+    // Update Count Badge
+    const countBadge = document.getElementById('results-count-badge');
+    if (countBadge) {
+      if (filtered.length === latestEvaluatedResults.length) {
+        countBadge.innerText = `Showing all ${latestEvaluatedResults.length} candidate replicas`;
+      } else {
+        countBadge.innerText = `Showing ${filtered.length} of ${latestEvaluatedResults.length} candidate replicas`;
+      }
+    }
+
+    renderResultsGrid(filtered);
+  }
+
+  function renderResultsGrid(results) {
     const container = document.getElementById('results-grid');
     if (!container) return;
 
     if (!results || results.length === 0) {
-      container.innerHTML = `<div class="no-results">No candidate replicas found in database.</div>`;
+      container.innerHTML = `
+        <div class="no-results" style="padding: 24px; text-align: center; color: #94a3b8; background: #0f172a; border-radius: 8px; border: 1px dashed #334155;">
+          🔍 No candidate replicas matched your search/filter criteria.
+        </div>
+      `;
       return;
     }
 
@@ -467,29 +569,8 @@
     }).join('');
   }
 
-  function renderResultsFallback(field, tempC, propFilter = 'ALL', weaponTypeFilter = 'ALL', brandFilter = 'ALL') {
-    let replicas = advisorData.replicas || [];
-
-    if (propFilter !== 'ALL') {
-      replicas = replicas.filter(r => {
-        const p = r.skosPropulsion || '';
-        const pText = r.propulsion || '';
-        return p.includes(propFilter) || pText.toLowerCase().includes(propFilter.toLowerCase());
-      });
-    }
-
-    if (weaponTypeFilter !== 'ALL') {
-      replicas = replicas.filter(r => {
-        const role = r.skosRole || '';
-        const plat = r.skosPlatform || '';
-        const cls = r.owlClass || '';
-        return role.includes(weaponTypeFilter) || plat.includes(weaponTypeFilter) || cls.includes(weaponTypeFilter);
-      });
-    }
-
-    if (brandFilter !== 'ALL') {
-      replicas = replicas.filter(r => (r.brand || '').toLowerCase().includes(brandFilter.toLowerCase()));
-    }
+  function getResultsFallback(field, tempC) {
+    const replicas = advisorData.replicas || [];
 
     const results = replicas.map(r => {
       let score = 100;
@@ -521,7 +602,7 @@
     });
 
     results.sort((a, b) => b.matchScore - a.matchScore);
-    renderResults(results);
+    return results;
   }
 
   // Global helper to show SKOS Concept Modal

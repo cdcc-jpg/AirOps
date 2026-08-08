@@ -2936,6 +2936,83 @@ body::after {
   color: #e5e7eb;
 }
 
+/* Candidate Suitability Toolbar & Live Search */
+.results-filter-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+
+.results-search-box {
+  position: relative;
+  width: 100%;
+}
+
+.advisor-search-input {
+  width: 100%;
+  padding: 8px 30px 8px 12px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #f8fafc;
+  font-size: 0.82rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.advisor-search-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+.btn-clear-search {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.results-filter-dropdowns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.advisor-filter-select {
+  padding: 6px 8px;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #e2e8f0;
+  font-size: 0.75rem;
+  outline: none;
+}
+
+.advisor-filter-select:focus {
+  border-color: #38bdf8;
+}
+
+.results-count-badge {
+  font-size: 0.72rem;
+  color: #38bdf8;
+  background: #0f172a;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  margin-top: 4px;
+  display: inline-block;
+}
+
 
 
 
