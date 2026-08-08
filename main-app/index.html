@@ -34,10 +34,11 @@
       </div>
 
       <nav class="sidebar-tabs">
-        <div class="sidebar-tab active" data-tab="setup">1. Setup</div>
-        <div class="sidebar-tab" data-tab="signin">2. Sign-In</div>
-        <div class="sidebar-tab" data-tab="gameview">3. Gameview</div>
+        <div class="sidebar-tab active" data-tab="setup">Setup</div>
+        <div class="sidebar-tab" data-tab="signin">Sign-In</div>
+        <div class="sidebar-tab" data-tab="gameview">Gameview</div>
         <div class="sidebar-tab" data-tab="queries">Queries</div>
+        <div class="sidebar-tab" data-tab="advisor">Advisor</div>
       </nav>
 
       <div class="sidebar-content">
@@ -52,6 +53,14 @@
         </div>
         <div class="sidebar-panel" id="panel-queries">
           <!-- Static semantic queries populated by JS -->
+        </div>
+        <div class="sidebar-panel" id="panel-advisor">
+          <div class="panel-section">
+            <h4>🎯 Replica Selection Advisor</h4>
+            <p style="font-size: 0.85rem; color: #8899a6; line-height: 1.4;">
+              Ontology-driven replica recommendation engine operationalizing <code>airsoft-replica-selector-app.ttl</code> and W3C SKOS controlled vocabulary concepts.
+            </p>
+          </div>
         </div>
       </div>
     </aside>
@@ -103,6 +112,9 @@
         <!-- Populated by JS -->
       </div>
     </section>
+
+    <!-- ─── Replica Selection Advisor View ─── -->
+    <section id="replica-advisor-view" class="advisor-view-container" style="display:none;"></section>
   </div>
 
   <!-- ─── Player Detail Overlay ─── -->
@@ -112,7 +124,8 @@
     </div>
   </div>
 
-  <!-- ─── App Script ─── -->
+  <!-- ─── App Scripts ─── -->
+  <script src="js/replica-advisor.js?v=2.11.1"></script>
   <script type="module" src="js/app.js?v=2.11.1"></script>
 </body>
 </html>

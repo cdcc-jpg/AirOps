@@ -31,8 +31,10 @@ ONTOLOGY_FILES = [
     os.path.join(ONTOLOGIES_DIR, '3-Domain', 'airsoft', 'airsoft-field.ttl'),
     os.path.join(ONTOLOGIES_DIR, '3-Domain', 'airsoft', 'airsoft-safety.ttl'),
     os.path.join(ONTOLOGIES_DIR, '4-Application', 'profiles', 'airsoft-gameday-marshal-app.ttl'),
+    os.path.join(ONTOLOGIES_DIR, '4-Application', 'profiles', 'airsoft-replica-selector-app.ttl'),
     os.path.join(ONTOLOGIES_DIR, '4-Application', 'alignments', 'alignments-airsoft-bfo.ttl'),
-    os.path.join(ONTOLOGIES_DIR, 'Grouped-Vocabularies-and-Restrictions', 'airsoft', 'vocabularies', 'airsoft-skos-taxonomy.ttl')
+    os.path.join(ONTOLOGIES_DIR, 'Grouped-Vocabularies-and-Restrictions', 'airsoft', 'vocabularies', 'airsoft-skos-taxonomy.ttl'),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'controlled-vocabulary', 'vocabularies', 'airsoft-skos-2000.ttl'))
 ]
 
 SHACL_PATH = os.path.join(ONTOLOGIES_DIR, 'Grouped-Vocabularies-and-Restrictions', 'airsoft', 'shapes', 'airsoft-shacl-shapes.ttl')
@@ -670,6 +672,256 @@ def export_turtle():
     ttl_data = graph.serialize(format="turtle")
     return ttl_data, 200, {'Content-Type': 'text/turtle'}
 
+# ═════════════════════════════════════════════════════════════════
+# 🎯 REPLICA SELECTION ADVISOR API ENDPOINTS
+# ═════════════════════════════════════════════════════════════════
+
+@app.route('/api/replica-advisor/options', methods=['GET'])
+def get_replica_advisor_options():
+    advisor_data_path = os.path.join(os.path.dirname(__file__), 'data', 'replica-advisor-data.json')
+    if os.path.exists(advisor_data_path):
+        with open(advisor_data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return jsonify(data)
+    return jsonify({'fields': [], 'replicas': [], 'tacticalRoles': []}), 404
+
+@app.route('/api/skos/concept/<concept_id>', methods=['GET'])
+def get_skos_concept(concept_id):
+    SKOS = Namespace("http://www.w3.org/2004/02/skos/core#")
+    ASOFT_SKOS = Namespace("https://github.com/cdcc-jpg/ontologies/airsoft-skos#")
+    
+    clean_id = concept_id.replace("asoft-skos:", "").replace("asoft-skos#", "")
+    concept_uri = ASOFT_SKOS[clean_id]
+
+    pref_label = graph.value(concept_uri, SKOS.prefLabel)
+    definition = graph.value(concept_uri, SKOS.definition)
+    notation = graph.value(concept_uri, SKOS.notation)
+    scope_note = graph.value(concept_uri, SKOS.scopeNote)
+    alt_labels = [str(o) for o in graph.objects(concept_uri, SKOS.altLabel)]
+
+    if pref_label or definition:
+        return jsonify({
+            'uri': str(concept_uri),
+            'id': clean_id,
+            'prefLabel': str(pref_label or clean_id),
+            'definition': str(definition or 'No definition available in SKOS database.'),
+            'notation': str(notation or clean_id),
+            'scopeNote': str(scope_note or ''),
+            'altLabels': alt_labels
+        })
+    
+    return jsonify({
+        'uri': str(concept_uri),
+        'id': clean_id,
+        'prefLabel': clean_id,
+        'definition': 'SKOS Concept registered in controlled vocabulary.',
+        'notation': clean_id,
+        'altLabels': []
+    })
+
+@app.route('/api/replica-advisor/evaluate', methods=['POST'])
+def evaluate_replica_suitability():
+    payload = request.json or {}
+    field = payload.get('field', {})
+    target_role = payload.get('targetRole', 'role_assault')
+    temperature_c = float(payload.get('temperatureC', 18))
+    propulsion_filter = payload.get('propulsionFilter', 'ALL')
+    weapon_type_filter = payload.get('weaponTypeFilter', 'ALL')
+    brand_filter = payload.get('brandFilter', 'ALL')
+
+    advisor_data_path = os.path.join(os.path.dirname(__file__), 'data', 'replica-advisor-data.json')
+    replicas = payload.get('customReplicas')
+    if not replicas and os.path.exists(advisor_data_path):
+        with open(advisor_data_path, 'r', encoding='utf-8') as f:
+            db = json.load(f)
+            replicas = db.get('replicas', [])
+
+    # Filter replicas by user constraints
+    filtered_replicas = []
+    for r in replicas:
+        if propulsion_filter != 'ALL':
+            skos_p = r.get('skosPropulsion', '')
+            p_text = r.get('propulsion', '')
+            if propulsion_filter not in skos_p and propulsion_filter.lower() not in p_text.lower():
+                continue
+
+        if weapon_type_filter != 'ALL':
+            skos_r = r.get('skosRole', '')
+            skos_plat = r.get('skosPlatform', '')
+            owl_cls = r.get('owlClass', '')
+            if weapon_type_filter not in skos_r and weapon_type_filter not in skos_plat and weapon_type_filter not in owl_cls:
+                continue
+
+        if brand_filter != 'ALL':
+            if brand_filter.lower() not in r.get('brand', '').lower():
+                continue
+
+        filtered_replicas.append(r)
+
+    replicas = filtered_replicas
+
+    field_max_j = float(field.get('maxJoules', 1.88))
+    field_max_len = int(field.get('maxPermissibleLengthMm', 1400))
+    field_semi_only = bool(field.get('isSemiOnlyRestricted', False))
+    field_requires_bio = bool(field.get('requiresBioBB', False))
+    field_requires_tracer = bool(field.get('requiresTracerUnit', False))
+    field_med = int(field.get('minEngagementDistanceMeters', 0))
+
+    # ═════════════════════════════════════════════════════════════════
+    # Dynamic SHACL Shape Construction (sh:maxInclusive = slider value)
+    # ═════════════════════════════════════════════════════════════════
+    SH = Namespace("http://www.w3.org/ns/shacl#")
+    ASOFT = Namespace("https://github.com/cdcc-jpg/ontologies/airsoft-core#")
+    
+    shacl_g = rdflib.Graph()
+    shape_uri = ASOFT.ReplicaChronoSafetyShape
+    prop_node = rdflib.BNode()
+
+    shacl_g.add((shape_uri, RDF.type, SH.NodeShape))
+    shacl_g.add((shape_uri, SH.targetClass, ASOFT.AirsoftReplica))
+    shacl_g.add((shape_uri, SH.property, prop_node))
+    shacl_g.add((prop_node, SH.path, ASOFT.hasJoules))
+    shacl_g.add((prop_node, SH.datatype, XSD.float))
+    shacl_g.add((prop_node, SH.maxInclusive, Literal(float(field_max_j), datatype=XSD.float)))
+    shacl_g.add((prop_node, SH.message, Literal(f"SHACL Violation: Muzzle energy exceeds dynamic site ceiling of {field_max_j:.2f} Joules (sh:maxInclusive {field_max_j:.2f}J).", lang="en")))
+
+    results = []
+
+    for rep in replicas:
+        score = 100.0
+        disqualifications = []
+        warnings = []
+        checks = []
+
+        energy = float(rep.get('muzzleEnergyJoules', 1.0))
+        length = int(rep.get('overallLengthMm', 800))
+        firing_modes = rep.get('firingModes', [])
+        uses_bio = bool(rep.get('usesBioBB', True))
+        has_tracer = bool(rep.get('hasTracerUnit', False))
+        cold_reliable = bool(rep.get('isColdWeatherReliable', True))
+
+        # ─── Execute SHACL Shape Validation via PySHACL ───
+        data_g = rdflib.Graph()
+        rep_uri = ASOFT[rep.get('id', 'rep_temp')]
+        data_g.add((rep_uri, RDF.type, ASOFT.AirsoftReplica))
+        data_g.add((rep_uri, ASOFT.hasJoules, Literal(energy, datatype=XSD.float)))
+
+        conforms, results_graph, _ = pyshacl.validate(
+            data_graph=data_g,
+            shacl_graph=shacl_g,
+            inference='none',
+            meta_shacl=False,
+            debug=False
+        )
+
+        shacl_report = {
+            'conforms': conforms,
+            'shapeTarget': 'airsoft:ReplicaChronoSafetyShape',
+            'appliedMaxInclusive': field_max_j,
+            'shaclPropertyPath': 'airsoft:hasJoules'
+        }
+
+        # Check 1: Muzzle Energy vs Site Limit (SHACL Enforced)
+        if not conforms:
+            penalty = round((energy - field_max_j) * 100, 1)
+            score -= (40 + penalty)
+            disqualifications.append(f"SHACL Shape Violation: Muzzle energy ({energy:.2f}J) exceeds dynamic sh:maxInclusive ceiling ({field_max_j:.2f}J).")
+            checks.append({
+                'name': 'SHACL Muzzle Energy Ceiling',
+                'passed': False,
+                'msg': f"SHACL VIOLATION: {energy:.2f}J > sh:maxInclusive {field_max_j:.2f}J",
+                'shaclReport': shacl_report
+            })
+        else:
+            checks.append({
+                'name': 'SHACL Muzzle Energy Ceiling',
+                'passed': True,
+                'msg': f"SHACL CONFORMS: {energy:.2f}J ≤ sh:maxInclusive {field_max_j:.2f}J",
+                'shaclReport': shacl_report
+            })
+
+        # Check 2: Bio BB Requirement
+        if field_requires_bio and not uses_bio:
+            score -= 15
+            warnings.append("Replica is not configured for biodegradable BBs mandatory at this field.")
+            checks.append({'name': 'Bio BB Mandate', 'passed': False, 'msg': "NON-BIO: Field mandates 100% Bio BBs"})
+        else:
+            checks.append({'name': 'Bio BB Mandate', 'passed': True, 'msg': "COMPLIANT"})
+
+        # Check 3: Semi-Auto Restriction
+        if field_semi_only and ("Semi-Auto" not in firing_modes and "Single-Shot" not in firing_modes):
+            score -= 50
+            disqualifications.append("Replica lacks Semi-Auto mode required by site indoor/CQB rules.")
+            checks.append({'name': 'Semi-Auto Restriction', 'passed': False, 'msg': "NON-COMPLIANT: Lacks Semi-Auto/Single-Shot"})
+        else:
+            checks.append({'name': 'Semi-Auto Restriction', 'passed': True, 'msg': "COMPLIANT"})
+
+        # Check 4: Replica Length & Tactical Layout
+        if length > field_max_len:
+            score -= 25
+            warnings.append(f"Replica length ({length}mm) exceeds recommended maximum CQB clearance ({field_max_len}mm).")
+            checks.append({'name': 'Layout Clearance', 'passed': False, 'msg': f"SUBOPTIMAL: {length}mm > {field_max_len}mm max clearance"})
+        else:
+            checks.append({'name': 'Layout Clearance', 'passed': True, 'msg': f"OPTIMAL: {length}mm ≤ {field_max_len}mm"})
+
+        # Check 5: Ambient Temperature & Propulsion Reliability
+        if temperature_c < 10 and not cold_reliable:
+            score -= 20
+            warnings.append(f"Gas propulsion (GBBR) suffers severe cool-down at {temperature_c}°C ambient temperature.")
+            checks.append({'name': 'Cold Weather Reliability', 'passed': False, 'msg': f"RISK: {rep.get('propulsion')} suffers gas cool-down < 10°C"})
+        else:
+            checks.append({'name': 'Cold Weather Reliability', 'passed': True, 'msg': "RELIABLE"})
+
+        # Check 6: Tracer Requirement
+        if field_requires_tracer and not has_tracer:
+            score -= 10
+            warnings.append("Field requires illuminated tracer units for night/low-light games.")
+            checks.append({'name': 'Tracer Unit Requirement', 'passed': False, 'msg': "MISSING: Night ops require tracer unit"})
+        else:
+            checks.append({'name': 'Tracer Unit Requirement', 'passed': True, 'msg': "COMPLIANT"})
+
+        # Final Score & Suitability Status Classification
+        final_score = max(0.0, round(score, 1))
+
+        if len(disqualifications) > 0 or final_score < 40:
+            status = "Non-Compliant Match"
+            owl_class = "selector:NonCompliantMatch"
+            badge_class = "status-noncompliant"
+        elif final_score >= 85:
+            status = "Optimal Match"
+            owl_class = "selector:OptimalMatch"
+            badge_class = "status-optimal"
+        elif final_score >= 65:
+            status = "Permissible Match"
+            owl_class = "selector:PermissibleMatch"
+            badge_class = "status-permissible"
+        else:
+            status = "Suboptimal Match"
+            owl_class = "selector:SuboptimalMatch"
+            badge_class = "status-suboptimal"
+
+        results.append({
+            'replica': rep,
+            'matchScore': final_score,
+            'status': status,
+            'owlClass': owl_class,
+            'badgeClass': badge_class,
+            'disqualifications': disqualifications,
+            'warnings': warnings,
+            'checks': checks
+        })
+
+    # Sort results by match score descending
+    results.sort(key=lambda x: x['matchScore'], reverse=True)
+
+    return jsonify({
+        'field': field,
+        'targetRole': target_role,
+        'temperatureC': temperature_c,
+        'results': results
+    })
+
 if __name__ == '__main__':
     print("Starting AirOps v2.11 Semantic RDF microservice on port 3000...")
     app.run(host='0.0.0.0', port=3000, debug=False)
+

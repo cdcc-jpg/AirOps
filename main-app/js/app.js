@@ -161,6 +161,20 @@ class AirOpsApp {
       activePanel.classList.add('active');
     }
 
+    const mapArea = document.getElementById('map-area');
+    const liveFeed = document.getElementById('live-feed');
+    const advisorView = document.getElementById('replica-advisor-view');
+
+    if (this._activeTab === 'advisor') {
+      if (mapArea) mapArea.style.display = 'none';
+      if (liveFeed) liveFeed.style.display = 'none';
+      if (advisorView) advisorView.style.display = 'block';
+    } else {
+      if (mapArea) mapArea.style.display = 'block';
+      if (liveFeed) liveFeed.style.display = 'flex';
+      if (advisorView) advisorView.style.display = 'none';
+    }
+
     switch (this._activeTab) {
       case 'setup': this._renderSetupPanel(); break;
       case 'signin': this._renderSignInPanel(); break;
