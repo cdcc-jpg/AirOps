@@ -491,7 +491,7 @@
       "muzzleEnergyJoules": 1.12,
       "velocityFps020": 348,
       "overallLengthMm": 950,
-      "weightKg": 3.5,
+      "weightKg": 3.48,
       "firingModes": [
         "Safe",
         "Semi-Auto",
@@ -501,7 +501,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "Modern Russian 5.45mm assault rifle replica with stamped steel receiver, picatinny dust cover, optical ETU, and high-torque 21TPA motor."
+      "description": "High-performance steel AK-12 with PERUN optical ETU, microswitch trigger, 3.48kg steel weight, and quick spring change."
     },
     {
       "id": "rep_asg_evo3",
@@ -538,8 +538,8 @@
       "skosPlatform": "asoft-skos:TAC41",
       "skosBrand": "asoft-skos:SilverbackAirsoft",
       "skosRole": "asoft-skos:SniperRifle",
-      "muzzleEnergyJoules": 2.3,
-      "velocityFps020": 498,
+      "muzzleEnergyJoules": 2.25,
+      "velocityFps020": 490,
       "overallLengthMm": 1100,
       "weightKg": 2.65,
       "firingModes": [
@@ -549,7 +549,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "High-precision ambidextrous bolt-action sniper rifle with 110cc cylinder volume and CNC aluminum rotary hop-up."
+      "description": "2.65kg high-precision ambidextrous bolt-action sniper rifle with 110cc cylinder volume and CNC aluminum rotary hop-up."
     },
     {
       "id": "rep_tm_ngrs_hk416d",
@@ -678,7 +678,7 @@
       "propulsion": "Spring Bolt-Action",
       "owlClass": "airsoft:BoltActionSniper",
       "skosPropulsion": "asoft-skos:Spring",
-      "skosPlatform": "asoft-skos:VSR10",
+      "skosPlatform": "asoft-skos:NovritschSSG10",
       "skosBrand": "asoft-skos:Novritsch",
       "skosRole": "asoft-skos:SniperRifle",
       "muzzleEnergyJoules": 2.32,
@@ -692,7 +692,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "Out-of-the-box upgraded VSR-10 pattern sniper rifle handling up to M160 springs with stainless steel cylinder."
+      "description": "Ultra-lightweight 2.0kg precision bolt-action sniper rifle handling up to M160 springs with stainless steel cylinder."
     },
     {
       "id": "rep_lct_ak47",
@@ -716,7 +716,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "Ultra-realistic 9mm stamped steel AK-47 construction with real wood stock and V3 gear set."
+      "description": "3.80kg ultra-realistic stamped steel AK-47 construction with real wood stock and V3 gear set."
     },
     {
       "id": "rep_el_ak74m",
@@ -740,7 +740,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "Heavy steel Russian AK-74M manufactured in real firearm production facilities with quick spring change."
+      "description": "3.60kg heavy steel Russian AK-74M manufactured in real firearm production facilities with quick spring change."
     },
     {
       "id": "rep_umarex_mp7_gbb",
@@ -764,7 +764,7 @@
       "hasTracerUnit": true,
       "usesBioBB": true,
       "isColdWeatherReliable": false,
-      "description": "Licensed 1:1 scale German MP7A1 GBB SMG with folding vertical foregrip and 40-round gas magazine."
+      "description": "1.94kg licensed 1:1 scale German MP7A1 GBB SMG with folding vertical foregrip and 40-round gas magazine."
     },
     {
       "id": "rep_umarex_hk417_gbb",
@@ -787,7 +787,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": false,
-      "description": "7.62mm heavy battle rifle GBB replica with heavy bolt recoil impulse and high-capacity gas magazine."
+      "description": "3.70kg 7.62mm heavy battle rifle GBB replica with heavy bolt recoil impulse and high-capacity gas magazine."
     },
     {
       "id": "rep_silverback_srs_a2",
@@ -810,7 +810,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "Bullpup bolt-action sniper rifle packing a full 450mm inner barrel inside a ultra-compact 690mm chassis."
+      "description": "3.35kg bullpup bolt-action sniper rifle packing a full 450mm inner barrel inside a ultra-compact 690mm chassis."
     },
     {
       "id": "rep_vfc_mk18_aeg",
@@ -834,7 +834,7 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "CNC aluminum quad-rail Special Forces AR-15 carbine with Avalon ECS gearbox and QSC spring guide."
+      "description": "2.85kg CNC aluminum quad-rail Special Forces AR-15 carbine with Avalon ECS gearbox and QSC spring guide."
     },
     {
       "id": "rep_gng_arp9",
@@ -859,7 +859,7 @@
       "hasTracerUnit": true,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "Ultra-compact 9mm style Speedsoft carbine with pre-installed G&G ETU microswitch trigger."
+      "description": "2.00kg ultra-compact 9mm style Speedsoft carbine with pre-installed G&G ETU microswitch trigger."
     },
     {
       "id": "rep_tm_hicapa_51",
@@ -882,7 +882,7 @@
       "hasTracerUnit": true,
       "usesBioBB": true,
       "isColdWeatherReliable": false,
-      "description": "Benchmark double-stack 2011 gas sidearm platform widely customized for Speedsoft and competition."
+      "description": "0.90kg benchmark double-stack 2011 gas sidearm platform widely customized for Speedsoft and competition."
     },
     {
       "id": "rep_specna_m249_para",
@@ -905,7 +905,222 @@
       "hasTracerUnit": false,
       "usesBioBB": true,
       "isColdWeatherReliable": true,
-      "description": "High-capacity squad automatic support weapon replica featuring 2500-round auto-winding box magazine."
+      "description": "4.80kg high-capacity squad automatic support weapon replica featuring 2500-round auto-winding box magazine."
+    },
+    {
+      "id": "rep_novritsch_ssg96",
+      "name": "Novritsch SSG96 L96 Upgrade",
+      "brand": "Novritsch",
+      "propulsion": "Spring Bolt-Action",
+      "owlClass": "airsoft:BoltActionSniper",
+      "skosPropulsion": "asoft-skos:Spring",
+      "skosPlatform": "asoft-skos:NovritschSSG96",
+      "skosBrand": "asoft-skos:Novritsch",
+      "skosRole": "asoft-skos:SniperRifle",
+      "muzzleEnergyJoules": 2.35,
+      "velocityFps020": 505,
+      "overallLengthMm": 1080,
+      "weightKg": 3.2,
+      "firingModes": [
+        "Safe",
+        "Single-Shot"
+      ],
+      "hasTracerUnit": false,
+      "usesBioBB": true,
+      "isColdWeatherReliable": true,
+      "description": "3.20kg precision L96 pattern bolt-action sniper rifle with transparent magazine indicator and CNC receiver."
+    },
+    {
+      "id": "rep_novritsch_ssr4",
+      "name": "Novritsch SSR4 Metal AEG",
+      "brand": "Novritsch",
+      "propulsion": "Electric (AEG)",
+      "owlClass": "airsoft:ElectricReplica",
+      "skosPropulsion": "asoft-skos:AEG",
+      "skosPlatform": "asoft-skos:NovritschSSR4",
+      "skosBrand": "asoft-skos:Novritsch",
+      "skosRole": "asoft-skos:Assault",
+      "muzzleEnergyJoules": 1.14,
+      "velocityFps020": 350,
+      "overallLengthMm": 740,
+      "weightKg": 2.4,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto",
+        "Full-Auto"
+      ],
+      "hasTracerUnit": false,
+      "usesBioBB": true,
+      "isColdWeatherReliable": true,
+      "description": "2.40kg all-round M4 AEG with pre-installed programmable optical ETU and rotary hop-up unit."
+    },
+    {
+      "id": "rep_novritsch_ssr9",
+      "name": "Novritsch SSR9 Speedsoft DSG",
+      "brand": "Novritsch",
+      "propulsion": "Electric (AEG)",
+      "owlClass": "airsoft:ElectricReplica",
+      "skosPropulsion": "asoft-skos:AEG",
+      "skosPlatform": "asoft-skos:NovritschSSR9",
+      "skosBrand": "asoft-skos:Novritsch",
+      "skosRole": "asoft-skos:CQB",
+      "muzzleEnergyJoules": 1.1,
+      "velocityFps020": 340,
+      "overallLengthMm": 550,
+      "weightKg": 1.95,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto",
+        "3-Rd Burst",
+        "Full-Auto"
+      ],
+      "hasTracerUnit": true,
+      "usesBioBB": true,
+      "isColdWeatherReliable": true,
+      "description": "1.95kg ultra-compact 9mm Speedsoft carbine featuring dual-sector gear (DSG) trigger response."
+    },
+    {
+      "id": "rep_novritsch_ssx23",
+      "name": "Novritsch SSX23 NBB Pistol",
+      "brand": "Novritsch",
+      "propulsion": "Gas Blowback (GBB)",
+      "owlClass": "airsoft:GbbrReplica",
+      "skosPropulsion": "asoft-skos:GBBR",
+      "skosPlatform": "asoft-skos:NovritschSSX23",
+      "skosBrand": "asoft-skos:Novritsch",
+      "skosRole": "asoft-skos:Sidearm",
+      "muzzleEnergyJoules": 0.9,
+      "velocityFps020": 312,
+      "overallLengthMm": 245,
+      "weightKg": 0.86,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto"
+      ],
+      "hasTracerUnit": true,
+      "usesBioBB": true,
+      "isColdWeatherReliable": false,
+      "description": "0.86kg ultra-quiet non-blowback gas sidearm engineered for lifting heavy 0.36g-0.43g BBs."
+    },
+    {
+      "id": "rep_double_eagle_m904",
+      "name": "Double Eagle M904G Falcon Fire Control",
+      "brand": "Double Eagle",
+      "propulsion": "Electric (AEG)",
+      "owlClass": "airsoft:ElectricReplica",
+      "skosPropulsion": "asoft-skos:AEG",
+      "skosPlatform": "asoft-skos:DoubleEagleM904",
+      "skosBrand": "asoft-skos:DoubleEagle",
+      "skosRole": "asoft-skos:CQB",
+      "muzzleEnergyJoules": 1.1,
+      "velocityFps020": 340,
+      "overallLengthMm": 650,
+      "weightKg": 2.12,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto",
+        "1-5 Rd Burst",
+        "Full-Auto"
+      ],
+      "hasTracerUnit": false,
+      "usesBioBB": true,
+      "isColdWeatherReliable": true,
+      "description": "2.12kg lightweight polymer M4 carbine featuring Falcon 2.0 electronic fire control system."
+    },
+    {
+      "id": "rep_cyma_plat_m4",
+      "name": "CYMA Platinum M4 QSC (CM.097B)",
+      "brand": "Cyma",
+      "propulsion": "Electric (AEG)",
+      "owlClass": "airsoft:ElectricReplica",
+      "skosPropulsion": "asoft-skos:AEG",
+      "skosPlatform": "asoft-skos:CymaPlatinumM4",
+      "skosBrand": "asoft-skos:Cyma",
+      "skosRole": "asoft-skos:Assault",
+      "muzzleEnergyJoules": 1.14,
+      "velocityFps020": 350,
+      "overallLengthMm": 730,
+      "weightKg": 2.65,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto",
+        "Full-Auto"
+      ],
+      "hasTracerUnit": false,
+      "usesBioBB": true,
+      "isColdWeatherReliable": true,
+      "description": "2.65kg high-ROF CNC aluminum M4 carbine with 13:1 high-speed gears and quick spring change."
+    },
+    {
+      "id": "rep_we_g17",
+      "name": "WE-Tech Glock 17 Gen 5 GBB",
+      "brand": "WE-Tech",
+      "propulsion": "Gas Blowback (GBB)",
+      "owlClass": "airsoft:GbbrReplica",
+      "skosPropulsion": "asoft-skos:GBBR",
+      "skosPlatform": "asoft-skos:WEG17",
+      "skosBrand": "asoft-skos:WETech",
+      "skosRole": "asoft-skos:Sidearm",
+      "muzzleEnergyJoules": 0.9,
+      "velocityFps020": 310,
+      "overallLengthMm": 202,
+      "weightKg": 0.75,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto"
+      ],
+      "hasTracerUnit": true,
+      "usesBioBB": true,
+      "isColdWeatherReliable": false,
+      "description": "0.75kg metal-slide gas blowback G17 sidearm compatible with TM tuning upgrades."
+    },
+    {
+      "id": "rep_ics_komodo",
+      "name": "ICS CXP-APE CQB AEG",
+      "brand": "ICS Airsoft",
+      "propulsion": "Electric (AEG)",
+      "owlClass": "airsoft:ElectricReplica",
+      "skosPropulsion": "asoft-skos:AEG",
+      "skosPlatform": "asoft-skos:ICSKomodo",
+      "skosBrand": "asoft-skos:ICSAirsoft",
+      "skosRole": "asoft-skos:Assault",
+      "muzzleEnergyJoules": 1.12,
+      "velocityFps020": 345,
+      "overallLengthMm": 716,
+      "weightKg": 2.9,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto",
+        "Full-Auto"
+      ],
+      "hasTracerUnit": false,
+      "usesBioBB": true,
+      "isColdWeatherReliable": true,
+      "description": "2.90kg split-gearbox modular carbine replica with monolithic upper and EBB blowback function."
+    },
+    {
+      "id": "rep_kwa_ronin_t6",
+      "name": "KWA Ronin T6 VPS AEG",
+      "brand": "KWA",
+      "propulsion": "Electric (AEG)",
+      "owlClass": "airsoft:ElectricReplica",
+      "skosPropulsion": "asoft-skos:AEG",
+      "skosPlatform": "asoft-skos:KWAEve6",
+      "skosBrand": "asoft-skos:KWA",
+      "skosRole": "asoft-skos:CQB",
+      "muzzleEnergyJoules": 1.14,
+      "velocityFps020": 350,
+      "overallLengthMm": 673,
+      "weightKg": 2.58,
+      "firingModes": [
+        "Safe",
+        "Semi-Auto",
+        "Full-Auto"
+      ],
+      "hasTracerUnit": false,
+      "usesBioBB": true,
+      "isColdWeatherReliable": true,
+      "description": "2.58kg variable performance system (VPS) M4 carbine with adjustable FPS stock guide."
     }
   ],
   "tacticalRoles": [

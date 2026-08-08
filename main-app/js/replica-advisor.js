@@ -529,6 +529,7 @@
           <div class="replica-specs">
             <div class="spec-item"><span class="spec-label">Muzzle Energy:</span> <strong>${r.muzzleEnergyJoules} J</strong> (${r.velocityFps020} FPS)</div>
             <div class="spec-item"><span class="spec-label">Overall Length:</span> <strong>${r.overallLengthMm} mm</strong></div>
+            <div class="spec-item"><span class="spec-label">Weight (Mass):</span> <strong>${r.weightKg ? r.weightKg.toFixed(2) + ' kg (' + Math.round(r.weightKg * 1000) + 'g)' : 'N/A'}</strong></div>
             <div class="spec-item"><span class="spec-label">Propulsion:</span> <strong>${r.propulsion}</strong></div>
             <div class="spec-item"><span class="spec-label">Firing Modes:</span> <strong>${r.firingModes.join(', ')}</strong></div>
           </div>
