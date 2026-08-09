@@ -56,19 +56,35 @@
           <section class="advisor-sidebar-card">
             <h3>1. Target Field & Site Rules</h3>
 
-            <div class="form-group">
-              <label for="field-preset-select">Select Field Preset:</label>
-              <select id="field-preset-select" class="advisor-select">
-                ${advisorData.fields.map(f => `<option value="${f.id}">${f.name} (${f.type})</option>`).join('')}
-                <option value="custom">Custom Site Rules...</option>
-              </select>
+            <div class="preset-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <label for="field-preset-select" style="margin-bottom: 0;">Target Field Preset:</label>
+              <button id="btn-toggle-lock" class="btn-lock-toggle btn-locked" title="Toggle Lock / Edit Profile Mode">
+                <span id="lock-icon">🔒</span> <span id="lock-btn-text">Unlock to Edit Profile</span>
+              </button>
             </div>
+
+            <select id="field-preset-select" class="advisor-select" style="margin-bottom: 8px;">
+              ${(advisorData.fields || []).map(f => `<option value="${f.id}">${f.name} (${f.type})</option>`).join('')}
+              <option value="custom">⚡ Custom Site Rules (Editing Mode)...</option>
+            </select>
 
             <div class="field-desc-box" id="field-desc-box">
               Select a field above to inspect constraints.
             </div>
 
-            <div class="form-section-title">Site Constraints (FieldConstraintProfile)</div>
+            <div class="profile-lock-bar" id="profile-lock-bar">
+              <div class="lock-status-pill locked" id="lock-status-pill">
+                🔒 Profile Locked to Venue Rules
+              </div>
+              <div class="lock-hint-text" id="lock-hint-text">
+                Rules cursors locked to official field specifications to prevent accidental edits. Click <strong>Unlock to Edit</strong> to modify.
+              </div>
+            </div>
+
+            <div class="form-section-title" style="display: flex; justify-content: space-between; align-items: center;">
+              <span>Site Constraints (FieldConstraintProfile)</span>
+              <span id="section-lock-indicator" class="lock-indicator-tag locked">🔒 READ ONLY</span>
+            </div>
 
             <div class="form-group">
               <div class="slider-header">
@@ -109,6 +125,17 @@
                 <span>Illuminated Tracer Required</span>
               </label>
             </div>
+
+            <!-- 🔍 Field Venue Compatibility Matcher (Visible when unlocked/editing) -->
+            <div class="matching-fields-card" id="matching-fields-card" style="display: none;">
+              <div class="matching-fields-title">
+                <span>🔍 Venue Rule Matcher</span>
+                <span class="matching-count-badge" id="matching-count-badge">0 Matches</span>
+              </div>
+              <div class="matching-fields-sub">Real fields whose venue rules allow your custom slider profile:</div>
+              <div class="matching-fields-grid" id="matching-fields-grid"></div>
+            </div>
+
 
             <div class="form-section-title">2. Tactical Role & Environment</div>
 
@@ -221,8 +248,16 @@
   }
 
   let latestEvaluatedResults = [];
+  let isProfileLocked = true;
 
   function bindEvents() {
+    const btnLock = document.getElementById('btn-toggle-lock');
+    if (btnLock) {
+      btnLock.addEventListener('click', () => {
+        setProfileLockState(!isProfileLocked);
+      });
+    }
+
     const presetSelect = document.getElementById('field-preset-select');
     if (presetSelect) {
       presetSelect.addEventListener('change', (e) => {
@@ -275,6 +310,22 @@
       if (el) el.addEventListener('change', triggerEvaluate);
     });
 
+    // Matcher item click handler to switch to matching field
+    const matchingGrid = document.getElementById('matching-fields-grid');
+    if (matchingGrid) {
+      matchingGrid.addEventListener('click', (e) => {
+        const item = e.target.closest('.matching-field-item');
+        if (item) {
+          const fieldId = item.dataset.fieldId;
+          const select = document.getElementById('field-preset-select');
+          if (select) {
+            select.value = fieldId;
+            selectFieldPreset(fieldId);
+          }
+        }
+      });
+    }
+
     // 🔍 Section 3 Live Search & Filter Listeners
     const searchInput = document.getElementById('results-search-input');
     const searchClear = document.getElementById('results-search-clear');
@@ -325,9 +376,120 @@
     }
   }
 
+  function setProfileLockState(locked) {
+    isProfileLocked = locked;
+    const btnLock = document.getElementById('btn-toggle-lock');
+    const lockIcon = document.getElementById('lock-icon');
+    const lockBtnText = document.getElementById('lock-btn-text');
+    const pill = document.getElementById('lock-status-pill');
+    const hint = document.getElementById('lock-hint-text');
+    const indicator = document.getElementById('section-lock-indicator');
+    const matchingCard = document.getElementById('matching-fields-card');
+
+    const inputJoules = document.getElementById('input-max-joules');
+    const inputLength = document.getElementById('input-max-length');
+    const inputMed = document.getElementById('input-med');
+    const chkSemi = document.getElementById('chk-semi-only');
+    const chkBio = document.getElementById('chk-bio-bb');
+    const chkTracer = document.getElementById('chk-tracer');
+
+    [inputJoules, inputLength, inputMed, chkSemi, chkBio, chkTracer].forEach(el => {
+      if (el) {
+        el.disabled = isProfileLocked;
+        if (isProfileLocked) {
+          el.classList.add('cursor-locked');
+        } else {
+          el.classList.remove('cursor-locked');
+        }
+      }
+    });
+
+    if (isProfileLocked) {
+      if (btnLock) btnLock.className = 'btn-lock-toggle btn-locked';
+      if (lockIcon) lockIcon.innerText = '🔒';
+      if (lockBtnText) lockBtnText.innerText = 'Unlock to Edit Profile';
+      if (pill) {
+        pill.className = 'lock-status-pill locked';
+        pill.innerText = '🔒 Profile Locked to Venue Rules';
+      }
+      if (hint) hint.innerHTML = 'Rules cursors locked to official field specifications to prevent accidental edits. Click <strong>Unlock to Edit</strong> to modify.';
+      if (indicator) {
+        indicator.className = 'lock-indicator-tag locked';
+        indicator.innerText = '🔒 READ ONLY';
+      }
+      if (matchingCard) matchingCard.style.display = 'none';
+    } else {
+      if (btnLock) btnLock.className = 'btn-lock-toggle btn-unlocked';
+      if (lockIcon) lockIcon.innerText = '🔓';
+      if (lockBtnText) lockBtnText.innerText = 'Lock to Venue Rules';
+      if (pill) {
+        pill.className = 'lock-status-pill unlocked';
+        pill.innerText = '✏️ Custom Profile (Editing Unlocked)';
+      }
+      if (hint) hint.innerText = 'Adjust sliders & checkboxes below to build your custom rule profile, then check compatible fields below.';
+      if (indicator) {
+        indicator.className = 'lock-indicator-tag unlocked';
+        indicator.innerText = '✏️ EDITING';
+      }
+      if (matchingCard) {
+        matchingCard.style.display = 'block';
+        renderMatchingFields();
+      }
+    }
+  }
+
+  function renderMatchingFields() {
+    const matchingCard = document.getElementById('matching-fields-card');
+    if (!matchingCard || isProfileLocked) return;
+
+    const joules = parseFloat(document.getElementById('input-max-joules').value);
+    const length = parseInt(document.getElementById('input-max-length').value, 10);
+    const med = parseInt(document.getElementById('input-med').value, 10);
+    const semiOnly = document.getElementById('chk-semi-only').checked;
+    const bioBb = document.getElementById('chk-bio-bb').checked;
+    const tracer = document.getElementById('chk-tracer').checked;
+
+    const fields = advisorData.fields || [];
+    let matchCount = 0;
+
+    const itemsHtml = fields.map(f => {
+      const issues = [];
+      if (joules > f.maxJoules) issues.push(`Custom Joules (${joules.toFixed(2)}J) exceeds venue max (${f.maxJoules.toFixed(2)}J)`);
+      if (length > f.maxPermissibleLengthMm) issues.push(`Custom length (${length}mm) exceeds venue limit (${f.maxPermissibleLengthMm}mm)`);
+      if (f.isSemiOnlyRestricted && !semiOnly) issues.push(`Venue requires Semi-Only rule`);
+      if (f.requiresBioBB && !bioBb) issues.push(`Venue mandates Bio BBs`);
+      if (f.requiresTracerUnit && !tracer) issues.push(`Venue mandates Tracer Unit`);
+      if (med < f.minEngagementDistanceMeters) issues.push(`Venue requires MED ≥ ${f.minEngagementDistanceMeters}m`);
+
+      const isMatch = issues.length === 0;
+      if (isMatch) matchCount++;
+
+      return `
+        <div class="matching-field-item ${isMatch ? 'match-ok' : 'match-fail'}" data-field-id="${f.id}" title="${isMatch ? 'Click to select this venue' : issues.join(' | ')}">
+          <div class="field-item-header">
+            <span class="match-icon">${isMatch ? '✅' : '❌'}</span>
+            <span class="field-item-name">${f.name}</span>
+          </div>
+          <div class="field-item-details">
+            ${isMatch ? `<span class="tag-ok">✓ Rules Allowed by Venue</span>` : `<span class="tag-fail">⚠️ ${issues[0]}</span>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    const badge = document.getElementById('matching-count-badge');
+    if (badge) badge.innerText = `${matchCount} of ${fields.length} Fields Match`;
+
+    const grid = document.getElementById('matching-fields-grid');
+    if (grid) grid.innerHTML = itemsHtml;
+  }
+
   function selectFieldPreset(fieldId) {
     if (fieldId === 'custom') {
-      document.getElementById('field-desc-box').innerText = 'Custom user-configured field rules.';
+      selectedField = null;
+      document.getElementById('field-desc-box').innerText = 'Custom user-configured field rule profile (Editing Unlocked).';
+      setProfileLockState(false);
+      triggerEvaluate();
       return;
     }
 
@@ -355,13 +517,20 @@
     document.getElementById('chk-bio-bb').checked = field.requiresBioBB;
     document.getElementById('chk-tracer').checked = field.requiresTracerUnit;
 
+    setProfileLockState(true);
     runEvaluation();
   }
+
 
   let evalTimeout = null;
   function triggerEvaluate() {
     clearTimeout(evalTimeout);
-    evalTimeout = setTimeout(runEvaluation, 150);
+    evalTimeout = setTimeout(() => {
+      runEvaluation();
+      if (!isProfileLocked) {
+        renderMatchingFields();
+      }
+    }, 150);
   }
 
   async function runEvaluation() {

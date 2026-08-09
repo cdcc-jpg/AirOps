@@ -34,17 +34,18 @@ ONTOLOGY_FILES = [
     os.path.join(ONTOLOGIES_DIR, '4-Application', 'profiles', 'airsoft-replica-selector-app.ttl'),
     os.path.join(ONTOLOGIES_DIR, '4-Application', 'alignments', 'alignments-airsoft-bfo.ttl'),
     os.path.join(ONTOLOGIES_DIR, 'Grouped-Vocabularies-and-Restrictions', 'airsoft', 'vocabularies', 'airsoft-skos-taxonomy.ttl'),
-    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'controlled-vocabulary', 'vocabularies', 'airsoft-skos-2000.ttl'))
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'controlled-vocabulary', 'vocabularies', 'airsoft-skos-2000.jsonld'))
 ]
 
 SHACL_PATH = os.path.join(ONTOLOGIES_DIR, 'Grouped-Vocabularies-and-Restrictions', 'airsoft', 'shapes', 'airsoft-shacl-shapes.ttl')
 ALIGNMENTS_PATH = os.path.join(ONTOLOGIES_DIR, '4-Application', 'alignments', 'alignments-airsoft-bfo.ttl')
 
-print(f"Loading modular OWL/Turtle schemas from {ONTOLOGIES_DIR} into rdflib graph...")
+print(f"Loading modular OWL/SKOS schemas from {ONTOLOGIES_DIR} into rdflib graph...")
 try:
     for filepath in ONTOLOGY_FILES:
         if os.path.exists(filepath):
-            graph.parse(filepath, format="turtle")
+            fmt = "json-ld" if filepath.endswith(".jsonld") else "turtle"
+            graph.parse(filepath, format=fmt)
         else:
             print(f"Warning: Ontology file not found: {filepath}")
     print(f"Loaded schema graph successfully. Triples count: {len(graph)}")
