@@ -167,17 +167,6 @@ def add_header(response):
 
 # ─── Static Routing ──────────────────────────────────────────
 
-@app.route('/learning/')
-@app.route('/learning')
-def serve_learning_index():
-    learning_dir = os.path.join(os.path.dirname(__file__), '..', 'sparql-academy')
-    return send_from_directory(learning_dir, 'index.html')
-
-@app.route('/learning/<path:path>')
-def serve_learning_static(path):
-    learning_dir = os.path.join(os.path.dirname(__file__), '..', 'sparql-academy')
-    return send_from_directory(learning_dir, path)
-
 @app.route('/')
 def serve_index():
     return send_from_directory('.', 'index.html')

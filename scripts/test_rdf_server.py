@@ -92,21 +92,6 @@ def main():
         print("         → FAIL: Verification query failed.")
         sys.exit(1)
 
-    # 5. Test SPARQL Sandbox Academy static routing
-    print("  [5/5] Testing /learning SPARQL Sandbox static routing...")
-    try:
-        req = urllib.request.Request(f"{BASE_URL}/learning", method="GET")
-        with urllib.request.urlopen(req, timeout=5) as response:
-            html = response.read().decode('utf-8')
-            if "SPARQL Academy" in html:
-                print("         → SUCCESS: Learning Sandbox HTML loaded correctly.")
-            else:
-                print("         → FAIL: Sandbox HTML has invalid content.")
-                sys.exit(1)
-    except Exception as e:
-        print(f"         → FAIL: Could not fetch sandbox page: {e}")
-        sys.exit(1)
-
     print("\n✅ All v2.11 backend integration tests passed successfully.")
 
 if __name__ == "__main__":
