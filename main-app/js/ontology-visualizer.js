@@ -105,31 +105,31 @@ function updateSidebarSummary() {
 
   panel.innerHTML = `
     <div class="panel-section">
-      <h3>🧬 Ontology Alignment Studio</h3>
+      <h3 style="font-size: 13.5px; font-weight: 600; color: var(--text-primary);">Ontology Alignment Studio</h3>
       <p class="panel-desc">Visual pattern mapping between AirOps and BFO 2020 Upper Ontology.</p>
     </div>
 
     <div class="stat-card-group" style="display: flex; gap: 8px; margin-bottom: 16px;">
-      <div class="stat-box" style="flex: 1; background: rgba(0,255,204,0.05); border: 1px solid rgba(0,255,204,0.2); padding: 8px; border-radius: 6px; text-align: center;">
-        <div style="font-size: 1.4rem; font-weight: bold; color: #00ffcc;">${airopsCount}</div>
-        <div style="font-size: 0.75rem; color: #8a9ba8;">AirOps Classes</div>
+      <div class="stat-box" style="flex: 1; background: var(--sigil-gdc-bg); border: 1px solid var(--sigil-gdc-bd); padding: 8px; border-radius: 6px; text-align: center;">
+        <div style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--sigil-gdc-fg);">${airopsCount}</div>
+        <div style="font-size: 11.5px; color: var(--text-secondary);">AirOps Classes</div>
       </div>
-      <div class="stat-box" style="flex: 1; background: rgba(0,170,255,0.05); border: 1px solid rgba(0,170,255,0.2); padding: 8px; border-radius: 6px; text-align: center;">
-        <div style="font-size: 1.4rem; font-weight: bold; color: #00aaff;">${bfoCount}</div>
-        <div style="font-size: 0.75rem; color: #8a9ba8;">BFO Top-Level</div>
+      <div class="stat-box" style="flex: 1; background: var(--sigil-proc-bg); border: 1px solid var(--sigil-proc-bd); padding: 8px; border-radius: 6px; text-align: center;">
+        <div style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--sigil-proc-fg);">${bfoCount}</div>
+        <div style="font-size: 11.5px; color: var(--text-secondary);">BFO Top-Level</div>
       </div>
     </div>
 
-    <div style="background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.2); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
+    <div style="background: var(--sigil-cont-bg); border: 1px solid var(--sigil-cont-bd); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="color: #ffd700; font-weight: bold;">Manual Alignments</span>
-        <span style="background: #ffd700; color: #000; padding: 2px 8px; border-radius: 10px; font-weight: bold; font-size: 0.8rem;">${alignCount}</span>
+        <span style="color: var(--sigil-cont-fg); font-weight: 500; font-size: 12.5px;">Manual Alignments</span>
+        <span style="background: var(--bg-surface-1); color: var(--sigil-cont-fg); border: 1px solid var(--sigil-cont-bd); padding: 2px 8px; border-radius: 10px; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 11.5px;">${alignCount}</span>
       </div>
-      <p style="font-size: 0.8rem; color: #a0aec0; margin-top: 6px;">Saved in <code>schemas/airsoft-bfo-alignments.ttl</code></p>
+      <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 6px;">Saved in <code>schemas/airsoft-bfo-alignments.ttl</code></p>
     </div>
 
-    <button class="btn-primary" id="btn-open-studio-sidebar" style="width: 100%; margin-top: 10px;">
-      ⚡ Launch Visual Studio Workbench
+    <button class="btn btn-primary" id="btn-open-studio-sidebar" style="width: 100%; margin-top: 10px;">
+      Launch Visual Studio Workbench
     </button>
   `;
 
@@ -632,6 +632,7 @@ function startGraphSimulation() {
 function renderGraph() {
   if (!ctx || !canvas) return;
 
+  const isLight = document.documentElement.classList.contains('light');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.save();
@@ -643,8 +644,10 @@ function renderGraph() {
     ctx.beginPath();
     ctx.moveTo(link.source.x, link.source.y);
     ctx.lineTo(link.target.x, link.target.y);
-    ctx.strokeStyle = link.color;
-    ctx.lineWidth = link.type === 'subClassOf' ? 1 : 2.5;
+    ctx.strokeStyle = link.type === 'subClassOf'
+      ? (isLight ? 'rgba(37, 40, 48, 0.20)' : 'rgba(236, 232, 224, 0.18)')
+      : (isLight ? '#b88438' : '#d4a15a');
+    ctx.lineWidth = link.type === 'subClassOf' ? 1 : 2;
     if (link.type !== 'subClassOf') ctx.setLineDash([5, 5]);
     else ctx.setLineDash([]);
     ctx.stroke();
@@ -653,8 +656,8 @@ function renderGraph() {
     if (link.type !== 'subClassOf') {
       const midX = (link.source.x + link.target.x) / 2;
       const midY = (link.source.y + link.target.y) / 2;
-      ctx.fillStyle = '#ffd700';
-      ctx.font = '10px sans-serif';
+      ctx.fillStyle = isLight ? '#9e6b22' : '#dfb068';
+      ctx.font = '500 11px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
       ctx.fillText(link.type, midX, midY);
     }
   });
@@ -662,16 +665,15 @@ function renderGraph() {
   // Draw nodes
   graphNodes.forEach(node => {
     ctx.beginPath();
-    ctx.arc(node.x, node.y, node.type === 'airops' ? 8 : 10, 0, Math.PI * 2);
-    ctx.fillStyle = node.type === 'airops' ? '#00ffcc' : '#00aaff';
-    ctx.shadowBlur = 10;
-    ctx.shadowColor = node.type === 'airops' ? '#00ffcc' : '#00aaff';
+    ctx.arc(node.x, node.y, node.type === 'airops' ? 7 : 9, 0, Math.PI * 2);
+    ctx.fillStyle = node.type === 'airops'
+      ? (isLight ? '#287078' : '#6ec1cb')
+      : (isLight ? '#336699' : '#7ea8d8');
     ctx.fill();
-    ctx.shadowBlur = 0;
 
     // Node label
-    ctx.fillStyle = '#e2e8f0';
-    ctx.font = '11px sans-serif';
+    ctx.fillStyle = isLight ? '#252830' : '#ece8e0';
+    ctx.font = '500 11.5px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
     ctx.fillText(node.label, node.x + 12, node.y + 4);
   });
 

@@ -906,8 +906,8 @@ LIMIT 8`;
       <div class="gb-section" style="margin-top: 0;">
         <div class="gb-section-title">SPARQL Editor (Python rdflib)</div>
         <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
-          <textarea id="sparql-query-input" class="search-box" style="font-family: var(--font-mono); font-size: 0.7rem; height: 160px; width: 100%; resize: vertical; line-height: 1.3; background: #12161a; padding: 8px; border-color: var(--border-primary);" spellcheck="false">${defaultQuery}</textarea>
-          <button class="btn btn-primary" id="btn-run-sparql" style="width: 100%; margin-top: 6px;">⚡ Execute SPARQL Query</button>
+          <textarea id="sparql-query-input" class="search-box" style="font-family: var(--font-mono); font-size: 11.5px; height: 160px; width: 100%; resize: vertical; line-height: 1.5; background: var(--bg-surface-2); padding: 8px; border-color: var(--border-subtle);" spellcheck="false">${defaultQuery}</textarea>
+          <button class="btn btn-primary" id="btn-run-sparql" style="width: 100%; margin-top: 6px;">Execute SPARQL Query</button>
         </div>
       </div>
 

@@ -209,8 +209,9 @@ export class TacticalMap {
     // Clear
     ctx.clearRect(0, 0, w, h);
 
-    // Background
-    ctx.fillStyle = '#12161a';
+    // Background (Priory Nocturne / Daylight aware)
+    const isLight = document.documentElement.classList.contains('light');
+    ctx.fillStyle = isLight ? '#f5f2eb' : '#171a23';
     ctx.fillRect(0, 0, w, h);
 
     // Grid
@@ -261,8 +262,9 @@ export class TacticalMap {
     const gs = this.layout.field.gridSize;
     const fw = this.layout.field.width;
     const fh = this.layout.field.height;
+    const isLight = document.documentElement.classList.contains('light');
 
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
+    ctx.strokeStyle = isLight ? 'rgba(37, 40, 48, 0.06)' : 'rgba(236, 232, 224, 0.04)';
     ctx.lineWidth = 0.5;
 
     for (let x = 0; x <= fw; x += gs) {
@@ -288,9 +290,10 @@ export class TacticalMap {
     const ctx = this.ctx;
     const tl = this._toScreen(0, 0);
     const br = this._toScreen(this.layout.field.width, this.layout.field.height);
+    const isLight = document.documentElement.classList.contains('light');
 
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-    ctx.lineWidth = 2;
+    ctx.strokeStyle = isLight ? 'rgba(37, 40, 48, 0.22)' : 'rgba(236, 232, 224, 0.14)';
+    ctx.lineWidth = 1.5;
     ctx.setLineDash([8, 4]);
     ctx.strokeRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
     ctx.setLineDash([]);
@@ -466,8 +469,9 @@ export class TacticalMap {
       ctx.stroke();
 
       // Label
-      ctx.fillStyle = '#ffffff';
-      ctx.font = `bold ${Math.max(8, 10 * this.zoom)}px 'Outfit', sans-serif`;
+      const isLight = document.documentElement.classList.contains('light');
+      ctx.fillStyle = isLight ? '#252830' : '#ece8e0';
+      ctx.font = `500 ${Math.max(8, 10 * this.zoom)}px -apple-system, BlinkMacSystemFont, 'Inter', sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(obj.name, p.x, p.y - r - 6);
     }
@@ -556,20 +560,21 @@ export class TacticalMap {
 
   _drawZoneLabels() {
     const ctx = this.ctx;
+    const isLight = document.documentElement.classList.contains('light');
 
     for (const zone of this.layout.zones) {
       const b = zone.bounds;
       const center = this._toScreen(b.x + b.w / 2, b.y + b.h / 2);
 
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
-      ctx.font = `600 ${Math.max(7, 9 * this.zoom)}px 'Inter', sans-serif`;
+      ctx.fillStyle = isLight ? 'rgba(37, 40, 48, 0.65)' : 'rgba(236, 232, 224, 0.48)';
+      ctx.font = `500 ${Math.max(7, 9 * this.zoom)}px -apple-system, BlinkMacSystemFont, 'Inter', sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(zone.name, center.x, center.y);
 
       // Joule limit indicator
       if (zone.maxJoules > 0 && zone.type !== 'safe') {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-        ctx.font = `500 ${Math.max(6, 7 * this.zoom)}px 'JetBrains Mono', monospace`;
+        ctx.fillStyle = isLight ? 'rgba(72, 77, 89, 0.65)' : 'rgba(181, 187, 201, 0.42)';
+        ctx.font = `400 ${Math.max(6, 7 * this.zoom)}px -apple-system, BlinkMacSystemFont, 'Inter', sans-serif`;
         ctx.fillText(`≤${zone.maxJoules}J`, center.x, center.y + 12 * this.zoom);
       }
     }

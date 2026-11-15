@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="AirOps — Ontology-powered airsoft tactical operations platform for real-time situational awareness, game management, and chrono compliance.">
   <title>AirOps — Tactical Operations Platform</title>
   <link rel="stylesheet" href="index.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b6694' stroke-width='2'><circle cx='12' cy='12' r='8'/><line x1='12' y1='2' x2='12' y2='6'/><line x1='12' y1='18' x2='12' y2='22'/><line x1='2' y1='12' x2='6' y2='12'/><line x1='18' y1='12' x2='22' y2='12'/></svg>">
 </head>
 <body>
   <!-- ═══ Loading Screen ═══ -->
   <div id="loading-screen">
-    <div class="loading-logo">AIROPS</div>
+    <div class="loading-logo">AirOps</div>
     <div class="loading-bar">
       <div class="loading-bar-fill"></div>
     </div>
@@ -25,12 +25,27 @@
     <aside id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-brand">
-          <div class="logo">🎯</div>
+          <div class="logo" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="8"></circle>
+              <circle cx="12" cy="12" r="2.5"></circle>
+              <line x1="12" y1="2" x2="12" y2="5"></line>
+              <line x1="12" y1="19" x2="12" y2="22"></line>
+              <line x1="2" y1="12" x2="5" y2="12"></line>
+              <line x1="19" y1="12" x2="22" y2="12"></line>
+            </svg>
+          </div>
           <div>
-            <h1>AIROPS</h1>
-            <div class="subtitle">Tactical Operations Platform</div>
+            <h1>AirOps</h1>
+            <div class="subtitle">Tactical Operations</div>
           </div>
         </div>
+        <button type="button" class="theme-toggle-btn" id="btn-theme-toggle" title="Toggle Daylight / Nocturne theme" aria-label="Toggle Daylight or Nocturne theme">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+          </svg>
+        </button>
       </div>
 
       <nav class="sidebar-tabs">
@@ -56,8 +71,14 @@
         </div>
         <div class="sidebar-panel" id="panel-advisor">
           <div class="panel-section">
-            <h4>🎯 Replica Selection Advisor</h4>
-            <p style="font-size: 0.85rem; color: #8899a6; line-height: 1.4;">
+            <h4 class="panel-heading-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9"></circle>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Replica Selection Advisor
+            </h4>
+            <p class="panel-desc">
               Ontology-driven replica recommendation engine operationalizing <code>airsoft-replica-selector-app.ttl</code> and W3C SKOS controlled vocabulary concepts.
             </p>
           </div>
@@ -79,10 +100,33 @@
 
       <!-- Map controls -->
       <div class="map-controls">
-        <button class="map-btn active" id="btn-players" title="Toggle player markers">👥</button>
-        <button class="map-btn active" id="btn-labels" title="Toggle zone labels">🏷️</button>
-        <button class="map-btn" id="btn-heatmap" title="Toggle heatmap">🔥</button>
-        <button class="map-btn" id="btn-reset" title="Reset view">⟳</button>
+        <button class="map-btn active" id="btn-players" title="Toggle player markers" aria-label="Toggle player markers">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </button>
+        <button class="map-btn active" id="btn-labels" title="Toggle zone labels" aria-label="Toggle zone labels">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+          </svg>
+        </button>
+        <button class="map-btn" id="btn-heatmap" title="Toggle heatmap" aria-label="Toggle heatmap">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <circle cx="12" cy="12" r="5"></circle>
+            <circle cx="12" cy="12" r="1.5"></circle>
+          </svg>
+        </button>
+        <button class="map-btn" id="btn-reset" title="Reset view" aria-label="Reset view">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+        </button>
       </div>
 
       <!-- Score display -->
@@ -124,7 +168,26 @@
     </div>
   </div>
 
-  <!-- ─── App Scripts ─── -->
+  <!-- ─── Theme Switcher & App Scripts ─── -->
+  <script>
+    (function() {
+      const root = document.documentElement;
+      const saved = localStorage.getItem('airops-priory-theme');
+      if (saved === 'light') {
+        root.classList.remove('dark');
+        root.classList.add('light');
+      }
+      const btn = document.getElementById('btn-theme-toggle');
+      if (btn) {
+        btn.addEventListener('click', function() {
+          const isLight = root.classList.toggle('light');
+          root.classList.toggle('dark', !isLight);
+          localStorage.setItem('airops-priory-theme', isLight ? 'light' : 'dark');
+          window.dispatchEvent(new Event('resize'));
+        });
+      }
+    })();
+  </script>
   <script src="js/replica-advisor.js?v=2.11.1"></script>
   <script type="module" src="js/app.js?v=2.11.1"></script>
 </body>
