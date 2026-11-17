@@ -1,8 +1,10 @@
 /**
  * AirOps — Tactical Map Renderer
- * Canvas-based tactical map with zones, player markers, objectives,
- * terrain features, and interactive overlays.
+ * Canvas-based tactical map with ResizeObserver, devicePixelRatio scaling,
+ * and dynamic Priory theme token resolution via getComputedStyle.
  */
+
+import { readPrioryThemeTokens, withAlpha, parseRgbTriplet } from './priory-semiotics.js?v=2.11.2';
 
 export class TacticalMap {
   constructor(canvas, engine) {
@@ -17,6 +19,7 @@ export class TacticalMap {
     this.panY = 0;
     this.hoveredZone = null;
     this.selectedPlayer = null;
+    this.selectedZone = null;
     this.showHeatmap = false;
     this.showZoneLabels = true;
     this.showPlayerMarkers = true;
@@ -26,11 +29,11 @@ export class TacticalMap {
     this._isDragging = false;
     this._lastMouse = { x: 0, y: 0 };
     this._mousePos = { x: 0, y: 0 };
-    this._animFrame = null;
-
-    // Animation
-    this._time = 0;
-    this._playerPulse = new Map();
+    this._canvasWidth = 0;
+    this._canvasHeight = 0;
+    this._baseScale = 1;
+    this._offsetX = 0;
+    this._offsetY = 0;
 
     // Callbacks
     this.onZoneHover = null;
@@ -39,6 +42,14 @@ export class TacticalMap {
 
     this._bindEvents();
     this._resize();
+
+    if (typeof ResizeObserver !== 'undefined' && this.canvas.parentElement) {
+      this._resizeObserver = new ResizeObserver(() => {
+        this._resize();
+        this._render();
+      });
+      this._resizeObserver.observe(this.canvas.parentElement);
+    }
 
     window.addEventListener('resize', () => {
       this._resize();
@@ -51,26 +62,30 @@ export class TacticalMap {
     this.canvas.addEventListener('mousedown', (e) => this._onMouseDown(e));
     this.canvas.addEventListener('mouseup', (e) => this._onMouseUp(e));
     this.canvas.addEventListener('mouseleave', () => this._onMouseLeave());
-    this.canvas.addEventListener('wheel', (e) => this._onWheel(e));
+    this.canvas.addEventListener('wheel', (e) => this._onWheel(e), { passive: false });
     this.canvas.addEventListener('click', (e) => this._onClick(e));
   }
 
   _resize() {
-    const rect = this.canvas.parentElement.getBoundingClientRect();
-    this.canvas.width = rect.width * window.devicePixelRatio;
-    this.canvas.height = rect.height * window.devicePixelRatio;
+    const parent = this.canvas.parentElement;
+    if (!parent) return;
+    const rect = parent.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = Math.floor(rect.width * dpr);
+    this.canvas.height = Math.floor(rect.height * dpr);
     this.canvas.style.width = rect.width + 'px';
     this.canvas.style.height = rect.height + 'px';
-    this.ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     this._canvasWidth = rect.width;
     this._canvasHeight = rect.height;
 
-    // Calculate scale to fit map
     const fieldW = this.layout.field.width;
     const fieldH = this.layout.field.height;
-    const scaleX = (this._canvasWidth - 40) / fieldW;
-    const scaleY = (this._canvasHeight - 40) / fieldH;
+    const scaleX = Math.max(0.1, (this._canvasWidth - 32) / fieldW);
+    const scaleY = Math.max(0.1, (this._canvasHeight - 32) / fieldH);
     this._baseScale = Math.min(scaleX, scaleY);
     this._offsetX = (this._canvasWidth - fieldW * this._baseScale) / 2;
     this._offsetY = (this._canvasHeight - fieldH * this._baseScale) / 2;
@@ -108,7 +123,6 @@ export class TacticalMap {
       return;
     }
 
-    // Check zone hover
     const mapPos = this._toMap(this._mousePos.x, this._mousePos.y);
     let hoveredZone = null;
 
@@ -128,6 +142,8 @@ export class TacticalMap {
       this.canvas.style.cursor = hoveredZone ? 'pointer' : 'crosshair';
       if (this.onZoneHover) this.onZoneHover(hoveredZone, this._mousePos);
       this._render();
+    } else if (hoveredZone && this.onZoneHover) {
+      this.onZoneHover(hoveredZone, this._mousePos);
     }
   }
 
@@ -140,7 +156,7 @@ export class TacticalMap {
     }
   }
 
-  _onMouseUp(e) {
+  _onMouseUp() {
     this._isDragging = false;
     this.canvas.style.cursor = this.hoveredZone ? 'pointer' : 'crosshair';
     this._render();
@@ -158,7 +174,6 @@ export class TacticalMap {
     const delta = e.deltaY > 0 ? 0.92 : 1.08;
     const newZoom = Math.max(0.5, Math.min(3, this.zoom * delta));
 
-    // Zoom toward cursor
     const mx = this._mousePos.x;
     const my = this._mousePos.y;
     this.panX = mx - (mx - this.panX) * (newZoom / this.zoom);
@@ -168,12 +183,7 @@ export class TacticalMap {
     this._render();
   }
 
-  _onClick(e) {
-    if (this.hoveredZone && this.onZoneClick) {
-      this.onZoneClick(this.hoveredZone);
-    }
-
-    // Check player click
+  _onClick() {
     const mapPos = this._toMap(this._mousePos.x, this._mousePos.y);
     const s = this._baseScale * this.zoom;
     const hitRadius = 12 / s;
@@ -189,6 +199,12 @@ export class TacticalMap {
         return;
       }
     }
+
+    if (this.hoveredZone) {
+      this.selectedZone = this.hoveredZone;
+      if (this.onZoneClick) this.onZoneClick(this.hoveredZone);
+      this._render();
+    }
   }
 
   // ─── Rendering ─────────────────────────────────────────────
@@ -198,73 +214,78 @@ export class TacticalMap {
   }
 
   stop() {
-    // No-op (animations disabled)
+    // Static event-driven rendering
+  }
+
+  _zoneSemanticColor(zone, tokens) {
+    switch (zone.type) {
+      case 'fortification': return tokens.statusWarn;
+      case 'cqb': return tokens.sigils.role.fg;
+      case 'outdoor': return tokens.statusClear;
+      case 'elevated': return tokens.accentOchre;
+      case 'nogo': return tokens.statusAvoid;
+      case 'safe': return tokens.accentPrimary;
+      case 'path': return tokens.borderStrong;
+      default: return tokens.textMuted;
+    }
   }
 
   _render() {
+    if (this._canvasWidth <= 0 || this._canvasHeight <= 0) return;
+
     const ctx = this.ctx;
     const w = this._canvasWidth;
     const h = this._canvasHeight;
+    const tokens = readPrioryThemeTokens(document);
 
-    // Clear
     ctx.clearRect(0, 0, w, h);
 
-    // Background (Priory Nocturne / Daylight aware)
-    const isLight = document.documentElement.classList.contains('light');
-    ctx.fillStyle = isLight ? '#f5f2eb' : '#171a23';
+    ctx.fillStyle = tokens.bgCanvas;
     ctx.fillRect(0, 0, w, h);
 
-    // Grid
-    this._drawGrid();
+    this._drawGrid(tokens);
+    this._drawFieldBoundary(tokens);
 
-    // Field boundary
-    this._drawFieldBoundary();
-
-    // Zones
     for (const zone of this.layout.zones) {
-      this._drawZone(zone);
+      this._drawZone(zone, tokens);
     }
 
-    // Paths
     if (this.showPaths) {
-      this._drawPaths();
+      this._drawPaths(tokens);
     }
 
-    // Terrain
-    this._drawTerrain();
+    this._drawTerrain(tokens);
 
-    // Heatmap overlay
     if (this.showHeatmap) {
-      this._drawHeatmap();
+      this._drawHeatmap(tokens);
     }
 
-    // Objectives
-    this._drawObjectives();
+    this._drawObjectives(tokens);
 
-    // Player markers
     if (this.showPlayerMarkers) {
-      this._drawPlayers();
+      this._drawPlayers(tokens);
     }
 
-    // Zone labels
     if (this.showZoneLabels) {
-      this._drawZoneLabels();
+      this._drawZoneLabels(tokens);
     }
 
-    // Hovered zone highlight
+    if (this.selectedZone) {
+      this._drawZoneHighlight(this.selectedZone, tokens, false);
+    }
+
     if (this.hoveredZone) {
-      this._drawZoneHighlight(this.hoveredZone);
+      this._drawZoneHighlight(this.hoveredZone, tokens, true);
     }
   }
 
-  _drawGrid() {
+  _drawGrid(tokens) {
     const ctx = this.ctx;
     const gs = this.layout.field.gridSize;
     const fw = this.layout.field.width;
     const fh = this.layout.field.height;
-    const isLight = document.documentElement.classList.contains('light');
 
-    ctx.strokeStyle = isLight ? 'rgba(37, 40, 48, 0.06)' : 'rgba(236, 232, 224, 0.04)';
+    ctx.strokeStyle = withAlpha(tokens.borderSubtle, 0.55);
     ctx.lineWidth = 0.5;
 
     for (let x = 0; x <= fw; x += gs) {
@@ -286,20 +307,19 @@ export class TacticalMap {
     }
   }
 
-  _drawFieldBoundary() {
+  _drawFieldBoundary(tokens) {
     const ctx = this.ctx;
     const tl = this._toScreen(0, 0);
     const br = this._toScreen(this.layout.field.width, this.layout.field.height);
-    const isLight = document.documentElement.classList.contains('light');
 
-    ctx.strokeStyle = isLight ? 'rgba(37, 40, 48, 0.22)' : 'rgba(236, 232, 224, 0.14)';
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([8, 4]);
+    ctx.strokeStyle = tokens.borderStrong;
+    ctx.lineWidth = 1;
+    ctx.setLineDash([6, 4]);
     ctx.strokeRect(tl.x, tl.y, br.x - tl.x, br.y - tl.y);
     ctx.setLineDash([]);
   }
 
-  _drawZone(zone) {
+  _drawZone(zone, tokens) {
     const ctx = this.ctx;
     const b = zone.bounds;
     const tl = this._toScreen(b.x, b.y);
@@ -307,16 +327,17 @@ export class TacticalMap {
     const w = br.x - tl.x;
     const h = br.y - tl.y;
 
-    // Fill
-    ctx.fillStyle = zone.color + Math.round(zone.opacity * 255).toString(16).padStart(2, '0');
+    const baseColor = this._zoneSemanticColor(zone, tokens);
+    const alpha = Math.min(0.16, Math.max(0.06, zone.opacity || 0.1));
+
+    ctx.fillStyle = withAlpha(baseColor, alpha);
     ctx.fillRect(tl.x, tl.y, w, h);
 
-    // Border
-    ctx.strokeStyle = zone.borderColor;
-    ctx.lineWidth = zone.type === 'indoor' || zone.type === 'objective' ? 2 : 1;
+    ctx.strokeStyle = withAlpha(baseColor, 0.65);
+    ctx.lineWidth = zone.type === 'indoor' || zone.type === 'objective' || zone.type === 'cqb' ? 1.5 : 1;
 
     if (zone.type === 'spawn' || zone.type === 'safe') {
-      ctx.setLineDash([6, 3]);
+      ctx.setLineDash([5, 3]);
     } else if (zone.type === 'objective') {
       ctx.setLineDash([]);
     } else {
@@ -327,7 +348,7 @@ export class TacticalMap {
     ctx.setLineDash([]);
   }
 
-  _drawZoneHighlight(zone) {
+  _drawZoneHighlight(zone, tokens, isHover) {
     const ctx = this.ctx;
     const b = zone.bounds;
     const tl = this._toScreen(b.x, b.y);
@@ -335,23 +356,20 @@ export class TacticalMap {
     const w = br.x - tl.x;
     const h = br.y - tl.y;
 
-    // Glow effect
-    ctx.strokeStyle = zone.borderColor;
+    const strokeColor = isHover ? tokens.accentPrimary : this._zoneSemanticColor(zone, tokens);
+    ctx.strokeStyle = strokeColor;
     ctx.lineWidth = 2;
-    ctx.shadowColor = zone.borderColor;
-    ctx.shadowBlur = 12;
     ctx.strokeRect(tl.x, tl.y, w, h);
-    ctx.shadowBlur = 0;
   }
 
-  _drawPaths() {
+  _drawPaths(tokens) {
     const ctx = this.ctx;
     if (!this.layout.paths) return;
 
     for (const path of this.layout.paths) {
       if (path.points.length < 2) continue;
 
-      ctx.strokeStyle = 'rgba(160, 140, 100, 0.2)';
+      ctx.strokeStyle = withAlpha(tokens.textMuted, 0.32);
       ctx.lineWidth = path.width || 1;
       ctx.setLineDash([4, 4]);
 
@@ -369,7 +387,7 @@ export class TacticalMap {
     }
   }
 
-  _drawTerrain() {
+  _drawTerrain(tokens) {
     const ctx = this.ctx;
     if (!this.layout.terrain) return;
 
@@ -377,22 +395,15 @@ export class TacticalMap {
       if (feature.type === 'trees') {
         for (const [x, y] of feature.positions) {
           const p = this._toScreen(x, y);
-          const s = 6 * this.zoom;
+          const s = 5 * this.zoom;
 
-          // Tree shadow
-          ctx.fillStyle = 'rgba(30, 70, 20, 0.3)';
-          ctx.beginPath();
-          ctx.arc(p.x + 1, p.y + 1, s, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Tree
-          ctx.fillStyle = 'rgba(50, 120, 40, 0.5)';
+          ctx.fillStyle = withAlpha(tokens.statusClear, 0.25);
           ctx.beginPath();
           ctx.arc(p.x, p.y, s, 0, Math.PI * 2);
           ctx.fill();
 
-          ctx.strokeStyle = 'rgba(70, 150, 50, 0.4)';
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = withAlpha(tokens.statusClear, 0.55);
+          ctx.lineWidth = 0.75;
           ctx.stroke();
         }
       } else if (feature.type === 'rocks') {
@@ -400,21 +411,21 @@ export class TacticalMap {
           const p = this._toScreen(x, y);
           const s = 4 * this.zoom;
 
-          ctx.fillStyle = 'rgba(100, 90, 80, 0.4)';
+          ctx.fillStyle = withAlpha(tokens.textMuted, 0.25);
           ctx.beginPath();
           ctx.ellipse(p.x, p.y, s * 1.2, s * 0.8, 0, 0, Math.PI * 2);
           ctx.fill();
 
-          ctx.strokeStyle = 'rgba(140, 130, 110, 0.3)';
-          ctx.lineWidth = 0.5;
+          ctx.strokeStyle = withAlpha(tokens.borderStrong, 0.6);
+          ctx.lineWidth = 0.75;
           ctx.stroke();
         }
       } else if (feature.type === 'water') {
         const points = feature.path;
         if (points.length < 3) continue;
 
-        ctx.fillStyle = 'rgba(30, 60, 120, 0.25)';
-        ctx.strokeStyle = 'rgba(60, 100, 180, 0.3)';
+        ctx.fillStyle = withAlpha(tokens.accentPrimary, 0.16);
+        ctx.strokeStyle = withAlpha(tokens.accentPrimary, 0.45);
         ctx.lineWidth = 1;
 
         ctx.beginPath();
@@ -431,74 +442,68 @@ export class TacticalMap {
     }
   }
 
-  _drawObjectives() {
+  _drawObjectives(tokens) {
     const ctx = this.ctx;
     const objectives = this.engine.gameSession?.objectives || [];
 
     for (const obj of objectives) {
       const p = this._toScreen(obj.x, obj.y);
-      const r = 10 * this.zoom;
+      const r = 8 * this.zoom;
 
-      // Static outline ring
-      const pulseR = r + 4;
-      let ringColor;
-      if (obj.holder === 'nonband') ringColor = 'rgba(163, 163, 163, 0.4)';
-      else if (obj.holder === 'band') ringColor = 'rgba(241, 196, 15, 0.4)';
-      else ringColor = 'rgba(255, 170, 0, 0.3)';
+      const objColor = obj.holder === 'nonband'
+        ? tokens.teamAlpha
+        : obj.holder === 'band'
+          ? tokens.teamBravo
+          : tokens.accentOchre;
 
-      ctx.strokeStyle = ringColor;
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = withAlpha(objColor, 0.45);
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, pulseR, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, r + 4, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Diamond shape
-      ctx.fillStyle = obj.holder === 'nonband' ? '#888888' :
-                      obj.holder === 'band' ? '#f1c40f' : '#ffaa00';
-
+      ctx.fillStyle = objColor;
       ctx.beginPath();
       ctx.moveTo(p.x, p.y - r);
-      ctx.lineTo(p.x + r * 0.7, p.y);
+      ctx.lineTo(p.x + r * 0.72, p.y);
       ctx.lineTo(p.x, p.y + r);
-      ctx.lineTo(p.x - r * 0.7, p.y);
+      ctx.lineTo(p.x - r * 0.72, p.y);
       ctx.closePath();
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.strokeStyle = tokens.bgSurface1;
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Label
-      const isLight = document.documentElement.classList.contains('light');
-      ctx.fillStyle = isLight ? '#252830' : '#ece8e0';
-      ctx.font = `500 ${Math.max(8, 10 * this.zoom)}px -apple-system, BlinkMacSystemFont, 'Inter', sans-serif`;
+      ctx.fillStyle = tokens.textPrimary;
+      ctx.font = `500 ${Math.max(11.5, 11.5 * this.zoom)}px ${tokens.fontSans}`;
       ctx.textAlign = 'center';
       ctx.fillText(obj.name, p.x, p.y - r - 6);
     }
   }
 
-  _drawPlayers() {
+  _drawPlayers(tokens) {
     const ctx = this.ctx;
 
     for (const player of this.engine.players) {
       if (!player.position || player.position.x == null || player.position.y == null) continue;
       const p = this._toScreen(player.position.x, player.position.y);
-      const r = 5 * this.zoom;
+      const r = 5.5 * this.zoom;
       const isSelected = this.selectedPlayer?.id === player.id;
 
-      // Team color (Non-Band = grey, Band = yellow)
-      const color = player.team === 'nonband' ? '#a3a3a3' : '#f1c40f';
-      const dimColor = player.team === 'nonband' ? 'rgba(163, 163, 163, 0.15)' : 'rgba(241, 196, 15, 0.15)';
+      const color = player.team === 'band'
+        ? tokens.teamBravo
+        : player.team === 'nonband'
+          ? tokens.accentPrimary
+          : tokens.textMuted;
 
-      // Dead/banned players
       if (!player.isAlive) {
-        ctx.fillStyle = 'rgba(255, 51, 102, 0.3)';
+        ctx.fillStyle = withAlpha(tokens.statusAvoid, 0.24);
         ctx.beginPath();
         ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
         ctx.fill();
 
-        // X mark
-        ctx.strokeStyle = 'rgba(255, 51, 102, 0.6)';
+        ctx.strokeStyle = tokens.statusAvoid;
         ctx.lineWidth = 1.5;
         ctx.beginPath();
         ctx.moveTo(p.x - r * 0.5, p.y - r * 0.5);
@@ -509,80 +514,57 @@ export class TacticalMap {
         continue;
       }
 
-      // Selection ring
       if (isSelected) {
-        ctx.strokeStyle = color;
+        ctx.strokeStyle = tokens.textPrimary;
         ctx.lineWidth = 2;
-        ctx.shadowColor = color;
-        ctx.shadowBlur = 10;
         ctx.beginPath();
         ctx.arc(p.x, p.y, r + 4, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.shadowBlur = 0;
       }
 
-      // Outer glow
-      ctx.fillStyle = dimColor;
+      ctx.fillStyle = withAlpha(color, 0.16);
       ctx.beginPath();
       ctx.arc(p.x, p.y, r + 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Main dot
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
       ctx.fill();
 
-      // Role icon (center dot)
-      ctx.fillStyle = '#000';
-      ctx.font = `bold ${Math.max(6, 7 * this.zoom)}px 'Inter', sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.strokeStyle = tokens.bgCanvas;
+      ctx.lineWidth = 1;
+      ctx.stroke();
 
-      const roleInitial = player.role === 'Commander' ? '★' :
-                           player.role === 'Sniper' ? '◎' :
-                           player.role === 'Medic' ? '+' :
-                           player.role === 'Support' ? '▪' :
-                           player.role === 'Breacher' ? '▸' : '•';
-      ctx.fillText(roleInitial, p.x, p.y);
-
-      // Compliance indicator
       if (player.compliance === 'FLAGGED') {
-        ctx.fillStyle = '#ffaa00';
-        ctx.beginPath();
-        ctx.arc(p.x + r, p.y - r, 3, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = tokens.statusWarn;
+        ctx.fillRect(p.x + r - 2, p.y - r - 2, 5, 5);
       }
     }
-
-    ctx.textBaseline = 'alphabetic';
   }
 
-  _drawZoneLabels() {
+  _drawZoneLabels(tokens) {
     const ctx = this.ctx;
-    const isLight = document.documentElement.classList.contains('light');
 
     for (const zone of this.layout.zones) {
       const b = zone.bounds;
       const center = this._toScreen(b.x + b.w / 2, b.y + b.h / 2);
 
-      ctx.fillStyle = isLight ? 'rgba(37, 40, 48, 0.65)' : 'rgba(236, 232, 224, 0.48)';
-      ctx.font = `500 ${Math.max(7, 9 * this.zoom)}px -apple-system, BlinkMacSystemFont, 'Inter', sans-serif`;
+      ctx.fillStyle = tokens.textSecondary;
+      ctx.font = `500 ${Math.max(11.5, 11.5 * this.zoom)}px ${tokens.fontSans}`;
       ctx.textAlign = 'center';
       ctx.fillText(zone.name, center.x, center.y);
 
-      // Joule limit indicator
       if (zone.maxJoules > 0 && zone.type !== 'safe') {
-        ctx.fillStyle = isLight ? 'rgba(72, 77, 89, 0.65)' : 'rgba(181, 187, 201, 0.42)';
-        ctx.font = `400 ${Math.max(6, 7 * this.zoom)}px -apple-system, BlinkMacSystemFont, 'Inter', sans-serif`;
-        ctx.fillText(`≤${zone.maxJoules}J`, center.x, center.y + 12 * this.zoom);
+        ctx.fillStyle = tokens.textMuted;
+        ctx.font = `400 11.5px ${tokens.fontSans}`;
+        ctx.fillText(`<=${zone.maxJoules}J`, center.x, center.y + 14);
       }
     }
   }
 
-  _drawHeatmap() {
+  _drawHeatmap(tokens) {
     const ctx = this.ctx;
-    const s = this._baseScale * this.zoom;
 
     for (const player of this.engine.players) {
       if (!player.isAlive) continue;
@@ -591,10 +573,11 @@ export class TacticalMap {
       const r = 40 * this.zoom;
 
       const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-      const color = player.team === 'nonband' ? '163, 163, 163' : '241, 196, 15';
-      gradient.addColorStop(0, `rgba(${color}, 0.25)`);
-      gradient.addColorStop(0.5, `rgba(${color}, 0.08)`);
-      gradient.addColorStop(1, `rgba(${color}, 0)`);
+      const baseColor = player.team === 'band' ? tokens.teamBravo : tokens.accentPrimary;
+      const rgb = parseRgbTriplet(baseColor);
+      gradient.addColorStop(0, `rgba(${rgb}, 0.22)`);
+      gradient.addColorStop(0.5, `rgba(${rgb}, 0.07)`);
+      gradient.addColorStop(1, `rgba(${rgb}, 0)`);
 
       ctx.fillStyle = gradient;
       ctx.beginPath();

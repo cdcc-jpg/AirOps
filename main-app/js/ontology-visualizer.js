@@ -1,8 +1,15 @@
 /**
  * AirOps Ontology Visualizer & Alignment Studio Module
  * Renders dual class hierarchy trees, pattern inspector, manual alignment drafter,
- * and an interactive Canvas node-relationship graph for AirOps & BFO ontologies.
+ * and an interactive Canvas node-relationship graph using Priory semiotics & ResizeObserver.
  */
+
+import {
+  readPrioryThemeTokens,
+  withAlpha,
+  renderBfoSigilHtml,
+  renderEpistemicSigilHtml
+} from './priory-semiotics.js?v=2.11.2';
 
 let schemaData = null;
 let activeAlignments = [];
@@ -11,7 +18,6 @@ let selectedBFO = null;
 let activeInspectedNode = null;
 
 // Graph state
-let isGraphMode = false;
 let canvas = null;
 let ctx = null;
 let graphNodes = [];
@@ -21,6 +27,9 @@ let zoomLevel = 1.0;
 let panOffset = { x: 0, y: 0 };
 let isDraggingGraph = false;
 let dragStart = { x: 0, y: 0 };
+let graphResizeObserver = null;
+let canvasCssWidth = 0;
+let canvasCssHeight = 0;
 
 export async function initOntologyVisualizer() {
   setupEventListeners();
@@ -59,11 +68,9 @@ async function refreshOntologyData() {
 }
 
 function setupEventListeners() {
-  // Close studio buttons
   const btnClose = document.getElementById('btn-close-ontology-studio');
   if (btnClose) btnClose.addEventListener('click', closeOntologyStudio);
 
-  // Toggle graph view
   const btnGraph = document.getElementById('btn-toggle-graph-mode');
   if (btnGraph) btnGraph.addEventListener('click', toggleGraphMode);
 
@@ -73,7 +80,6 @@ function setupEventListeners() {
   const btnResetGraph = document.getElementById('btn-reset-graph');
   if (btnResetGraph) btnResetGraph.addEventListener('click', resetGraphView);
 
-  // Search filters
   const searchAirOps = document.getElementById('search-airops');
   if (searchAirOps) {
     searchAirOps.addEventListener('input', (e) => filterTree('airops', e.target.value));
@@ -84,7 +90,6 @@ function setupEventListeners() {
     searchBFO.addEventListener('input', (e) => filterTree('bfo', e.target.value));
   }
 
-  // Alignment actions
   const btnAdd = document.getElementById('btn-add-alignment');
   if (btnAdd) btnAdd.addEventListener('click', handleAddAlignment);
 
@@ -104,33 +109,31 @@ function updateSidebarSummary() {
   const alignCount = activeAlignments.length;
 
   panel.innerHTML = `
-    <div class="panel-section">
-      <h3 style="font-size: 13.5px; font-weight: 600; color: var(--text-primary);">Ontology Alignment Studio</h3>
-      <p class="panel-desc">Visual pattern mapping between AirOps and BFO 2020 Upper Ontology.</p>
+    <div class="wb-sec-hdr">
+      <span>Ontology Alignment Studio</span>
+      <span class="tabular-nums">BFO 2020</span>
     </div>
-
-    <div class="stat-card-group" style="display: flex; gap: 8px; margin-bottom: 16px;">
-      <div class="stat-box" style="flex: 1; background: var(--sigil-gdc-bg); border: 1px solid var(--sigil-gdc-bd); padding: 8px; border-radius: 6px; text-align: center;">
-        <div style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--sigil-gdc-fg);">${airopsCount}</div>
-        <div style="font-size: 11.5px; color: var(--text-secondary);">AirOps Classes</div>
-      </div>
-      <div class="stat-box" style="flex: 1; background: var(--sigil-proc-bg); border: 1px solid var(--sigil-proc-bd); padding: 8px; border-radius: 6px; text-align: center;">
-        <div style="font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--sigil-proc-fg);">${bfoCount}</div>
-        <div style="font-size: 11.5px; color: var(--text-secondary);">BFO Top-Level</div>
-      </div>
+    <div class="wb-prop-row">
+      <span class="wb-prop-key">AirOps Classes</span>
+      <span class="wb-prop-val">${airopsCount}</span>
     </div>
-
-    <div style="background: var(--sigil-cont-bg); border: 1px solid var(--sigil-cont-bd); padding: 12px; border-radius: 6px; margin-bottom: 16px;">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <span style="color: var(--sigil-cont-fg); font-weight: 500; font-size: 12.5px;">Manual Alignments</span>
-        <span style="background: var(--bg-surface-1); color: var(--sigil-cont-fg); border: 1px solid var(--sigil-cont-bd); padding: 2px 8px; border-radius: 10px; font-weight: 500; font-variant-numeric: tabular-nums; font-size: 11.5px;">${alignCount}</span>
-      </div>
-      <p style="font-size: 11.5px; color: var(--text-secondary); margin-top: 6px;">Saved in <code>schemas/airsoft-bfo-alignments.ttl</code></p>
+    <div class="wb-prop-row">
+      <span class="wb-prop-key">BFO Top-Level</span>
+      <span class="wb-prop-val">${bfoCount}</span>
     </div>
-
-    <button class="btn btn-primary" id="btn-open-studio-sidebar" style="width: 100%; margin-top: 10px;">
-      Launch Visual Studio Workbench
-    </button>
+    <div class="wb-prop-row">
+      <span class="wb-prop-key">Manual Alignments</span>
+      <span class="wb-prop-val">${alignCount}</span>
+    </div>
+    <div class="wb-prop-row">
+      <span class="wb-prop-key">Store File</span>
+      <span class="wb-prop-val"><code>schemas/airsoft-bfo-alignments.ttl</code></span>
+    </div>
+    <div class="wb-block-pad">
+      <button class="btn btn-primary" id="btn-open-studio-sidebar" style="width: 100%;">
+        Launch Visual Studio Workbench
+      </button>
+    </div>
   `;
 
   const btnOpen = document.getElementById('btn-open-studio-sidebar');
@@ -168,7 +171,7 @@ function renderAirOpsTree() {
   if (!container || !schemaData) return;
 
   const roots = buildClassHierarchy(schemaData.airops.classes);
-  container.innerHTML = roots.map(node => renderTreeNodeHTML(node, 'airops')).join('');
+  container.innerHTML = roots.map(node => renderTreeNodeHTML(node, 'airops', 0)).join('');
   attachTreeEvents(container, 'airops');
 }
 
@@ -177,30 +180,30 @@ function renderBFOTree() {
   if (!container || !schemaData) return;
 
   const roots = buildClassHierarchy(schemaData.bfo.classes);
-  container.innerHTML = roots.map(node => renderTreeNodeHTML(node, 'bfo')).join('');
+  container.innerHTML = roots.map(node => renderTreeNodeHTML(node, 'bfo', 0)).join('');
   attachTreeEvents(container, 'bfo');
 }
 
-function renderTreeNodeHTML(node, ontologyType) {
+function renderTreeNodeHTML(node, ontologyType, depth = 0) {
   const hasChildren = node.children && node.children.length > 0;
   const isAirOpsSelected = selectedAirOps && selectedAirOps.prefixed === node.prefixed;
   const isBFOSelected = selectedBFO && selectedBFO.prefixed === node.prefixed;
   const isSelected = (ontologyType === 'airops' && isAirOpsSelected) || (ontologyType === 'bfo' && isBFOSelected);
 
-  // Check if node has alignments
   const alignment = activeAlignments.find(a => a.subject === node.prefixed || a.object === node.prefixed);
+  const sigilHtml = renderBfoSigilHtml(node.uri || node.prefixed);
 
   return `
-    <div class="tree-node-item" data-prefixed="${node.prefixed}" data-ontology="${ontologyType}">
-      <div class="tree-node-row ${isSelected ? 'selected' : ''}">
-        <span class="tree-toggle ${hasChildren ? 'has-children' : 'empty'}">${hasChildren ? '▼' : '•'}</span>
+    <div class="tree-node-item" data-prefixed="${escapeHtml(node.prefixed)}" data-ontology="${ontologyType}">
+      <div class="wb-tree-row ${isSelected ? 'is-active' : ''}" style="padding-left: ${8 + depth * 12}px;">
+        <span class="tree-toggle ${hasChildren ? 'has-children' : 'empty'}">${hasChildren ? '-' : ' '}</span>
+        ${sigilHtml}
         <span class="tree-node-label">${escapeHtml(node.label)}</span>
-        <span class="tree-node-tag">${escapeHtml(node.prefixed)}</span>
-        ${alignment ? `<span class="alignment-pill" title="Aligned with ${alignment.object === node.prefixed ? alignment.subject : alignment.object}">⚡ Aligned</span>` : ''}
+        <span class="wb-tree-count">${alignment ? 'Aligned' : escapeHtml(node.prefixed)}</span>
       </div>
       ${hasChildren ? `
         <div class="tree-node-children">
-          ${node.children.map(child => renderTreeNodeHTML(child, ontologyType)).join('')}
+          ${node.children.map(child => renderTreeNodeHTML(child, ontologyType, depth + 1)).join('')}
         </div>
       ` : ''}
     </div>
@@ -208,7 +211,7 @@ function renderTreeNodeHTML(node, ontologyType) {
 }
 
 function attachTreeEvents(container, ontologyType) {
-  const rows = container.querySelectorAll('.tree-node-row');
+  const rows = container.querySelectorAll('.wb-tree-row');
   rows.forEach(row => {
     const parentItem = row.closest('.tree-node-item');
     const prefixed = parentItem.getAttribute('data-prefixed');
@@ -220,7 +223,7 @@ function attachTreeEvents(container, ontologyType) {
         const children = parentItem.querySelector('.tree-node-children');
         if (children) {
           children.classList.toggle('collapsed');
-          toggle.textContent = children.classList.contains('collapsed') ? '▶' : '▼';
+          toggle.textContent = children.classList.contains('collapsed') ? '+' : '-';
         }
       });
     }
@@ -239,35 +242,34 @@ function selectNode(prefixed, ontologyType) {
 
   if (ontologyType === 'airops') {
     selectedAirOps = targetClass;
-    document.getElementById('val-airops-selected').innerHTML = `
-      <span class="badge-airops">${escapeHtml(targetClass.label)}</span>
-      <small>(${targetClass.prefixed})</small>
-    `;
-    document.getElementById('box-airops-selected').classList.add('active');
+    const valEl = document.getElementById('val-airops-selected');
+    if (valEl) {
+      valEl.innerHTML = `<span class="badge-airops">${escapeHtml(targetClass.label)}</span> <code>${escapeHtml(targetClass.prefixed)}</code>`;
+    }
+    document.getElementById('box-airops-selected')?.classList.add('active');
   } else {
     selectedBFO = targetClass;
-    document.getElementById('val-bfo-selected').innerHTML = `
-      <span class="badge-bfo">${escapeHtml(targetClass.label)}</span>
-      <small>(${targetClass.prefixed})</small>
-    `;
-    document.getElementById('box-bfo-selected').classList.add('active');
+    const valEl = document.getElementById('val-bfo-selected');
+    if (valEl) {
+      valEl.innerHTML = `<span class="badge-bfo">${escapeHtml(targetClass.label)}</span> <code>${escapeHtml(targetClass.prefixed)}</code>`;
+    }
+    document.getElementById('box-bfo-selected')?.classList.add('active');
   }
 
-  // Highlight in trees
   renderAirOpsTree();
   renderBFOTree();
-
-  // Update Inspector Panel
   updateInspector();
 }
 
 function clearPairSelection() {
   selectedAirOps = null;
   selectedBFO = null;
-  document.getElementById('val-airops-selected').textContent = 'Select a class from left tree';
-  document.getElementById('val-bfo-selected').textContent = 'Select a class from right tree';
-  document.getElementById('box-airops-selected').classList.remove('active');
-  document.getElementById('box-bfo-selected').classList.remove('active');
+  const airEl = document.getElementById('val-airops-selected');
+  const bfoEl = document.getElementById('val-bfo-selected');
+  if (airEl) airEl.textContent = 'Select a class from left tree';
+  if (bfoEl) bfoEl.textContent = 'Select a class from right tree';
+  document.getElementById('box-airops-selected')?.classList.remove('active');
+  document.getElementById('box-bfo-selected')?.classList.remove('active');
   renderAirOpsTree();
   renderBFOTree();
 }
@@ -281,7 +283,7 @@ function filterTree(ontologyType, query) {
 
   items.forEach(item => {
     const label = item.querySelector('.tree-node-label')?.textContent.toLowerCase() || '';
-    const tag = item.getAttribute('data-prefixed').toLowerCase();
+    const tag = (item.getAttribute('data-prefixed') || '').toLowerCase();
     const matches = label.includes(q) || tag.includes(q);
 
     if (q === '') {
@@ -289,12 +291,12 @@ function filterTree(ontologyType, query) {
     } else {
       item.style.display = matches ? '' : 'none';
       if (matches) {
-        let parent = item.parentElement.closest('.tree-node-item');
+        let parent = item.parentElement?.closest('.tree-node-item');
         while (parent) {
           parent.style.display = '';
           const children = parent.querySelector('.tree-node-children');
           if (children) children.classList.remove('collapsed');
-          parent = parent.parentElement.closest('.tree-node-item');
+          parent = parent.parentElement?.closest('.tree-node-item');
         }
       }
     }
@@ -308,72 +310,62 @@ function updateInspector() {
   if (!container) return;
 
   if (!activeInspectedNode) {
-    container.innerHTML = `<div class="empty-state">Click any class node in either tree to inspect its pattern properties, SHACL rules, and domain/range relationships.</div>`;
+    container.innerHTML = `<div class="wb-prop-row"><span class="wb-prop-key">Selection</span><span class="wb-prop-val text-muted">None</span></div>`;
     return;
   }
 
   const node = activeInspectedNode;
   const isAirOps = node.ontologyType === 'airops';
-
-  // Find related properties
   const relatedProps = (schemaData[node.ontologyType].properties || []).filter(
     p => p.domain === node.prefixed || p.range === node.prefixed
   );
-
-  // Find existing alignments for this node
   const alignmentsForNode = activeAlignments.filter(a => a.subject === node.prefixed || a.object === node.prefixed);
 
   container.innerHTML = `
-    <div class="inspector-detail">
-      <div class="inspector-header">
-        <span class="inspector-badge ${isAirOps ? 'airops-tag' : 'bfo-tag'}">${isAirOps ? 'AirOps Domain Class' : 'BFO Upper Class'}</span>
-        <h3>${escapeHtml(node.label)}</h3>
-        <code>${escapeHtml(node.uri)}</code>
-      </div>
-
-      <div class="inspector-section">
-        <strong>Description / Definition:</strong>
-        <p>${escapeHtml(node.comment || 'No formal comment description provided in schema.')}</p>
-      </div>
-
-      <div class="inspector-section">
-        <strong>Superclasses (rdfs:subClassOf):</strong>
-        <div>
-          ${(node.superClasses && node.superClasses.length > 0)
-            ? node.superClasses.map(s => `<span class="chip">${escapeHtml(s)}</span>`).join(' ')
-            : '<em>Root top-level entity (no explicit superclass in schema)</em>'}
-        </div>
-      </div>
-
-      <div class="inspector-section">
-        <strong>Object Properties & Relationships:</strong>
-        ${relatedProps.length > 0 ? `
-          <ul class="prop-list">
-            ${relatedProps.map(p => `
-              <li>
-                <strong>${escapeHtml(p.prefixed)}</strong>
-                <small>(domain: <code>${escapeHtml(p.domain || 'any')}</code> ➔ range: <code>${escapeHtml(p.range || 'any')}</code>)</small>
-              </li>
-            `).join('')}
-          </ul>
-        ` : '<em>No specific object properties linked as domain/range for this class.</em>'}
-      </div>
-
-      <div class="inspector-section">
-        <strong>Active Manual Alignments:</strong>
-        ${alignmentsForNode.length > 0 ? `
-          <div class="active-align-box">
-            ${alignmentsForNode.map(a => `
-              <div class="align-item">
-                <span>${escapeHtml(a.subject)}</span>
-                <strong style="color:#ffd700;">${escapeHtml(a.predicate)}</strong>
-                <span>${escapeHtml(a.object)}</span>
-              </div>
-            `).join('')}
-          </div>
-        ` : '<p style="color:#8a9ba8; font-size:0.85rem;">No alignments configured yet for this class.</p>'}
-      </div>
+    <div class="wb-sec-hdr">
+      <span>${renderBfoSigilHtml(node.uri || node.prefixed)} ${escapeHtml(node.label)}</span>
+      <span>${isAirOps ? 'AirOps Class' : 'BFO Class'}</span>
     </div>
+    <div class="wb-prop-row">
+      <span class="wb-prop-key">IRI</span>
+      <span class="wb-prop-val" title="${escapeHtml(node.uri)}"><code>${escapeHtml(node.uri)}</code></span>
+    </div>
+    <div class="wb-prop-row">
+      <span class="wb-prop-key">Definition</span>
+      <span class="wb-prop-val" title="${escapeHtml(node.comment || '')}">${escapeHtml(node.comment || 'No comment defined')}</span>
+    </div>
+    <div class="wb-prop-row">
+      <span class="wb-prop-key">Superclasses</span>
+      <span class="wb-prop-val">
+        ${(node.superClasses && node.superClasses.length > 0)
+          ? node.superClasses.map(s => `<code>${escapeHtml(s)}</code>`).join(', ')
+          : 'Root entity'}
+      </span>
+    </div>
+    <div class="wb-sec-hdr">
+      <span>Object Properties</span>
+      <span class="tabular-nums">${relatedProps.length}</span>
+    </div>
+    ${relatedProps.length > 0
+      ? relatedProps.map(p => `
+        <div class="wb-prop-row">
+          <span class="wb-prop-key"><code>${escapeHtml(p.prefixed)}</code></span>
+          <span class="wb-prop-val"><code>${escapeHtml(p.domain || 'any')}</code> -> <code>${escapeHtml(p.range || 'any')}</code></span>
+        </div>
+      `).join('')
+      : `<div class="wb-prop-row"><span class="wb-prop-key">Properties</span><span class="wb-prop-val text-muted">None linked</span></div>`}
+    <div class="wb-sec-hdr">
+      <span>Alignments</span>
+      <span class="tabular-nums">${alignmentsForNode.length}</span>
+    </div>
+    ${alignmentsForNode.length > 0
+      ? alignmentsForNode.map(a => `
+        <div class="wb-epistemic-row">
+          ${renderEpistemicSigilHtml('entailed', 'Asserted alignment')}
+          <div><code>${escapeHtml(a.subject)}</code> ${escapeHtml(a.predicate)} <code>${escapeHtml(a.object)}</code></div>
+        </div>
+      `).join('')
+      : `<div class="wb-prop-row"><span class="wb-prop-key">Alignments</span><span class="wb-prop-val text-muted">None configured</span></div>`}
   `;
 }
 
@@ -382,22 +374,21 @@ function renderAssertionsList() {
   if (!container) return;
 
   if (activeAlignments.length === 0) {
-    container.innerHTML = `<div class="empty-state">No manual alignments defined yet. Select an AirOps class and a BFO class above to add your first mapping assertion.</div>`;
+    container.innerHTML = `<div class="wb-prop-row"><span class="wb-prop-key">Assertions</span><span class="wb-prop-val text-muted">None defined</span></div>`;
     return;
   }
 
-  container.innerHTML = activeAlignments.map((a, idx) => `
-    <div class="assertion-row">
-      <div class="assertion-subj">${escapeHtml(a.subject)}</div>
-      <div class="assertion-pred">${escapeHtml(a.predicate)}</div>
-      <div class="assertion-obj">${escapeHtml(a.object)}</div>
+  container.innerHTML = activeAlignments.map(a => `
+    <div class="wb-epistemic-row">
+      ${renderEpistemicSigilHtml('entailed', 'Asserted alignment')}
+      <div><code>${escapeHtml(a.subject)}</code> ${escapeHtml(a.predicate)} <code>${escapeHtml(a.object)}</code></div>
     </div>
   `).join('');
 }
 
 async function handleAddAlignment() {
   if (!selectedAirOps || !selectedBFO) {
-    alert('Please select both an AirOps class and a BFO top-level class from the trees before adding an alignment.');
+    alert('Select both an AirOps class and a BFO class before adding an alignment.');
     return;
   }
 
@@ -487,9 +478,17 @@ function initGraphCanvas() {
   ctx = canvas.getContext('2d');
   resizeCanvas();
 
+  if (typeof ResizeObserver !== 'undefined' && canvas.parentElement) {
+    if (graphResizeObserver) graphResizeObserver.disconnect();
+    graphResizeObserver = new ResizeObserver(() => {
+      resizeCanvas();
+      renderGraph();
+    });
+    graphResizeObserver.observe(canvas.parentElement);
+  }
+
   window.addEventListener('resize', resizeCanvas);
 
-  // Canvas Mouse Interaction
   canvas.onmousedown = (e) => {
     isDraggingGraph = true;
     dragStart = { x: e.clientX - panOffset.x, y: e.clientY - panOffset.y };
@@ -501,8 +500,8 @@ function initGraphCanvas() {
     }
   };
 
-  canvas.onmouseup = () => isDraggingGraph = false;
-  canvas.onmouseleave = () => isDraggingGraph = false;
+  canvas.onmouseup = () => { isDraggingGraph = false; };
+  canvas.onmouseleave = () => { isDraggingGraph = false; };
 
   canvas.onwheel = (e) => {
     e.preventDefault();
@@ -515,9 +514,18 @@ function initGraphCanvas() {
 }
 
 function resizeCanvas() {
-  if (!canvas) return;
-  canvas.width = canvas.parentElement.clientWidth;
-  canvas.height = canvas.parentElement.clientHeight - 45;
+  if (!canvas || !canvas.parentElement) return;
+  const rect = canvas.parentElement.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  canvasCssWidth = rect.width;
+  canvasCssHeight = Math.max(1, rect.height - 28);
+  canvas.width = Math.floor(canvasCssWidth * dpr);
+  canvas.height = Math.floor(canvasCssHeight * dpr);
+  canvas.style.width = canvasCssWidth + 'px';
+  canvas.style.height = canvasCssHeight + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 function buildGraphNodes() {
@@ -528,7 +536,6 @@ function buildGraphNodes() {
 
   const nodeMap = new Map();
 
-  // Add AirOps nodes
   schemaData.airops.classes.forEach((c, idx) => {
     const node = {
       id: c.prefixed,
@@ -542,7 +549,6 @@ function buildGraphNodes() {
     nodeMap.set(c.prefixed, node);
   });
 
-  // Add BFO nodes
   schemaData.bfo.classes.forEach((c, idx) => {
     const node = {
       id: c.prefixed,
@@ -556,7 +562,6 @@ function buildGraphNodes() {
     nodeMap.set(c.prefixed, node);
   });
 
-  // Add subClassOf links
   [...schemaData.airops.classes, ...schemaData.bfo.classes].forEach(c => {
     if (c.superClasses) {
       c.superClasses.forEach(sp => {
@@ -564,22 +569,19 @@ function buildGraphNodes() {
           graphLinks.push({
             source: nodeMap.get(c.prefixed),
             target: nodeMap.get(sp),
-            type: 'subClassOf',
-            color: 'rgba(255, 255, 255, 0.2)'
+            type: 'subClassOf'
           });
         }
       });
     }
   });
 
-  // Add alignment links
   activeAlignments.forEach(a => {
     if (nodeMap.has(a.subject) && nodeMap.has(a.object)) {
       graphLinks.push({
         source: nodeMap.get(a.subject),
         target: nodeMap.get(a.object),
-        type: a.predicate,
-        color: '#ffd700'
+        type: a.predicate
       });
     }
   });
@@ -587,7 +589,6 @@ function buildGraphNodes() {
 
 function startGraphSimulation() {
   function step() {
-    // Simple force layout physics
     for (let i = 0; i < graphNodes.length; i++) {
       for (let j = i + 1; j < graphNodes.length; j++) {
         const n1 = graphNodes[i];
@@ -596,7 +597,7 @@ function startGraphSimulation() {
         const dy = n2.y - n1.y;
         const dist = Math.sqrt(dx * dx + dy * dy) || 1;
         if (dist < 120) {
-          const force = (120 - dist) / dist * 0.05;
+          const force = ((120 - dist) / dist) * 0.05;
           n1.vx -= dx * force;
           n1.vy -= dy * force;
           n2.vx += dx * force;
@@ -630,50 +631,46 @@ function startGraphSimulation() {
 }
 
 function renderGraph() {
-  if (!ctx || !canvas) return;
+  if (!ctx || !canvas || canvasCssWidth <= 0 || canvasCssHeight <= 0) return;
 
-  const isLight = document.documentElement.classList.contains('light');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const tokens = readPrioryThemeTokens(document);
+  ctx.clearRect(0, 0, canvasCssWidth, canvasCssHeight);
+  ctx.fillStyle = tokens.bgCanvas;
+  ctx.fillRect(0, 0, canvasCssWidth, canvasCssHeight);
 
   ctx.save();
   ctx.translate(panOffset.x, panOffset.y);
   ctx.scale(zoomLevel, zoomLevel);
 
-  // Draw links
   graphLinks.forEach(link => {
     ctx.beginPath();
     ctx.moveTo(link.source.x, link.source.y);
     ctx.lineTo(link.target.x, link.target.y);
     ctx.strokeStyle = link.type === 'subClassOf'
-      ? (isLight ? 'rgba(37, 40, 48, 0.20)' : 'rgba(236, 232, 224, 0.18)')
-      : (isLight ? '#b88438' : '#d4a15a');
+      ? withAlpha(tokens.borderStrong, 0.7)
+      : tokens.accentOchre;
     ctx.lineWidth = link.type === 'subClassOf' ? 1 : 2;
-    if (link.type !== 'subClassOf') ctx.setLineDash([5, 5]);
-    else ctx.setLineDash([]);
+    ctx.setLineDash(link.type !== 'subClassOf' ? [5, 5] : []);
     ctx.stroke();
 
-    // Link label for alignments
     if (link.type !== 'subClassOf') {
       const midX = (link.source.x + link.target.x) / 2;
       const midY = (link.source.y + link.target.y) / 2;
-      ctx.fillStyle = isLight ? '#9e6b22' : '#dfb068';
-      ctx.font = '500 11px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
+      ctx.fillStyle = tokens.sigils.cont.fg;
+      ctx.font = `500 11.5px ${tokens.fontSans}`;
       ctx.fillText(link.type, midX, midY);
     }
   });
+  ctx.setLineDash([]);
 
-  // Draw nodes
   graphNodes.forEach(node => {
     ctx.beginPath();
-    ctx.arc(node.x, node.y, node.type === 'airops' ? 7 : 9, 0, Math.PI * 2);
-    ctx.fillStyle = node.type === 'airops'
-      ? (isLight ? '#287078' : '#6ec1cb')
-      : (isLight ? '#336699' : '#7ea8d8');
+    ctx.arc(node.x, node.y, node.type === 'airops' ? 6 : 8, 0, Math.PI * 2);
+    ctx.fillStyle = node.type === 'airops' ? tokens.sigils.gdc.fg : tokens.sigils.proc.fg;
     ctx.fill();
 
-    // Node label
-    ctx.fillStyle = isLight ? '#252830' : '#ece8e0';
-    ctx.font = '500 11.5px -apple-system, BlinkMacSystemFont, "Inter", sans-serif';
+    ctx.fillStyle = tokens.textPrimary;
+    ctx.font = `500 11.5px ${tokens.fontSans}`;
     ctx.fillText(node.label, node.x + 12, node.y + 4);
   });
 
@@ -682,5 +679,5 @@ function renderGraph() {
 
 function escapeHtml(str) {
   if (!str) return '';
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }

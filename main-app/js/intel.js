@@ -1,14 +1,15 @@
 /**
  * AirOps v2 — Intelligence Layer
  * Kill/death stats, leaderboards, weapon performance, per-player analytics.
- * All powered by the ontology engine's game event data.
  */
+
+import { renderBfoSigilHtml } from './priory-semiotics.js?v=2.11.2';
 
 export class IntelEngine {
   constructor(engine) {
     this.engine = engine;
-    this._killIndex = new Map();   // attackerId -> [events]
-    this._deathIndex = new Map();  // targetId -> [events]
+    this._killIndex = new Map();
+    this._deathIndex = new Map();
     this._buildIndexes();
   }
 
@@ -23,14 +24,11 @@ export class IntelEngine {
     }
   }
 
-  // ─── Per-Player Stats ──────────────────────────────────────
-
   getPlayerStats(playerId) {
     const kills = this._killIndex.get(playerId) || [];
     const deaths = this._deathIndex.get(playerId) || [];
     const player = this.engine.getPlayer(playerId);
 
-    // Favourite weapon (most used in kills)
     const weaponCounts = {};
     for (const k of kills) {
       weaponCounts[k.weapon] = (weaponCounts[k.weapon] || 0) + 1;
@@ -38,7 +36,6 @@ export class IntelEngine {
     const favWeapon = Object.entries(weaponCounts)
       .sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
 
-    // Nemesis (died to most)
     const nemesisCounts = {};
     for (const d of deaths) {
       nemesisCounts[d.attackerCallsign] = (nemesisCounts[d.attackerCallsign] || 0) + 1;
@@ -46,7 +43,6 @@ export class IntelEngine {
     const nemesis = Object.entries(nemesisCounts)
       .sort((a, b) => b[1] - a[1])[0]?.[0] || 'None';
 
-    // Zone performance
     const zoneCounts = {};
     for (const k of kills) {
       zoneCounts[k.zone] = (zoneCounts[k.zone] || 0) + 1;
@@ -68,8 +64,6 @@ export class IntelEngine {
       bestZone,
     };
   }
-
-  // ─── Leaderboards ──────────────────────────────────────────
 
   getLeaderboard(metric = 'kills', limit = 10) {
     const stats = this.engine.players.map(p => this.getPlayerStats(p.id));
@@ -94,16 +88,12 @@ export class IntelEngine {
     return stats.slice(0, limit);
   }
 
-  // ─── Kill Feed (latest eliminations) ─────────────────────
-
   getKillFeed(limit = 15) {
     return this.engine.gameEvents
       .filter(e => e.type === 'elimination')
       .slice(-limit)
       .reverse();
   }
-
-  // ─── Weapon Intelligence ──────────────────────────────────
 
   getWeaponStats() {
     const elims = this.engine.gameEvents.filter(e => e.type === 'elimination');
@@ -122,8 +112,6 @@ export class IntelEngine {
       .sort((a, b) => b.kills - a.kills);
   }
 
-  // ─── Zone Heatmap Data ────────────────────────────────────
-
   getZoneActivity() {
     const elims = this.engine.gameEvents.filter(e => e.type === 'elimination');
     const zoneMap = {};
@@ -136,8 +124,6 @@ export class IntelEngine {
       .map(([zone, count]) => ({ zone: zone.replace(/_/g, ' '), count }))
       .sort((a, b) => b.count - a.count);
   }
-
-  // ─── Team Stats ───────────────────────────────────────────
 
   getTeamStats(teamId) {
     const teamPlayers = this.engine.players.filter(p => p.team === teamId);
@@ -155,34 +141,34 @@ export class IntelEngine {
     };
   }
 
-  // ─── HTML Renderers ───────────────────────────────────────
-
   renderLeaderboardHTML(metric = 'kills') {
     const board = this.getLeaderboard(metric, 10);
     const labels = { kills: 'Kills', kd: 'K/D', objectives: 'OBJ', revives: 'Revives' };
 
     return `
-      <div class="intel-leaderboard">
-        <div class="leaderboard-header">
-          <span class="lb-rank">#</span>
-          <span class="lb-name">Player</span>
-          <span class="lb-stat">${labels[metric] || 'Score'}</span>
-        </div>
-        ${board.map((p, i) => {
-          const player = this.engine.getPlayer(p.playerId);
-          const teamClass = player?.team || 'alpha';
-          const val = metric === 'kd' ? p.kd.toFixed(2) : p[metric] ?? p.kills;
-          const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`;
-
-          return `
-            <div class="lb-row" data-player-id="${p.playerId}">
-              <span class="lb-rank">${medal}</span>
-              <span class="lb-name team-${teamClass}">${p.callsign}</span>
-              <span class="lb-stat">${val}</span>
-            </div>
-          `;
-        }).join('')}
-      </div>
+      <table class="wb-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Player</th>
+            <th class="num">${labels[metric] || 'Score'}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${board.map((p, i) => {
+            const player = this.engine.getPlayer(p.playerId);
+            const teamClass = player?.team || 'nonband';
+            const val = metric === 'kd' ? p.kd.toFixed(2) : p[metric] ?? p.kills;
+            return `
+              <tr data-player-id="${p.playerId}">
+                <td class="tabular-nums">${i + 1}</td>
+                <td class="team-${teamClass}">${p.callsign}</td>
+                <td class="num">${val}</td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
     `;
   }
 
@@ -190,7 +176,7 @@ export class IntelEngine {
     const feed = this.getKillFeed(10);
 
     if (feed.length === 0) {
-      return '<div class="no-data">No eliminations yet</div>';
+      return `<div class="wb-prop-row"><span class="wb-prop-key">Kill Feed</span><span class="wb-prop-val text-muted">No eliminations</span></div>`;
     }
 
     return feed.map(e => {
@@ -198,12 +184,14 @@ export class IntelEngine {
         hour: '2-digit', minute: '2-digit'
       });
       return `
-        <div class="kill-feed-entry">
-          <span class="kf-time">${time}</span>
-          <span class="kf-attacker team-${e.attackerTeam}">${e.attackerCallsign}</span>
-          <span class="kf-icon">💀</span>
-          <span class="kf-target team-${e.targetTeam}">${e.targetCallsign}</span>
-          <span class="kf-zone">${e.zone.replace(/_/g, ' ')}</span>
+        <div class="feed-entry">
+          <span class="feed-time">${time}</span>
+          <span class="feed-icon">${renderBfoSigilHtml('proc', '', 'Elimination')}</span>
+          <span class="feed-text">
+            <span class="highlight team-${e.attackerTeam}">${e.attackerCallsign}</span> ->
+            <span class="highlight team-${e.targetTeam}">${e.targetCallsign}</span>
+            <span class="text-muted">(${e.zone.replace(/_/g, ' ')})</span>
+          </span>
         </div>
       `;
     }).join('');
@@ -213,7 +201,7 @@ export class IntelEngine {
     const weapons = this.getWeaponStats().slice(0, 8);
 
     if (weapons.length === 0) {
-      return '<div class="no-data">No weapon data</div>';
+      return `<div class="wb-prop-row"><span class="wb-prop-key">Weapons</span><span class="wb-prop-val text-muted">No data</span></div>`;
     }
 
     const maxKills = weapons[0]?.kills || 1;
@@ -221,12 +209,12 @@ export class IntelEngine {
     return weapons.map(w => {
       const pct = Math.round((w.kills / maxKills) * 100);
       return `
-        <div class="weapon-stat-row">
-          <div class="ws-name">${w.name.substring(0, 28)}</div>
-          <div class="ws-bar-bg">
-            <div class="ws-bar" style="width: ${pct}%"></div>
+        <div class="balance-factor-row">
+          <span class="bf-label" title="${w.name}">${w.name.substring(0, 18)}</span>
+          <div class="bf-bar-bg">
+            <div class="bf-bar" style="width: ${pct}%; background: var(--accent-primary);"></div>
           </div>
-          <div class="ws-kills">${w.kills}</div>
+          <span class="bf-val">${w.kills}</span>
         </div>
       `;
     }).join('');

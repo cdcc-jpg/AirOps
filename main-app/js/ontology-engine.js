@@ -486,7 +486,7 @@ export class OntologyEngine {
     } else {
       player.team = 'unassigned';
       player.teamName = 'Unassigned';
-      player.teamColor = '#888888';
+      player.teamColor = 'var(--team-unassigned)';
     }
 
     await fetch('/api/mutate', {

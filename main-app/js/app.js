@@ -1,19 +1,29 @@
 /**
- * AirOps v2.1 — Main Application Controller
- * High-density tactical control panel workflow:
+ * AirOps v2.11 — Main Application Controller
+ * High-density tactical workbench workflow:
  *   Phase 1: Gameday Setup & Weather Suggestions
- *   Phase 2: Roster Sign-In & Chrono Registration (Pre-team)
+ *   Phase 2: Roster Sign-In & Chrono Registration
  *   Phase 3: Active Game Operations & Matchmaking Analytics
  */
 
-import { OntologyEngine } from './ontology-engine.js?v=2.11.1';
-import { TacticalMap } from './tactical-map.js?v=2.11.1';
-import { ChronoFeed } from './chrono-feed.js?v=2.11.1';
-import { IntelEngine } from './intel.js?v=2.11.1';
-import { PenaltyEngine } from './penalty-engine.js?v=2.11.1';
-import { FuzzyBalanceEngine } from './fuzzy-balance.js?v=2.11.1';
-import { MatchmakingEngine } from './matchmaking.js?v=2.11.1';
-import { initOntologyVisualizer, openOntologyStudio } from './ontology-visualizer.js?v=2.11.1';
+import { OntologyEngine } from './ontology-engine.js?v=2.11.2';
+import { TacticalMap } from './tactical-map.js?v=2.11.2';
+import { ChronoFeed } from './chrono-feed.js?v=2.11.2';
+import { IntelEngine } from './intel.js?v=2.11.2';
+import { PenaltyEngine } from './penalty-engine.js?v=2.11.2';
+import { FuzzyBalanceEngine } from './fuzzy-balance.js?v=2.11.2';
+import { MatchmakingEngine } from './matchmaking.js?v=2.11.2';
+import { initOntologyVisualizer, openOntologyStudio } from './ontology-visualizer.js?v=2.11.2';
+import { PRIORY_UI_ICONS, renderBfoSigilHtml, renderEpistemicSigilHtml } from './priory-semiotics.js?v=2.11.2';
+
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
 class AirOpsApp {
   constructor() {
@@ -25,9 +35,11 @@ class AirOpsApp {
     this.balance = null;
     this.matchmaker = null;
 
-    this._activeTab = 'setup'; // Defaults to setup
+    this._activeTab = 'setup';
+    this._feedFilter = 'all';
+    this._selectedZone = null;
     this._searchQuery = '';
-    
+
     // Gameday State
     this._setupLocked = false;
     this._gamedayConditions = {
@@ -35,61 +47,55 @@ class AirOpsApp {
       marshallCount: 3,
       expectedPlayers: 40
     };
-    
+
     // Game Timer State
     this._timerInterval = null;
-    this._timerSeconds = 45 * 60; 
+    this._timerSeconds = 45 * 60;
     this._timerRunning = false;
 
-    // Filters for Query tab
-    this._queryFilters = {
-      team: 'all',
-      role: 'all',
-      compliance: 'all',
-      powerSource: 'all',
-      text: ''
-    };
+    this._shaclSummary = 'SHACL Ready';
   }
 
   async init() {
     this._showLoading('Initializing ontology engine...', 15);
 
-    // Load data
     this.engine = new OntologyEngine();
     await this.engine.load();
     this._showLoading('Building intelligence graphs...', 40);
 
-    // Unassign all players by default on load to start with a sign-in pool
     for (const p of this.engine.players) {
       p.team = 'unassigned';
       p.teamName = 'Unassigned';
-      p.teamColor = '#888888';
+      p.teamColor = 'var(--team-unassigned)';
     }
 
-    // Init engines
     this.chronoFeed = new ChronoFeed(this.engine);
     this.intel = new IntelEngine(this.engine);
     this.penalty = new PenaltyEngine(this.engine);
     this.balance = new FuzzyBalanceEngine(this.engine, this.intel);
     this.matchmaker = new MatchmakingEngine(this.engine, this.intel);
-    this._optimizedGameday = { weather: 'Dry', marshallCount: 3, enrolledPlayersCount: 0, marshallRatio: '0.000', suggestedMode: 'Full Site Domination', modeReason: 'Initializing...', warnings: [] };
+    this._optimizedGameday = {
+      weather: 'Dry',
+      marshallCount: 3,
+      enrolledPlayersCount: this.engine.players.length,
+      marshallRatio: '0.000',
+      suggestedMode: 'Full Site Domination',
+      modeReason: 'Initializing...',
+      warnings: []
+    };
     await this._updateMatchmakingSuggestions();
     this._showLoading('Rendering tactical control map...', 70);
 
-    // Init map
     const canvas = document.getElementById('tactical-map');
     this.map = new TacticalMap(canvas, this.engine);
     this._showLoading('Control panel online.', 100);
 
-    // Set up map callbacks
     this.map.onZoneHover = (zone, mousePos) => this._onZoneHover(zone, mousePos);
     this.map.onZoneClick = (zone) => this._onZoneClick(zone);
     this.map.onPlayerClick = (player) => this._showPlayerDetail(player);
 
-    // Start map rendering
     this.map.start();
 
-    // Set up UI
     this._setupTabs();
     this._setupMapControls();
     this._setupFeedFilters();
@@ -97,13 +103,10 @@ class AirOpsApp {
     initOntologyVisualizer();
     this._updateUI();
 
-    // Hide loading screen
     setTimeout(() => {
-      document.getElementById('loading-screen').classList.add('hidden');
-    }, 600);
+      document.getElementById('loading-screen')?.classList.add('hidden');
+    }, 350);
   }
-
-  // ─── Loading Screen ────────────────────────────────────────
 
   _showLoading(text, percent) {
     const bar = document.querySelector('.loading-bar-fill');
@@ -120,13 +123,13 @@ class AirOpsApp {
     );
   }
 
-  // ─── Central UI Refresh ────────────────────────────────────
-
   _updateUI() {
     this._renderActivePanel();
     this._renderGamePhase();
     this._renderScoreDisplay();
     this._renderFeedEntries();
+    this._renderZoneInspector(this._selectedZone);
+    this._renderStatusBar();
     this.map._render();
   }
 
@@ -168,11 +171,15 @@ class AirOpsApp {
     if (this._activeTab === 'advisor') {
       if (mapArea) mapArea.style.display = 'none';
       if (liveFeed) liveFeed.style.display = 'none';
-      if (advisorView) advisorView.style.display = 'block';
+      if (advisorView) advisorView.style.display = 'flex';
     } else {
-      if (mapArea) mapArea.style.display = 'block';
+      if (mapArea) mapArea.style.display = 'flex';
       if (liveFeed) liveFeed.style.display = 'flex';
       if (advisorView) advisorView.style.display = 'none';
+      if (this.map) {
+        this.map._resize();
+        this.map._render();
+      }
     }
 
     switch (this._activeTab) {
@@ -190,7 +197,6 @@ class AirOpsApp {
     const panel = document.getElementById('panel-setup');
     if (!panel) return;
 
-    // Run matchmaking optimizer
     const opt = this._optimizedGameday || {
       weather: 'Dry',
       marshallCount: 3,
@@ -202,10 +208,14 @@ class AirOpsApp {
     };
 
     const warnings = opt.warnings || [];
+    const ratioDenom = opt.marshallCount > 0 ? Math.round((opt.enrolledPlayersCount || 0) / opt.marshallCount) : 0;
 
     panel.innerHTML = `
-      <div class="gb-section" style="margin-top: 0;">
-        <div class="gb-section-title">1. Site Conditions Setup</div>
+      <div class="wb-sec-hdr">
+        <span>1. Site Conditions Setup</span>
+        <span class="tabular-nums">${this._setupLocked ? 'LOCKED' : 'EDIT'}</span>
+      </div>
+      <div class="wb-block-pad">
         <div class="chrono-form">
           <div class="form-group">
             <label for="se-weather">Weather Condition</label>
@@ -216,70 +226,62 @@ class AirOpsApp {
               <option value="Windy" ${opt.weather === 'Windy' ? 'selected' : ''}>High Wind / Drift</option>
             </select>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-            <div class="form-group">
-              <label for="se-marshalls">Marshalls Enrolled</label>
-              <input type="number" id="se-marshalls" min="1" max="20" value="${opt.marshallCount}" ${this._setupLocked ? 'disabled' : ''}>
-            </div>
-            <div class="form-group">
-              <label>Players Enrolled</label>
-              <div style="background: var(--bg-tertiary); border: 1px solid var(--border-primary); padding: 5px; font-size: 0.75rem; border-radius: var(--radius-sm); font-family: var(--font-mono); text-align: center;">
-                ${opt.enrolledPlayersCount || 0}
-              </div>
-            </div>
+          <div class="form-group">
+            <label for="se-marshalls">Marshalls Enrolled</label>
+            <input type="number" id="se-marshalls" min="1" max="20" value="${opt.marshallCount}" ${this._setupLocked ? 'disabled' : ''}>
           </div>
-          ${this._setupLocked 
-            ? `<button class="btn btn-secondary" id="btn-unlock-setup" style="width: 100%; margin-top: 6px;">🔓 Edit Setup</button>`
-            : `<button class="btn btn-primary" id="btn-lock-setup" style="width: 100%; margin-top: 6px;">🔒 Lock Conditions</button>`
+          ${this._setupLocked
+            ? `<button type="button" class="btn btn-secondary" id="btn-unlock-setup" style="width: 100%;">${PRIORY_UI_ICONS.unlock} Edit Setup</button>`
+            : `<button type="button" class="btn btn-primary" id="btn-lock-setup" style="width: 100%;">${PRIORY_UI_ICONS.lock} Lock Conditions</button>`
           }
         </div>
       </div>
 
-      <div class="gb-section">
-        <div class="gb-section-title">Ontology Decision Engine</div>
-        <div style="background: var(--bg-card); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-primary); font-size: 0.75rem; line-height: 1.4;">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span class="label">Suggested Game Mode:</span>
-            <span class="value" style="color: var(--accent-cyan); font-weight: bold;">${opt.suggestedMode || 'Full Site Domination'}</span>
-          </div>
-          <div style="color: var(--text-secondary); margin-bottom: 8px; font-size: 0.7rem; font-style: italic;">
-            Reason: ${opt.modeReason || ''}
-          </div>
-          <div style="display: flex; justify-content: space-between;">
-            <span class="label">Marshall Safety Ratio:</span>
-            <span class="value" style="font-family: var(--font-mono);">${opt.marshallRatio || '0.000'} (1:${Math.round(opt.enrolledPlayersCount / opt.marshallCount) || 0})</span>
-          </div>
-        </div>
+      <div class="wb-sec-hdr">
+        <span>Ontology Decision Engine</span>
+        <span class="tabular-nums">SPARQL</span>
+      </div>
+      <div class="wb-prop-row">
+        <span class="wb-prop-key">Enrolled Players</span>
+        <span class="wb-prop-val">${opt.enrolledPlayersCount || 0}</span>
+      </div>
+      <div class="wb-prop-row">
+        <span class="wb-prop-key">Suggested Mode</span>
+        <span class="wb-prop-val text-cyan" title="${escapeHtml(opt.suggestedMode || 'Full Site Domination')}">${escapeHtml(opt.suggestedMode || 'Full Site Domination')}</span>
+      </div>
+      <div class="wb-prop-row">
+        <span class="wb-prop-key">Marshall Ratio</span>
+        <span class="wb-prop-val">${opt.marshallRatio || '0.000'} (1:${ratioDenom})</span>
+      </div>
+      <div class="wb-epistemic-row">
+        ${renderEpistemicSigilHtml('entailed', 'Entailed site recommendation')}
+        <span class="text-muted">${escapeHtml(opt.modeReason || '')}</span>
       </div>
 
       ${warnings.length > 0 ? `
-        <div class="gb-section">
-          <div class="gb-section-title" style="color: var(--status-fail);">⚠️ Warnings & Constraints</div>
-          <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
-            ${warnings.map(w => `
-              <div style="padding: 6px 8px; background: rgba(231,76,60,0.06); border: 1px solid rgba(231,76,60,0.15); border-radius: 4px; color: var(--accent-red); font-size: 0.65rem;">
-                ${w}
-              </div>
-            `).join('')}
-          </div>
+        <div class="wb-sec-hdr">
+          <span class="text-red">Warnings &amp; Constraints</span>
+          <span class="tabular-nums">${warnings.length}</span>
         </div>
+        ${warnings.map(w => `
+          <div class="wb-epistemic-row">
+            ${renderEpistemicSigilHtml('entailed', 'Safety constraint')}
+            <span class="text-red">${escapeHtml(w)}</span>
+          </div>
+        `).join('')}
       ` : ''}
     `;
 
-    // Hook listeners
-    const setupLock = document.getElementById('btn-lock-setup');
-    setupLock?.addEventListener('click', async () => {
+    document.getElementById('btn-lock-setup')?.addEventListener('click', async () => {
       this._setupLocked = true;
       this._gamedayConditions.weather = document.getElementById('se-weather').value;
-      this._gamedayConditions.marshallCount = parseInt(document.getElementById('se-marshalls').value);
+      this._gamedayConditions.marshallCount = parseInt(document.getElementById('se-marshalls').value, 10);
       await this._updateMatchmakingSuggestions();
       this._updateUI();
-      // Auto transition to Sign-in
-      document.querySelector('.sidebar-tab[data-tab="signin"]').click();
+      document.querySelector('.sidebar-tab[data-tab="signin"]')?.click();
     });
 
-    const setupUnlock = document.getElementById('btn-unlock-setup');
-    setupUnlock?.addEventListener('click', () => {
+    document.getElementById('btn-unlock-setup')?.addEventListener('click', () => {
       this._setupLocked = false;
       this._renderSetupPanel();
     });
@@ -297,9 +299,9 @@ class AirOpsApp {
 
     panel.innerHTML = `
       <div class="checkin-section">
-        <button class="btn btn-secondary checkin-toggle" id="btn-toggle-checkin" style="width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center;">
-          <span>📝 Register Arriving Player</span>
-          <span id="checkin-chevron">▼</span>
+        <button type="button" class="checkin-toggle" id="btn-toggle-checkin">
+          <span>Register Arriving Player</span>
+          <span id="checkin-chevron">+</span>
         </button>
         <div class="checkin-form-container hidden" id="checkin-form-panel">
           <form id="checkin-form" class="checkin-form">
@@ -323,9 +325,9 @@ class AirOpsApp {
             </div>
             <div class="form-group">
               <label for="ci-replica">Primary Replica Model</label>
-              <input type="text" id="ci-replica" required placeholder=" Tokyo Marui VSR-10">
+              <input type="text" id="ci-replica" required placeholder="Tokyo Marui VSR-10">
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
               <div class="form-group">
                 <label for="ci-brand">Brand</label>
                 <input type="text" id="ci-brand" placeholder="Tokyo Marui">
@@ -342,7 +344,7 @@ class AirOpsApp {
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
               <div class="form-group">
-                <label for="ci-fps">FPS (w/0.2g)</label>
+                <label for="ci-fps">FPS (0.2g)</label>
                 <input type="number" id="ci-fps" required min="0" max="600" value="330">
               </div>
               <div class="form-group">
@@ -350,42 +352,43 @@ class AirOpsApp {
                 <input type="number" id="ci-joules" step="0.01" required min="0" max="4" value="1.0">
               </div>
               <div class="form-group">
-                <label for="ci-bb">BB Weight</label>
+                <label for="ci-bb">BB (g)</label>
                 <input type="number" id="ci-bb" step="0.01" required value="0.2">
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Log Chrono & Check-in</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px;">Log Chrono &amp; Check-In</button>
           </form>
         </div>
       </div>
 
-      <!-- Matchmaker Optimizer trigger -->
-      <div style="margin-bottom: var(--space-md);">
-        <button class="btn btn-primary" id="btn-run-matchmaking" style="width: 100%; height: 36px; font-weight: bold; border-color: var(--accent-amber); text-shadow: none;">
-          ⚡ Auto-Balance & Suggest Teams
+      <div class="wb-block-pad" style="border-bottom: 1px solid var(--border-subtle);">
+        <button type="button" class="btn btn-primary" id="btn-run-matchmaking" style="width: 100%;">
+          Auto-Balance &amp; Suggest Teams
         </button>
       </div>
 
-      <!-- Chrono pools -->
-      <div class="gb-section-title" style="margin-top: 8px; color: var(--text-heading);">
-        Checked-In / Unassigned Pool · ${unassigned.length}
+      <div class="wb-sec-hdr">
+        <span>Unassigned Pool</span>
+        <span class="tabular-nums">${unassigned.length}</span>
       </div>
-      <div id="unassigned-pool" style="max-height: 250px; overflow-y: auto; margin-bottom: 12px;">
+      <div id="unassigned-pool" style="max-height: 220px; overflow-y: auto;">
         ${unassigned.map(p => this._renderSignRosterCard(p)).join('')}
       </div>
 
       ${checkedIn.length > 0 ? `
-        <div class="gb-section-title" style="color: var(--accent-green);">
-          Assigned Roster · ${checkedIn.length}
+        <div class="wb-sec-hdr">
+          <span class="text-green">Assigned Roster</span>
+          <span class="tabular-nums">${checkedIn.length}</span>
         </div>
-        <div id="assigned-pool" style="max-height: 200px; overflow-y: auto; margin-bottom: 12px;">
+        <div id="assigned-pool" style="max-height: 200px; overflow-y: auto;">
           ${checkedIn.map(p => this._renderSignRosterCard(p)).join('')}
         </div>
       ` : ''}
 
       ${banned.length > 0 ? `
-        <div class="gb-section-title" style="color: var(--status-fail);">
-          Banned / Non-Compliant · ${banned.length}
+        <div class="wb-sec-hdr">
+          <span class="text-red">Banned / Non-Compliant</span>
+          <span class="tabular-nums">${banned.length}</span>
         </div>
         <div id="banned-pool" style="max-height: 150px; overflow-y: auto;">
           ${banned.map(p => this._renderSignRosterCard(p)).join('')}
@@ -393,29 +396,23 @@ class AirOpsApp {
       ` : ''}
     `;
 
-    // Hook collapsible form
     const toggleBtn = document.getElementById('btn-toggle-checkin');
     const formPanel = document.getElementById('checkin-form-panel');
     const chevron = document.getElementById('checkin-chevron');
     toggleBtn?.addEventListener('click', () => {
       const isHidden = formPanel.classList.toggle('hidden');
-      chevron.textContent = isHidden ? '▼' : '▲';
+      if (chevron) chevron.textContent = isHidden ? '+' : '-';
     });
 
-    // Check-in submit handler
-    const form = document.getElementById('checkin-form');
-    form?.addEventListener('submit', (e) => {
+    document.getElementById('checkin-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       this._handlePlayerCheckIn();
     });
 
-    // Trigger matchmaking balance
-    const matchBtn = document.getElementById('btn-run-matchmaking');
-    matchBtn?.addEventListener('click', () => {
+    document.getElementById('btn-run-matchmaking')?.addEventListener('click', () => {
       this._handleMatchmakingTrigger();
     });
 
-    // Roster clicks to details
     panel.querySelectorAll('.player-card').forEach(card => {
       card.addEventListener('click', () => {
         const player = this.engine.getPlayer(card.dataset.playerId);
@@ -427,26 +424,18 @@ class AirOpsApp {
   _renderSignRosterCard(player) {
     const statusClass = player.compliance === 'CLEARED' ? 'cleared' :
                         player.compliance === 'FLAGGED' ? 'flagged' : 'banned';
-    const initial = player.name.charAt(0);
     const tier = player.chrono?.tier || 'AEG';
-
-    // Show team if assigned
-    const teamLabel = player.team === 'unassigned' 
-      ? '<span style="color: var(--text-muted);">Unassigned</span>' 
-      : `<span style="color: ${player.teamColor}; font-weight: 600;">${player.teamName}</span>`;
+    const statusLabel = player.compliance === 'CLEARED' ? 'OK' : player.compliance === 'FLAGGED' ? 'WARN' : 'OUT';
+    const isSelected = this.map?.selectedPlayer?.id === player.id;
 
     return `
-      <div class="player-card" data-player-id="${player.id}">
-        <div class="player-avatar" style="background: rgba(255,255,255,0.04); border-color: var(--border-primary); color: var(--text-secondary);">${initial}</div>
+      <div class="player-card ${isSelected ? 'selected' : ''}" data-player-id="${player.id}" title="${escapeHtml(player.callsign)} · ${escapeHtml(player.role)} · ${escapeHtml(tier)}">
+        ${renderBfoSigilHtml('ind')}
         <div class="player-info">
-          <div class="player-name">${player.callsign} <span class="card-tier-label" style="font-size: 0.65rem; padding: 1px 4px; border-radius: 4px; background: rgba(255,255,255,0.06);">${tier}</span></div>
-          <div class="player-meta">
-            <span>${player.role}</span>
-            <span>·</span>
-            <span>${teamLabel}</span>
-          </div>
+          <span class="player-name">${escapeHtml(player.callsign)}</span>
+          <span class="player-meta">${escapeHtml(tier)} · ${escapeHtml(player.teamName)}</span>
         </div>
-        <div class="status-badge ${statusClass}">${player.compliance === 'CLEARED' ? '✓' : player.compliance === 'FLAGGED' ? '!' : '✗'}</div>
+        <span class="status-badge ${statusClass}">${statusLabel}</span>
       </div>
     `;
   }
@@ -458,18 +447,17 @@ class AirOpsApp {
     const replicaName = document.getElementById('ci-replica').value;
     const brand = document.getElementById('ci-brand').value || 'Unknown';
     const powerSource = document.getElementById('ci-power').value;
-    const fps = parseInt(document.getElementById('ci-fps').value);
+    const fps = parseInt(document.getElementById('ci-fps').value, 10);
     const joules = parseFloat(document.getElementById('ci-joules').value);
     const bbWeight = parseFloat(document.getElementById('ci-bb').value);
 
     const nextId = `P_${this.engine.players.length + 1}`;
     const callsign = `${callsignName}-${this.engine.players.length + 1}`;
 
-    // Determine tier & rules
     let tier = 'AEG';
     if (replicaName.toLowerCase().includes('vsr') || replicaName.toLowerCase().includes('sniper') || role === 'Sniper') {
       tier = 'Bolt-Action';
-    } else if (replicaName.toLowerCase().includes('dmr') || role === 'Sniper' && fps > 350) {
+    } else if (replicaName.toLowerCase().includes('dmr') || (role === 'Sniper' && fps > 350)) {
       tier = 'DMR';
     }
 
@@ -489,15 +477,15 @@ class AirOpsApp {
       id: nextId,
       name,
       callsign,
-      team: 'unassigned', // Pre-team pool
+      team: 'unassigned',
       teamName: 'Unassigned',
-      teamColor: '#888888',
+      teamColor: 'var(--team-unassigned)',
       role,
       status: compliance === 'BANNED' ? 'OUT' : 'ACTIVE',
       gear: {
         primary: {
           name: replicaName,
-          sku: `SKU-${Math.floor(Math.random()*90000) + 10000}`,
+          sku: `SKU-${Math.floor(Math.random() * 90000) + 10000}`,
           brand,
           powerSource,
           gearboxType: 'V2 Hybrid',
@@ -515,13 +503,12 @@ class AirOpsApp {
       },
       compliance,
       repairs: [],
-      position: null, // No positioning until spatial check
+      position: null,
       isAlive: compliance !== 'BANNED',
       warnings: [],
       stats: { kills: 0, deaths: 0, assists: 0, objectiveCaptures: 0, revives: 0 }
     };
 
-    // Log the chrono event
     const newChronoLog = {
       logId: `Log_${Date.now()}`,
       playerId: nextId,
@@ -539,18 +526,15 @@ class AirOpsApp {
 
     this._rebuildEngines();
     this._updateUI();
-
-    alert(`Sign-in logged. Callsign: ${callsign} assigned to unassigned pool.`);
   }
 
   async _handleMatchmakingTrigger() {
     const eligible = this.engine.players.filter(p => p.compliance !== 'BANNED' && p.status !== 'OUT');
     if (eligible.length === 0) {
-      alert("No checked-in, eligible players in the pool!");
+      alert('No checked-in, eligible players in the pool.');
       return;
     }
 
-    // Run partition matchmaking on Python RDF backend
     const rosters = await this.matchmaker.generateTeams(
       eligible,
       this._gamedayConditions.weather,
@@ -558,34 +542,29 @@ class AirOpsApp {
     );
 
     if (!rosters) {
-      alert("Matchmaking execution failed on Python RDF backend!");
+      alert('Matchmaking execution failed on Python RDF backend.');
       return;
     }
 
-    // Apply assignments to local player profiles
     for (const p of this.engine.players) {
       if (rosters.nonband.includes(p.id)) {
         p.team = 'nonband';
         p.teamName = 'Non-Band';
-        p.teamColor = '#888888';
+        p.teamColor = 'var(--team-nonband)';
       } else if (rosters.band.includes(p.id)) {
         p.team = 'band';
         p.teamName = 'Band';
-        p.teamColor = '#f1c40f';
+        p.teamColor = 'var(--team-band)';
       } else {
         p.team = 'unassigned';
         p.teamName = 'Unassigned';
-        p.teamColor = '#888888';
+        p.teamColor = 'var(--team-unassigned)';
       }
     }
 
     this._rebuildEngines();
     this._updateUI();
-
-    alert(`Matchmaking successfully processed. Assigned ${rosters.nonband.length} to Non-Band (Grey) and ${rosters.band.length} to Band (Yellow). Transitioning to Gameview.`);
-    
-    // Switch to Phase 3 tab
-    document.querySelector('.sidebar-tab[data-tab="gameview"]').click();
+    document.querySelector('.sidebar-tab[data-tab="gameview"]')?.click();
   }
 
   // ─── Phase 3: Gameview Operations Panel ────────────────────
@@ -594,14 +573,13 @@ class AirOpsApp {
     const panel = document.getElementById('panel-gameview');
     if (!panel) return;
 
-    // Check if team assignment has run
     const assignedCount = this.engine.players.filter(p => p.team !== 'unassigned').length;
     if (assignedCount === 0) {
       panel.innerHTML = `
-        <div style="text-align: center; padding: 32px var(--space-md); color: var(--text-secondary);">
-          <div style="font-size: 2.5rem; margin-bottom: var(--space-md);">⏱️</div>
-          <div style="font-weight: bold; margin-bottom: 6px;">Gameview Offline</div>
-          <div style="font-size: 0.75rem;">Rosters have not been assigned. Complete Gameday Setup (Phase 1) and Run Matchmaking (Phase 2) to launch active Gameview monitoring.</div>
+        <div class="wb-sec-hdr"><span>Gameview Operations</span><span>OFFLINE</span></div>
+        <div class="wb-epistemic-row">
+          ${renderEpistemicSigilHtml('entailed', 'Roster assignment prerequisite')}
+          <span class="text-muted">Complete Setup (Phase 1) and Auto-Balance Matchmaking (Phase 2) to populate active teams.</span>
         </div>
       `;
       return;
@@ -613,140 +591,133 @@ class AirOpsApp {
     const elapsedSecs = this._timerSeconds % 60;
     const timerStr = `${elapsedMins.toString().padStart(2, '0')}:${elapsedSecs.toString().padStart(2, '0')}`;
 
-    // Threat balances
-    const report = this.balance.getBalanceReport();
-
     panel.innerHTML = `
-      <!-- Timer -->
-      <div class="timer-card mb-md">
-        <div class="timer-display" style="font-family: var(--font-mono); font-size: 2.2rem; font-weight: 800; text-align: center; color: var(--accent-green); text-shadow: 0 0 10px rgba(0, 255, 136, 0.2);">
-          ${timerStr}
-        </div>
-        <div class="timer-controls" style="display: flex; gap: 8px; justify-content: center; margin-top: 6px;">
-          <button class="btn btn-primary" id="btn-timer-toggle" style="padding: 4px 12px; font-size: 0.75rem;">
-            ${this._timerRunning ? '⏸ Pause' : '▶ Start'}
+      <div class="wb-sec-hdr"><span>Session Clock</span><span class="tabular-nums">${this._timerRunning ? 'LIVE' : 'PAUSED'}</span></div>
+      <div class="timer-card">
+        <div class="timer-display">${timerStr}</div>
+        <div class="timer-controls">
+          <button type="button" class="btn btn-primary" id="btn-timer-toggle">
+            ${this._timerRunning ? `${PRIORY_UI_ICONS.pause} Pause` : `${PRIORY_UI_ICONS.play} Start`}
           </button>
-          <button class="btn btn-secondary" id="btn-timer-reset" style="padding: 4px 12px; font-size: 0.75rem;">
-            ⟳ Reset
+          <button type="button" class="btn btn-secondary" id="btn-timer-reset">
+            ${PRIORY_UI_ICONS.reset} Reset
           </button>
         </div>
       </div>
 
-      <!-- Before/After Game balance telemetry stats -->
-      <div class="gb-section" style="margin-top: 0;">
-        <div class="gb-section-title">Team Telemetry Balance</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.75rem;">
-          <div style="background: var(--bg-card); padding: 8px; border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
-            <div style="font-weight: bold; color: var(--text-primary); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; margin-bottom: 4px;">Non-Band</div>
-            <div class="detail-row"><span class="label">Count:</span><span class="value">${nonband.length}</span></div>
-            <div class="detail-row"><span class="label">Avg Joule:</span><span class="value">${this.engine.getAverageJoules('nonband').toFixed(2)}J</span></div>
-            <div class="detail-row"><span class="label">Snipers:</span><span class="value">${nonband.filter(p => p.role === 'Sniper').length}</span></div>
-          </div>
-          <div style="background: var(--bg-card); padding: 8px; border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
-            <div style="font-weight: bold; color: var(--accent-amber); border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 2px; margin-bottom: 4px;">Band (Yellow)</div>
-            <div class="detail-row"><span class="label">Count:</span><span class="value">${band.length}</span></div>
-            <div class="detail-row"><span class="label">Avg Joule:</span><span class="value">${this.engine.getAverageJoules('band').toFixed(2)}J</span></div>
-            <div class="detail-row"><span class="label">Snipers:</span><span class="value">${band.filter(p => p.role === 'Sniper').length}</span></div>
-          </div>
-        </div>
-      </div>
+      <div class="wb-sec-hdr"><span>Team Telemetry Balance</span><span class="tabular-nums">${assignedCount}</span></div>
+      <table class="wb-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="num">Non-Band</th>
+            <th class="num">Band</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Players</td>
+            <td class="num">${nonband.length}</td>
+            <td class="num">${band.length}</td>
+          </tr>
+          <tr>
+            <td>Avg Joules</td>
+            <td class="num">${this.engine.getAverageJoules('nonband').toFixed(2)}J</td>
+            <td class="num">${this.engine.getAverageJoules('band').toFixed(2)}J</td>
+          </tr>
+          <tr>
+            <td>Snipers</td>
+            <td class="num">${nonband.filter(p => p.role === 'Sniper').length}</td>
+            <td class="num">${band.filter(p => p.role === 'Sniper').length}</td>
+          </tr>
+        </tbody>
+      </table>
 
-      <!-- Threat calculations -->
-      <div class="gb-section">
-        <div class="gb-section-title">Team Threat Score (TTS)</div>
-        ${this.balance.renderBalanceHTML()}
-      </div>
+      <div class="wb-sec-hdr"><span>Team Threat Score (TTS)</span><span>Fuzzy</span></div>
+      ${this.balance.renderBalanceHTML()}
 
-      <!-- Quick Actions forms -->
-      <div class="logger-container" style="margin-top: 12px;">
-        <!-- Record elimination -->
-        <button class="btn btn-secondary checkin-toggle" id="toggle-kill-form" style="width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-          <span>💀 Record Elimination</span>
-          <span id="kill-chevron">▼</span>
+      <div class="checkin-section">
+        <button type="button" class="checkin-toggle" id="toggle-kill-form">
+          <span>Record Elimination</span>
+          <span id="kill-chevron">+</span>
         </button>
-        <div class="checkin-form-container hidden" id="kill-form-panel" style="margin-bottom: 12px;">
+        <div class="checkin-form-container hidden" id="kill-form-panel">
           <form id="kill-form" class="chrono-form">
             <div class="form-group">
-              <label for="k-attacker">Attacker (Shooter)</label>
-              <select id="k-attacker" style="width: 100%;" required>
+              <label for="k-attacker">Attacker</label>
+              <select id="k-attacker" required>
                 <option value="" disabled selected>-- Select Attacker --</option>
-                ${this.engine.players.filter(p => p.isAlive && p.team !== 'unassigned').map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
+                ${this.engine.players.filter(p => p.isAlive && p.team !== 'unassigned').map(p => `<option value="${p.id}">${escapeHtml(p.callsign)} (${escapeHtml(p.teamName)})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
-              <label for="k-target">Target (Hit Player)</label>
-              <select id="k-target" style="width: 100%;" required>
+              <label for="k-target">Target</label>
+              <select id="k-target" required>
                 <option value="" disabled selected>-- Select Target --</option>
-                ${this.engine.players.filter(p => p.isAlive && p.team !== 'unassigned').map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
+                ${this.engine.players.filter(p => p.isAlive && p.team !== 'unassigned').map(p => `<option value="${p.id}">${escapeHtml(p.callsign)} (${escapeHtml(p.teamName)})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
-              <label for="k-zone">Zone of Engagement</label>
-              <select id="k-zone" style="width: 100%;" required>
+              <label for="k-zone">Zone</label>
+              <select id="k-zone" required>
                 <option value="" disabled selected>-- Select Zone --</option>
-                ${this.engine.getZones().map(z => `<option value="${z.id}">${z.name}</option>`).join('')}
+                ${this.engine.getZones().map(z => `<option value="${z.id}">${escapeHtml(z.name)}</option>`).join('')}
               </select>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px;">Confirm Elimination</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Confirm Elimination</button>
           </form>
         </div>
 
-        <!-- Log infraction -->
-        <button class="btn btn-secondary checkin-toggle" id="toggle-violation-form" style="width: 100%; text-align: left; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <span>⚠️ Log Rule Violation</span>
-          <span id="violation-chevron">▼</span>
+        <button type="button" class="checkin-toggle" id="toggle-violation-form">
+          <span>Log Rule Violation</span>
+          <span id="violation-chevron">+</span>
         </button>
-        <div class="checkin-form-container hidden" id="violation-form-panel" style="margin-bottom: 12px;">
+        <div class="checkin-form-container hidden" id="violation-form-panel">
           <form id="violation-form" class="chrono-form">
             <div class="form-group">
               <label for="v-player">Offending Player</label>
-              <select id="v-player" style="width: 100%;" required>
+              <select id="v-player" required>
                 <option value="" disabled selected>-- Select Player --</option>
-                ${this.engine.players.map(p => `<option value="${p.id}">${p.callsign} (${p.teamName})</option>`).join('')}
+                ${this.engine.players.map(p => `<option value="${p.id}">${escapeHtml(p.callsign)} (${escapeHtml(p.teamName)})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label for="v-type">Violation Type</label>
-              <select id="v-type" style="width: 100%;" required>
+              <select id="v-type" required>
                 <option value="" disabled selected>-- Select Infraction --</option>
-                ${Object.entries(this.penalty.violationTypes).map(([k, v]) => `<option value="${k}">${v.icon} ${v.label} (Max Warnings: ${v.maxWarnings})</option>`).join('')}
+                ${Object.entries(this.penalty.violationTypes).map(([k, v]) => `<option value="${k}">${escapeHtml(v.label)} (Max: ${v.maxWarnings})</option>`).join('')}
               </select>
             </div>
             <div class="form-group">
               <label for="v-zone">Incident Zone</label>
-              <select id="v-zone" style="width: 100%;" required>
+              <select id="v-zone" required>
                 <option value="" disabled selected>-- Select Zone --</option>
-                ${this.engine.getZones().map(z => `<option value="${z.id}">${z.name}</option>`).join('')}
+                ${this.engine.getZones().map(z => `<option value="${z.id}">${escapeHtml(z.name)}</option>`).join('')}
               </select>
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 4px;">Submit Incident Record</button>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Incident Record</button>
           </form>
         </div>
       </div>
 
-      <!-- Incident log -->
-      <div class="gb-section" style="margin-top: 8px;">
-        <div class="gb-section-title">Incidents & Violations Feed</div>
-        ${this.penalty.renderIncidentLogHTML(10)}
-      </div>
+      <div class="wb-sec-hdr"><span>Incidents &amp; Violations</span><span class="tabular-nums">${this.penalty.getIncidentLog().length}</span></div>
+      ${this.penalty.renderIncidentLogHTML(10)}
     `;
 
-    // Collapsible logger toggles
     document.getElementById('toggle-kill-form')?.addEventListener('click', () => {
       const pnl = document.getElementById('kill-form-panel');
       const chv = document.getElementById('kill-chevron');
       const isHidden = pnl.classList.toggle('hidden');
-      chv.textContent = isHidden ? '▼' : '▲';
+      if (chv) chv.textContent = isHidden ? '+' : '-';
     });
 
     document.getElementById('toggle-violation-form')?.addEventListener('click', () => {
       const pnl = document.getElementById('violation-form-panel');
       const chv = document.getElementById('violation-chevron');
       const isHidden = pnl.classList.toggle('hidden');
-      chv.textContent = isHidden ? '▼' : '▲';
+      if (chv) chv.textContent = isHidden ? '+' : '-';
     });
 
-    // Form submits
     document.getElementById('kill-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       this._handleKillSubmission();
@@ -757,11 +728,10 @@ class AirOpsApp {
       this._handleViolationSubmission();
     });
 
-    // Hook timer controls
     const toggleTimer = document.getElementById('btn-timer-toggle');
     toggleTimer?.addEventListener('click', () => {
       this._timerRunning = !this._timerRunning;
-      toggleTimer.textContent = this._timerRunning ? '⏸ Pause' : '▶ Start';
+      toggleTimer.innerHTML = this._timerRunning ? `${PRIORY_UI_ICONS.pause} Pause` : `${PRIORY_UI_ICONS.play} Start`;
     });
 
     document.getElementById('btn-timer-reset')?.addEventListener('click', () => {
@@ -770,7 +740,6 @@ class AirOpsApp {
       this._renderGameviewPanel();
     });
 
-    // Row click inside incidents
     panel.querySelectorAll('.incident-row').forEach(row => {
       row.addEventListener('click', () => {
         const player = this.engine.getPlayer(row.dataset.playerId);
@@ -805,17 +774,15 @@ class AirOpsApp {
 
     if (!attacker || !target) return;
     if (attacker.team === target.team) {
-      alert("Friendly fire is ignored!");
+      alert('Friendly fire is ignored.');
       return;
     }
 
     attacker.stats.kills++;
     target.stats.deaths++;
-
     target.status = 'ELIMINATED';
     target.isAlive = false;
 
-    // Append to events (reflecting in memory store)
     await this.engine.addGameEvent({
       type: 'elimination',
       timestamp: new Date().toISOString(),
@@ -829,7 +796,6 @@ class AirOpsApp {
       weapon: attacker.gear.primary.name
     });
 
-    // Update score
     if (attacker.team === 'nonband') {
       this.engine.gameSession.score.nonband += 5;
     } else {
@@ -838,8 +804,6 @@ class AirOpsApp {
 
     this._rebuildEngines();
     this._updateUI();
-
-    alert(`Logged: ${attacker.callsign} eliminated ${target.callsign}.`);
   }
 
   async _handleViolationSubmission() {
@@ -878,8 +842,6 @@ class AirOpsApp {
 
     this._rebuildEngines();
     this._updateUI();
-
-    alert(`Logged violation warning for ${player.callsign} (${action}).`);
   }
 
   // ─── Queries Panel ──────────────────────────────────────────
@@ -903,32 +865,32 @@ ORDER BY DESC(?joules)
 LIMIT 8`;
 
     panel.innerHTML = `
-      <div class="gb-section" style="margin-top: 0;">
-        <div class="gb-section-title">SPARQL Editor (Python rdflib)</div>
-        <div style="display: flex; flex-direction: column; gap: var(--space-xs);">
-          <textarea id="sparql-query-input" class="search-box" style="font-family: var(--font-mono); font-size: 11.5px; height: 160px; width: 100%; resize: vertical; line-height: 1.5; background: var(--bg-surface-2); padding: 8px; border-color: var(--border-subtle);" spellcheck="false">${defaultQuery}</textarea>
-          <button class="btn btn-primary" id="btn-run-sparql" style="width: 100%; margin-top: 6px;">Execute SPARQL Query</button>
-        </div>
+      <div class="wb-sec-hdr">
+        <span>SPARQL Editor</span>
+        <span>rdflib</span>
+      </div>
+      <div class="wb-block-pad" style="border-bottom: 1px solid var(--border-subtle);">
+        <textarea id="sparql-query-input" class="search-box" spellcheck="false">${escapeHtml(defaultQuery)}</textarea>
+        <button type="button" class="btn btn-primary" id="btn-run-sparql" style="width: 100%; margin-top: 6px;">Execute SPARQL Query</button>
       </div>
 
-      <div class="gb-section">
-        <div class="gb-section-title">Execution Console Output</div>
-        <div id="sparql-status" style="font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 6px; font-family: var(--font-mono);">Ready. Enter SELECT query.</div>
-        <div id="sparql-results-container" style="max-height: 250px; overflow-y: auto; overflow-x: auto; background: var(--bg-card); border-radius: var(--radius-md); border: 1px solid var(--border-primary); font-size: 0.65rem;">
-          <div style="padding: 12px; color: var(--text-muted); text-align: center;">No query results loaded.</div>
-        </div>
+      <div class="wb-sec-hdr">
+        <span>Execution Output</span>
+        <span id="sparql-status" class="tabular-nums">Ready</span>
+      </div>
+      <div id="sparql-results-container" style="max-height: 280px; overflow: auto;">
+        <div class="wb-prop-row"><span class="wb-prop-key">Results</span><span class="wb-prop-val text-muted">None loaded</span></div>
       </div>
     `;
 
-    // Hook execute button
     document.getElementById('btn-run-sparql')?.addEventListener('click', async () => {
       const qInput = document.getElementById('sparql-query-input').value;
       const statusEl = document.getElementById('sparql-status');
       const resultsContainer = document.getElementById('sparql-results-container');
-      
-      statusEl.textContent = 'Executing query over Python RDF Graph...';
-      statusEl.style.color = 'var(--accent-cyan)';
-      
+
+      statusEl.textContent = 'Running...';
+      statusEl.style.color = 'var(--accent-primary)';
+
       const startTime = performance.now();
       try {
         const res = await fetch('/api/query', {
@@ -940,177 +902,173 @@ LIMIT 8`;
         const duration = (performance.now() - startTime).toFixed(1);
 
         if (data.error) {
-          statusEl.textContent = `Error: ${data.error}`;
-          statusEl.style.color = 'var(--accent-red)';
-          resultsContainer.innerHTML = `<div style="padding: 12px; color: var(--accent-red); font-family: var(--font-mono); font-size: 0.65rem; white-space: pre-wrap;">${data.error}</div>`;
+          statusEl.textContent = 'Error';
+          statusEl.style.color = 'var(--status-avoid)';
+          resultsContainer.innerHTML = `<pre style="padding:8px;color:var(--status-avoid);white-space:pre-wrap;"><code>${escapeHtml(data.error)}</code></pre>`;
           return;
         }
 
-        statusEl.textContent = `Completed in ${duration}ms · Returned ${data.results.length} rows`;
-        statusEl.style.color = 'var(--accent-green)';
+        statusEl.textContent = `${duration}ms · ${data.results.length} rows`;
+        statusEl.style.color = 'var(--status-clear)';
 
         if (data.results.length === 0) {
-          resultsContainer.innerHTML = '<div style="padding: 12px; color: var(--text-muted); text-align: center;">Empty result set.</div>';
+          resultsContainer.innerHTML = `<div class="wb-prop-row"><span class="wb-prop-key">Results</span><span class="wb-prop-val text-muted">Empty result set</span></div>`;
           return;
         }
 
-        // Render table
-        let tableHTML = `<table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-mono); font-size: 0.62rem;">`;
-        tableHTML += `<thead style="background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border-primary);"><tr>`;
+        let tableHTML = `<table class="wb-table"><thead><tr>`;
         for (const v of data.vars) {
-          tableHTML += `<th style="padding: 6px; font-weight: bold; color: var(--text-heading); border-right: 1px solid rgba(255,255,255,0.05);">${v}</th>`;
+          tableHTML += `<th>${escapeHtml(v)}</th>`;
         }
         tableHTML += `</tr></thead><tbody>`;
 
         for (const row of data.results) {
-          tableHTML += `<tr style="border-bottom: 1px solid rgba(255,255,255,0.02); hover: background-color: var(--bg-hover);">`;
+          tableHTML += `<tr>`;
           for (const v of data.vars) {
-            let val = row[v] || "";
-            // Truncate URIs to make output clean
+            const rawVal = row[v] || '';
+            let val = rawVal;
             if (val.includes('#')) val = val.split('#')[1];
-            tableHTML += `<td style="padding: 6px; border-right: 1px solid rgba(255,255,255,0.05); white-space: nowrap; max-width: 140px; overflow: hidden; text-overflow: ellipsis;" title="${row[v]}">${val}</td>`;
+            const isNum = val !== '' && !Number.isNaN(Number(val));
+            tableHTML += `<td class="${isNum ? 'num' : ''}" title="${escapeHtml(rawVal)}">${isNum ? escapeHtml(val) : `<code>${escapeHtml(val)}</code>`}</td>`;
           }
           tableHTML += `</tr>`;
         }
         tableHTML += `</tbody></table>`;
         resultsContainer.innerHTML = tableHTML;
       } catch (err) {
-        statusEl.textContent = `Fatal: ${err.message}`;
-        statusEl.style.color = 'var(--accent-red)';
-        resultsContainer.innerHTML = `<div style="padding: 12px; color: var(--accent-red); font-family: var(--font-mono);">${err.message}</div>`;
+        statusEl.textContent = 'Failed';
+        statusEl.style.color = 'var(--status-avoid)';
+        resultsContainer.innerHTML = `<pre style="padding:8px;color:var(--status-avoid);"><code>${escapeHtml(err.message)}</code></pre>`;
       }
     });
   }
 
-  // ─── Player Detail Overlay Modal ────────────────────────────
+  // ─── Docked Right Inspector: Player Detail & Zone Telemetry ──
 
   _showPlayerDetail(player) {
     const overlay = document.getElementById('player-detail-overlay');
     const detail = document.getElementById('player-detail');
     if (!overlay || !detail) return;
 
+    document.getElementById('app')?.classList.remove('wb-no-right');
+    const titleEl = document.getElementById('inspector-pane-title');
+    const metaEl = document.getElementById('inspector-pane-meta');
+    if (titleEl) titleEl.textContent = 'Inspector · Player';
+    if (metaEl) metaEl.textContent = player.id;
+
     this.map.selectPlayer(player.id);
 
-    const teamColor = player.team === 'nonband' ? '#888888' : player.team === 'band' ? '#f1c40f' : 'var(--text-secondary)';
-    const teamClass = player.team === 'nonband' ? 'nonband' : player.team === 'band' ? 'band' : 'unassigned';
     const statusClass = player.compliance === 'CLEARED' ? 'cleared' :
                         player.compliance === 'FLAGGED' ? 'flagged' : 'banned';
 
     const stats = this.intel.getPlayerStats(player.id);
     const pWarnings = this.penalty.getPlayerWarnings(player.id);
-    
+    const repairs = player.repairs || [];
+
     const warningHTML = pWarnings.length === 0
-      ? '<div style="font-size: 0.75rem; color: var(--text-muted);">No active warnings issued</div>'
+      ? `<div class="wb-prop-row"><span class="wb-prop-key">Warnings</span><span class="wb-prop-val text-muted">None issued</span></div>`
       : pWarnings.map(w => `
-          <div style="padding: 6px 8px; background: rgba(241, 196, 15, 0.06); border: 1px solid rgba(241, 196, 15, 0.15); border-radius: 6px; margin-bottom: 4px; font-size: 0.7rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <span style="font-weight: 700; color: var(--accent-amber);">${w.icon} ${w.label}</span>
-              <div style="color: var(--text-secondary); margin-top: 1px; font-size: 0.65rem;">Escalation action: ${w.escalationAction.replace(/_/g, ' ')}</div>
-            </div>
-            <span style="font-family: var(--font-mono); font-weight: bold;">${w.count} / ${w.maxWarnings}</span>
+          <div class="wb-prop-row" title="${escapeHtml(w.escalationAction.replace(/_/g, ' '))}">
+            <span class="wb-prop-key text-amber">${escapeHtml(w.label)}</span>
+            <span class="wb-prop-val">${w.count} / ${w.maxWarnings} (${escapeHtml(w.escalationAction.replace(/_/g, ' '))})</span>
           </div>
         `).join('');
 
-    const repairs = player.repairs || [];
     const repairHTML = repairs.length === 0
-      ? '<div style="font-size: 0.75rem; color: var(--text-muted);">No repair logs in Silo 3</div>'
-      : repairs.slice(0, 2).map(r => `
-          <div style="padding: 6px 8px; background: var(--bg-card); border-radius: 6px; margin-bottom: 4px; font-size: 0.7rem;">
-            <div style="font-weight: 600; display: flex; justify-content: space-between;">
-              <span>${r.repairId}</span>
-              <span style="color: var(--accent-cyan); font-size: 0.65rem;">${r.date}</span>
-            </div>
-            <div style="color: var(--text-secondary); margin-top: 2px;">${r.diagnosis}</div>
+      ? `<div class="wb-prop-row"><span class="wb-prop-key">Silo 3 Log</span><span class="wb-prop-val text-muted">No repairs</span></div>`
+      : repairs.slice(0, 3).map(r => `
+          <div class="wb-prop-row" title="${escapeHtml(r.diagnosis)}">
+            <span class="wb-prop-key"><code>${escapeHtml(r.repairId)}</code> (${escapeHtml(r.date)})</span>
+            <span class="wb-prop-val">${escapeHtml(r.diagnosis)}</span>
           </div>
         `).join('');
 
     detail.innerHTML = `
       <div class="detail-header">
-        <div class="detail-avatar" style="border-color: ${teamColor}; background: ${teamColor}1a; color: ${teamColor}; font-weight: bold;">
-          ${player.name.charAt(0)}
-        </div>
-        <div>
-          <div class="detail-name">${player.name}</div>
-          <div class="detail-callsign">${player.callsign} <span style="font-size: 0.7rem; font-weight: normal; color: var(--text-muted);">(${player.id})</span></div>
-          <div style="margin-top: 4px; display: flex; gap: 4px;">
-            <span class="status-badge ${statusClass}">${player.compliance}</span>
-            <span class="status-badge" style="background: rgba(255,255,255,0.04); color: var(--text-heading);">${player.status}</span>
+        <div style="display:flex;align-items:center;gap:6px;min-width:0;">
+          ${renderBfoSigilHtml('ind')}
+          <div style="min-width:0;">
+            <div class="detail-name">${escapeHtml(player.name)}</div>
+            <div class="detail-callsign">${escapeHtml(player.callsign)} · <code>${escapeHtml(player.id)}</code></div>
           </div>
         </div>
-      </div>
-
-      <!-- Marshall Control Actions -->
-      <div class="detail-section" style="background: rgba(231, 76, 60, 0.03); border: 1px solid rgba(231,76,60,0.15); border-radius: var(--radius-md); padding: 8px;">
-        <div class="detail-section-title" style="color: var(--accent-red); margin-bottom: 6px; font-size: 0.75rem;">🛡️ Marshall Live Control Console</div>
-        
-        <div style="display: flex; gap: 6px; margin-bottom: 6px;">
-          <select id="modal-status" class="search-box" style="flex: 1; padding: 4px; font-size: 0.75rem; height: 26px;">
-            <option value="ACTIVE" ${player.status === 'ACTIVE' ? 'selected' : ''}>Status: ACTIVE</option>
-            <option value="ELIMINATED" ${player.status === 'ELIMINATED' ? 'selected' : ''}>Status: ELIMINATED</option>
-            <option value="RESPAWNING" ${player.status === 'RESPAWNING' ? 'selected' : ''}>Status: RESPAWNING</option>
-            <option value="OUT" ${player.status === 'OUT' ? 'selected' : ''}>Status: OUT (BANNED)</option>
-          </select>
-          <button class="btn btn-primary" id="modal-btn-status" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Apply</button>
-        </div>
-
-        <div style="display: flex; gap: 6px; margin-bottom: 6px;">
-          <select id="modal-team" class="search-box" style="flex: 1; padding: 4px; font-size: 0.75rem; height: 26px;">
-            <option value="unassigned" ${player.team === 'unassigned' ? 'selected' : ''}>Team: Unassigned</option>
-            <option value="nonband" ${player.team === 'nonband' ? 'selected' : ''}>Team: Non-Band (Grey)</option>
-            <option value="band" ${player.team === 'band' ? 'selected' : ''}>Team: Band (Yellow)</option>
-          </select>
-          <button class="btn btn-secondary" id="modal-btn-team" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Team</button>
-        </div>
-
-        <div style="display: flex; gap: 6px;">
-          <select id="modal-violation" class="search-box" style="flex: 1; padding: 4px; font-size: 0.75rem; height: 26px;">
-            <option value="" disabled selected>-- Log Infraction --</option>
-            <option value="BLIND_FIRE">Blind Fire</option>
-            <option value="OVERSHOOT">Overshooting</option>
-            <option value="DEAD_MAN_WALKING">Dead Man Walk/Talk</option>
-            <option value="MED_VIOLATION">MED Infraction</option>
-            <option value="EYE_PRO_REMOVED">Eye Pro Off</option>
-            <option value="AGGRESSION">Aggression / Fight</option>
-          </select>
-          <button class="btn btn-secondary" id="modal-btn-violation" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Log</button>
-        </div>
-      </div>
-
-      <!-- Chrono validation update inside modal -->
-      <div class="detail-section" style="background: rgba(46, 204, 113, 0.02); border: 1px solid rgba(46, 204, 113, 0.15); border-radius: var(--radius-md); padding: 8px;">
-        <div class="detail-section-title" style="color: var(--accent-green); margin-bottom: 6px; font-size: 0.75rem;">⏱️ Re-Chrono Validation Check</div>
-        <div style="display: flex; gap: 4px;">
-          <input type="number" id="modal-fps" class="search-box" style="flex: 1; height: 26px; font-size: 0.75rem; padding: 4px;" placeholder="FPS" value="${player.chrono.fps}">
-          <input type="number" id="modal-joules" step="0.01" class="search-box" style="flex: 1; height: 26px; font-size: 0.75rem; padding: 4px;" placeholder="Joules" value="${player.chrono.joules}">
-          <button class="btn btn-primary" id="modal-btn-chrono" style="padding: 2px 8px; font-size: 0.7rem; height: 26px;">Chrono</button>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <span class="status-badge ${statusClass}">${escapeHtml(player.compliance)}</span>
+          <button type="button" class="wb-icon-btn" id="close-detail" title="Clear player selection" aria-label="Clear player selection">&times;</button>
         </div>
       </div>
 
       <div class="detail-section">
-        <div class="detail-section-title">Replica Details</div>
-        <div class="detail-row"><span class="label">Replica</span><span class="value" style="font-family: var(--font-body);">${player.gear.primary.name}</span></div>
-        <div class="detail-row"><span class="label">Chrono Power</span><span class="value" style="font-family: var(--font-mono); font-weight: bold; color: var(--accent-cyan);">${player.chrono.fps} FPS · ${player.chrono.joules} J (${player.chrono.bbWeight}g)</span></div>
-        <div class="detail-row"><span class="label">Tier / MED</span><span class="value" style="font-family: var(--font-mono);">${player.chrono.tier} / ${player.chrono.med}m MED</span></div>
+        <div class="detail-section-title">Replica &amp; Chrono</div>
+        <div class="detail-row"><span class="label">Status</span><span class="value">${escapeHtml(player.status)}</span></div>
+        <div class="detail-row"><span class="label">Team</span><span class="value team-${escapeHtml(player.team)}">${escapeHtml(player.teamName)}</span></div>
+        <div class="detail-row"><span class="label">Role</span><span class="value">${escapeHtml(player.role)}</span></div>
+        <div class="detail-row"><span class="label">Replica</span><span class="value" title="${escapeHtml(player.gear.primary.name)}">${escapeHtml(player.gear.primary.name)}</span></div>
+        <div class="detail-row"><span class="label">Chrono Power</span><span class="value text-cyan">${player.chrono.fps} FPS · ${player.chrono.joules} J (${player.chrono.bbWeight}g)</span></div>
+        <div class="detail-row"><span class="label">Tier / MED</span><span class="value">${escapeHtml(player.chrono.tier)} · ${player.chrono.med}m</span></div>
       </div>
 
       <div class="detail-section">
         <div class="detail-section-title">Telemetry Stats</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 4px;">
-          <div style="background: var(--bg-card); padding: 4px; border-radius: 4px;">
-            <div style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: bold; color: var(--accent-green);">${stats.kills}</div>
-            <div style="font-size: 0.55rem; color: var(--text-secondary);">Kills</div>
+        <table class="wb-table">
+          <thead>
+            <tr>
+              <th class="num">Kills</th>
+              <th class="num">Deaths</th>
+              <th class="num">K/D</th>
+              <th class="num">Caps</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num text-green">${stats.kills}</td>
+              <td class="num text-red">${stats.deaths}</td>
+              <td class="num text-cyan">${stats.kd.toFixed(2)}</td>
+              <td class="num">${stats.objectiveCaptures}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Marshall Live Control Console</div>
+        <div class="wb-block-pad">
+          <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+            <select id="modal-status" style="flex: 1;">
+              <option value="ACTIVE" ${player.status === 'ACTIVE' ? 'selected' : ''}>Status: ACTIVE</option>
+              <option value="ELIMINATED" ${player.status === 'ELIMINATED' ? 'selected' : ''}>Status: ELIMINATED</option>
+              <option value="RESPAWNING" ${player.status === 'RESPAWNING' ? 'selected' : ''}>Status: RESPAWNING</option>
+              <option value="OUT" ${player.status === 'OUT' ? 'selected' : ''}>Status: OUT (BANNED)</option>
+            </select>
+            <button type="button" class="btn btn-primary btn-sm" id="modal-btn-status">Apply</button>
           </div>
-          <div style="background: var(--bg-card); padding: 4px; border-radius: 4px;">
-            <div style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: bold; color: var(--accent-red);">${stats.deaths}</div>
-            <div style="font-size: 0.55rem; color: var(--text-secondary);">Deaths</div>
+
+          <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+            <select id="modal-team" style="flex: 1;">
+              <option value="unassigned" ${player.team === 'unassigned' ? 'selected' : ''}>Team: Unassigned</option>
+              <option value="nonband" ${player.team === 'nonband' ? 'selected' : ''}>Team: Non-Band</option>
+              <option value="band" ${player.team === 'band' ? 'selected' : ''}>Team: Band</option>
+            </select>
+            <button type="button" class="btn btn-secondary btn-sm" id="modal-btn-team">Team</button>
           </div>
-          <div style="background: var(--bg-card); padding: 4px; border-radius: 4px;">
-            <div style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: bold; color: var(--accent-cyan);">${stats.kd.toFixed(2)}</div>
-            <div style="font-size: 0.55rem; color: var(--text-secondary);">K/D</div>
+
+          <div style="display: flex; gap: 4px; margin-bottom: 6px;">
+            <select id="modal-violation" style="flex: 1;">
+              <option value="" disabled selected>-- Log Infraction --</option>
+              <option value="BLIND_FIRE">Blind Fire</option>
+              <option value="OVERSHOOT">Overshooting</option>
+              <option value="DEAD_MAN_WALKING">Dead Man Walk/Talk</option>
+              <option value="MED_VIOLATION">MED Infraction</option>
+              <option value="EYE_PRO_REMOVED">Eye Pro Off</option>
+              <option value="AGGRESSION">Aggression / Fight</option>
+            </select>
+            <button type="button" class="btn btn-secondary btn-sm" id="modal-btn-violation">Log</button>
           </div>
-          <div style="background: var(--bg-card); padding: 4px; border-radius: 4px;">
-            <div style="font-family: var(--font-mono); font-size: 0.95rem; font-weight: bold; color: var(--accent-purple);">${stats.objectiveCaptures}</div>
-            <div style="font-size: 0.55rem; color: var(--text-secondary);">Caps</div>
+
+          <div style="display: flex; gap: 4px;">
+            <input type="number" id="modal-fps" style="flex: 1;" placeholder="FPS" value="${player.chrono.fps}">
+            <input type="number" id="modal-joules" step="0.01" style="flex: 1;" placeholder="Joules" value="${player.chrono.joules}">
+            <button type="button" class="btn btn-primary btn-sm" id="modal-btn-chrono">Chrono</button>
           </div>
         </div>
       </div>
@@ -1124,23 +1082,21 @@ LIMIT 8`;
         <div class="detail-section-title">Tech Repair Log (Silo 3)</div>
         ${repairHTML}
       </div>
-
-      <button class="btn btn-secondary" style="width: 100%; margin-top: 12px;" id="close-detail">Close Console View</button>
     `;
 
     overlay.classList.add('visible');
+    this._renderStatusBar(player);
 
     const closeModal = () => {
       overlay.classList.remove('visible');
       this.map.clearSelection();
+      if (titleEl) titleEl.textContent = 'Inspector';
+      if (metaEl) metaEl.textContent = 'Field & Telemetry';
+      this._renderStatusBar();
     };
 
     document.getElementById('close-detail')?.addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeModal();
-    });
 
-    // Control callbacks
     document.getElementById('modal-btn-status')?.addEventListener('click', async () => {
       const s = document.getElementById('modal-status').value;
       await this.engine.updatePlayerStatus(player.id, s);
@@ -1158,7 +1114,7 @@ LIMIT 8`;
     });
 
     document.getElementById('modal-btn-chrono')?.addEventListener('click', async () => {
-      const fps = parseInt(document.getElementById('modal-fps').value);
+      const fps = parseInt(document.getElementById('modal-fps').value, 10);
       const joules = parseFloat(document.getElementById('modal-joules').value);
       await this.engine.updatePlayerChrono(player.id, fps, joules, player.chrono.bbWeight);
       this._rebuildEngines();
@@ -1202,20 +1158,86 @@ LIMIT 8`;
     });
   }
 
-  // ─── Header Game Phase & Score Overlays ─────────────────────
+  _renderZoneInspector(zone) {
+    const container = document.getElementById('zone-inspector');
+    if (!container || !this.engine) return;
+
+    const comp = this.engine.getComplianceBreakdown();
+    const field = this.engine.fieldLayout?.field;
+    const zones = this.engine.getZones();
+
+    if (zone) {
+      const playersInZone = this.engine.getPlayersInZone(zone.id);
+      container.innerHTML = `
+        <div class="wb-sec-hdr">
+          <span style="display:flex;align-items:center;gap:5px;">${renderBfoSigilHtml(zone.type)} ${escapeHtml(zone.name)}</span>
+          <span class="tabular-nums">${escapeHtml(zone.type)}</span>
+        </div>
+        <div class="wb-prop-row"><span class="wb-prop-key">Zone ID</span><span class="wb-prop-val"><code>${escapeHtml(zone.id)}</code></span></div>
+        <div class="wb-prop-row"><span class="wb-prop-key">Max Joules</span><span class="wb-prop-val">${zone.maxJoules > 0 ? `${zone.maxJoules}J` : 'No Firing'}</span></div>
+        <div class="wb-prop-row"><span class="wb-prop-key">Capacity</span><span class="wb-prop-val">${playersInZone.length} / ${zone.maxPlayers}</span></div>
+        <div class="wb-sec-hdr"><span>Zone Rules</span><span class="tabular-nums">${(zone.rules || []).length}</span></div>
+        ${(zone.rules || []).map(r => `
+          <div class="wb-epistemic-row">
+            ${renderEpistemicSigilHtml('entailed', 'Field rule')}
+            <span>${escapeHtml(r)}</span>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      container.innerHTML = `
+        <div class="wb-sec-hdr">
+          <span>Field Overview</span>
+          <span class="tabular-nums">${zones.length} Zones</span>
+        </div>
+        <div class="wb-prop-row"><span class="wb-prop-key">Venue</span><span class="wb-prop-val" title="${escapeHtml(field?.name || '')}">${escapeHtml(field?.name || 'Humber Quarry')}</span></div>
+        <div class="wb-prop-row"><span class="wb-prop-key">Cleared</span><span class="wb-prop-val text-green">${comp.CLEARED}</span></div>
+        <div class="wb-prop-row"><span class="wb-prop-key">Flagged</span><span class="wb-prop-val text-amber">${comp.FLAGGED}</span></div>
+        <div class="wb-prop-row"><span class="wb-prop-key">Banned</span><span class="wb-prop-val text-red">${comp.BANNED}</span></div>
+        <div class="wb-sec-hdr"><span>Chrono Compliance</span><span class="tabular-nums">${this.engine.players.length}</span></div>
+        ${this.chronoFeed ? this.chronoFeed.renderStats() : ''}
+        <div class="wb-sec-hdr"><span>Zones</span><span class="tabular-nums">${zones.length}</span></div>
+        ${zones.map(z => `
+          <div class="wb-tree-row zone-select-row" data-zone-id="${escapeHtml(z.id)}">
+            ${renderBfoSigilHtml(z.type)}
+            <span>${escapeHtml(z.name)}</span>
+            <span class="wb-tree-count">${z.maxJoules > 0 ? `${z.maxJoules}J` : 'Safe'}</span>
+          </div>
+        `).join('')}
+      `;
+
+      container.querySelectorAll('.zone-select-row').forEach(row => {
+        row.addEventListener('click', () => {
+          const z = this.engine.getZoneById(row.dataset.zoneId);
+          if (z) {
+            this._selectedZone = z;
+            if (this.map) {
+              this.map.selectedZone = z;
+              this.map._render();
+            }
+            this._renderZoneInspector(z);
+          }
+        });
+      });
+    }
+  }
+
+  // ─── Toolbar Phase, Score & Status Bar ──────────────────────
 
   _renderGamePhase() {
     const badge = document.getElementById('game-phase-badge');
-    if (badge) {
-      let phaseLabel = 'Setup';
-      if (this._activeTab === 'setup') phaseLabel = 'Phase 1: Gameday Setup';
-      else if (this._activeTab === 'signin') phaseLabel = 'Phase 2: Chrono Sign-In Pool';
-      else if (this._activeTab === 'gameview') phaseLabel = 'Phase 3: Active Gameday Operations';
+    const topReadout = document.getElementById('top-phase-readout');
+    let phaseLabel = 'Phase 1: Gameday Setup';
+    if (this._activeTab === 'signin') phaseLabel = 'Phase 2: Chrono Sign-In Pool';
+    else if (this._activeTab === 'gameview') phaseLabel = 'Phase 3: Active Gameday';
+    else if (this._activeTab === 'queries') phaseLabel = 'SPARQL Query Workbench';
+    else if (this._activeTab === 'advisor') phaseLabel = 'Replica Selection Advisor';
 
-      badge.innerHTML = `
-        <div class="dot" style="background: var(--accent-cyan);"></div>
-        <span>${phaseLabel}</span>
-      `;
+    if (badge) {
+      badge.innerHTML = `<span class="dot"></span><span>${phaseLabel}</span>`;
+    }
+    if (topReadout) {
+      topReadout.textContent = phaseLabel;
     }
   }
 
@@ -1227,22 +1249,40 @@ LIMIT 8`;
     if (scoreEl) {
       scoreEl.innerHTML = `
         <div class="score-team">
-          <div class="team-dot" style="background: #888888;"></div>
-          <div>
-            <div class="team-name" style="color: #a3a3a3;">Non-Band</div>
-            <div class="team-score text-green">${session.score.nonband || 0}</div>
-          </div>
+          <span class="team-dot" style="background: var(--team-nonband);"></span>
+          <span class="team-name">Non-Band</span>
+          <span class="team-score text-green">${session.score.nonband || 0}</span>
         </div>
         <div class="score-divider"></div>
         <div class="score-team">
-          <div>
-            <div class="team-name" style="color: var(--accent-amber);">Band</div>
-            <div class="team-score text-blue">${session.score.band || 0}</div>
-          </div>
-          <div class="team-dot" style="background: var(--accent-amber);"></div>
+          <span class="team-dot" style="background: var(--team-band);"></span>
+          <span class="team-name">Band</span>
+          <span class="team-score text-amber">${session.score.band || 0}</span>
         </div>
       `;
     }
+  }
+
+  _renderStatusBar(activePlayer = null) {
+    const comp = this.engine.getComplianceBreakdown();
+    const modeEl = document.getElementById('sb-mode');
+    const rosterEl = document.getElementById('sb-roster');
+    const compEl = document.getElementById('sb-compliance');
+    const selEl = document.getElementById('sb-selection');
+    const shaclEl = document.getElementById('sb-shacl');
+
+    if (modeEl) modeEl.textContent = `Mode: ${this._activeTab}`;
+    if (rosterEl) rosterEl.textContent = `Roster: ${this.engine.players.length} players`;
+    if (compEl) compEl.textContent = `Cleared: ${comp.CLEARED} · Flagged: ${comp.FLAGGED} · Banned: ${comp.BANNED}`;
+    if (selEl) {
+      const player = activePlayer || this.map?.selectedPlayer;
+      selEl.textContent = player
+        ? `Selected: ${player.callsign} (${player.id})`
+        : this._selectedZone
+          ? `Zone: ${this._selectedZone.name}`
+          : 'Field: Humber Quarry';
+    }
+    if (shaclEl) shaclEl.textContent = this._shaclSummary;
   }
 
   _setupMapControls() {
@@ -1268,6 +1308,8 @@ LIMIT 8`;
 
   _onZoneHover(zone, mousePos) {
     const tooltip = document.getElementById('zone-tooltip');
+    if (!tooltip) return;
+
     if (!zone || !mousePos) {
       tooltip.classList.remove('visible');
       return;
@@ -1276,32 +1318,28 @@ LIMIT 8`;
     const playersInZone = this.engine.getPlayersInZone(zone.id);
 
     tooltip.innerHTML = `
-      <h4>${zone.icon} ${zone.name}</h4>
+      <h4>${renderBfoSigilHtml(zone.type)} ${escapeHtml(zone.name)}</h4>
       <div class="zone-stat">
         <span class="label">Type</span>
-        <span class="value">${zone.type}</span>
+        <span class="value">${escapeHtml(zone.type)}</span>
       </div>
       <div class="zone-stat">
         <span class="label">Max Joules</span>
-        <span class="value">${zone.maxJoules > 0 ? zone.maxJoules + 'J' : 'N/A'}</span>
+        <span class="value">${zone.maxJoules > 0 ? `${zone.maxJoules}J` : 'N/A'}</span>
       </div>
       <div class="zone-stat">
-        <span class="label">Max Players</span>
-        <span class="value">${zone.maxPlayers}</span>
-      </div>
-      <div class="zone-stat">
-        <span class="label">Current Players</span>
-        <span class="value">${playersInZone.length}</span>
+        <span class="label">Occupancy</span>
+        <span class="value">${playersInZone.length} / ${zone.maxPlayers}</span>
       </div>
     `;
 
-    const mapArea = document.getElementById('map-area');
-    const rect = mapArea.getBoundingClientRect();
-    let x = mousePos.x + 16;
-    let y = mousePos.y + 16;
+    const wrap = document.getElementById('map-canvas-wrap') || document.getElementById('map-area');
+    const rect = wrap.getBoundingClientRect();
+    let x = mousePos.x + 14;
+    let y = mousePos.y + 14;
 
-    if (x + 260 > rect.width) x = mousePos.x - 270;
-    if (y + 200 > rect.height) y = mousePos.y - 210;
+    if (x + 220 > rect.width) x = Math.max(8, mousePos.x - 220);
+    if (y + 130 > rect.height) y = Math.max(8, mousePos.y - 130);
 
     tooltip.style.left = x + 'px';
     tooltip.style.top = y + 'px';
@@ -1309,7 +1347,9 @@ LIMIT 8`;
   }
 
   _onZoneClick(zone) {
-    // Spatial zoom click handler
+    this._selectedZone = zone;
+    this._renderZoneInspector(zone);
+    this._renderStatusBar();
   }
 
   _setupFeedFilters() {
@@ -1340,37 +1380,40 @@ LIMIT 8`;
         hour: '2-digit', minute: '2-digit', second: '2-digit'
       });
 
-      let icon, text;
+      let iconHtml = renderBfoSigilHtml('proc');
+      let text = 'Operational log entry recorded';
+
       switch (e.type) {
-        case 'elimination':
-          icon = '💀';
+        case 'elimination': {
+          iconHtml = renderBfoSigilHtml('proc', '', 'Elimination');
           const attackerTeamClass = e.attackerTeam === 'nonband' ? 'nonband' : 'band';
           const targetTeamClass = e.targetTeam === 'nonband' ? 'nonband' : 'band';
-          text = `<span class="highlight team-${attackerTeamClass}">${e.attackerCallsign}</span> eliminated <span class="highlight team-${targetTeamClass}">${e.targetCallsign}</span> <span class="text-muted">in ${e.zone.replace(/_/g, ' ')}</span>`;
+          text = `<span class="highlight team-${attackerTeamClass}">${escapeHtml(e.attackerCallsign)}</span> eliminated <span class="highlight team-${targetTeamClass}">${escapeHtml(e.targetCallsign)}</span> <span class="text-muted">in ${escapeHtml(e.zone.replace(/_/g, ' '))}</span>`;
           break;
-        case 'objective_capture':
-          icon = '🏴';
+        }
+        case 'objective_capture': {
+          iconHtml = renderBfoSigilHtml('role', '', 'Objective Capture');
           const teamLabel = e.team === 'nonband' ? 'NON-BAND' : 'BAND';
-          text = `<span class="highlight team-${e.team}">${teamLabel}</span> captured <span class="highlight">${e.zone.replace(/_/g, ' ')}</span>`;
+          text = `<span class="highlight team-${escapeHtml(e.team)}">${teamLabel}</span> captured <span class="highlight">${escapeHtml(e.zone.replace(/_/g, ' '))}</span>`;
           break;
-        case 'medic_revive':
-          icon = '💚';
-          text = `<span class="highlight team-${e.team}">${e.medicCallsign}</span> revived teammate <span class="highlight team-${e.team}">${e.revivedCallsign}</span>`;
+        }
+        case 'medic_revive': {
+          iconHtml = renderBfoSigilHtml('ind', '', 'Medic Revive');
+          text = `<span class="highlight team-${escapeHtml(e.team)}">${escapeHtml(e.medicCallsign)}</span> revived <span class="highlight team-${escapeHtml(e.team)}">${escapeHtml(e.revivedCallsign)}</span>`;
           break;
-        case 'violation':
-          icon = '⚠️';
+        }
+        case 'violation': {
+          iconHtml = renderBfoSigilHtml('qual', '', 'Rule Violation');
           const actionClass = e.action === 'EJECTED' || e.action === 'BANNED_FOR_DAY' ? 'danger' : 'warn';
-          text = `<span class="warn">${e.playerCallsign}</span>: <span class="danger">${e.violationType.replace(/_/g, ' ')}</span> → <span class="${actionClass}">${e.action.replace(/_/g, ' ')}</span>`;
+          text = `<span class="warn">${escapeHtml(e.playerCallsign)}</span>: <span class="danger">${escapeHtml(e.violationType.replace(/_/g, ' '))}</span> -> <span class="${actionClass}">${escapeHtml(e.action.replace(/_/g, ' '))}</span>`;
           break;
-        default:
-          icon = '•';
-          text = 'Operational log entry recorded';
+        }
       }
 
       return `
         <div class="feed-entry">
           <div class="feed-time">${time}</div>
-          <div class="feed-icon">${icon}</div>
+          <div class="feed-icon">${iconHtml}</div>
           <div class="feed-text">${text}</div>
         </div>
       `;
@@ -1380,7 +1423,6 @@ LIMIT 8`;
   }
 }
 
-// Bootstrap
 document.addEventListener('DOMContentLoaded', () => {
   const app = new AirOpsApp();
   app.init().catch(err => {
